@@ -9,7 +9,7 @@ def home():
     return render_template('/base/landing_page.html')
 
 @base_page_bp.route("/services")
-def about():
+def services():
     return render_template("/base/about_page.html")
 
 @base_page_bp.route("/about")

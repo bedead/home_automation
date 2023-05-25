@@ -5,47 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <script src="/static/js/trigger.js"></script>
     <title>Home automation | Home</title>
 </head>
 
 <body>
-    <nav class="z-10 top-0 left-0 right-0 fixed bg-gradient-to-r from-white-simple to-white-shade shadow-sm">
-        <div class="md:p-3 md:flex md:justify-between md:items-center">
-            <a href="/" class="md:ml-8 bg-new_orange-brighter p-5 w-1/6 rounded-2xl">
-                <img class="lg:w-36 lg:h-7" src="/static/img/logo/logo-no-background.png" alt="company logo" />
-            </a>
-            <!-- pc desktop navigation bar -->
-            <ul class="hidden md:text-[16px] lg:text-[18px] md:flex md:mr-20 gap-8 font-semibold items-center">
-                <li class="text-new_brown-brighter">
-                    <a href="/">Home.</a>
-                </li>
-                <li class="text-new_brown-brighter">
-                    <a href="/services">Services.</a>
-                </li>
-                <li class="text-new_brown-brighter">
-                    <a href="/about">About.</a>
-                </li>
-                <li class="text-new_white-lighter bg-new_brown-brighter px-4 py-2 rounded-3xl">
-                    <a href="/auth/signup">Sign Up.</a>
-                </li>
-            </ul>
-            <!-- mobile nav -->
-            <ul class="hidden">
+    {% extends "base_layout.html" %}
 
-            </ul>
-        </div>
-    </nav>
-    <div class="mt-16 md:mt-20 lg:mt-24 bg-gradient-to-r from-white-simple to-white-shade">
-        <div class="">
-            <p class="text-black">jdsn</p>
-        </div>
+    {% block content %}
+    <div class="">
+        
     </div>
-    <features>
+    {% endblock %}
 
-    </features>
-    <footer>
-
-    </footer>
 </body>
 
 </html>
