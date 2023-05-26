@@ -2,7 +2,7 @@
 # @author Satyam Mishra
 
 from flask import Flask
-from config import DevConfig, ProdConfig
+from __config__ import DevConfig, ProdConfig
 
 def create_app():
     """Create Flask application."""
@@ -11,15 +11,19 @@ def create_app():
     # selecting config file for application to run
     # Basic config, Dev, and Prod
     app.config.from_object(DevConfig)
-
+    
     with app.app_context():
         # Import parts of our application
-        from .base import base_page_bp
-        from .auth import auth_page_bp
+        from .__base__ import base_page_bp
+        from .__auth__ import auth_page_bp
+        from .__dashboard__ import dashboard_page_bp
+        from .__error__ import error_page_bp
 
         # Register Blueprints
         app.register_blueprint(base_page_bp)
         app.register_blueprint(auth_page_bp)
+        app.register_blueprint(dashboard_page_bp)
+        app.register_blueprint(error_page_bp)
 
         # returning app
         return app
