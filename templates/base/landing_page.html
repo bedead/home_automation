@@ -14,11 +14,100 @@
     {% extends "base_layout.html" %}
 
     {% block content %}
-    <div class="">
-        
+    <!-- hero section -->
+    <div
+        class="mt-[78px] md:mt-20 lg:mt-[90px] h-screen bg-gradient-to-r from-white-simple to-white-shade overflow-y-hidden">
+        <div class="z-30">
+
+        </div>
+        <div class="z-40 md:flex justify-evenly mx-5 items-center">
+            <h1 class="ml-0 md:mt-0 text-center md:ml-10 font-black text-5xl md:text-6xl lg:text-7xl">Transform Your
+                Home with <span class="text-new_orange-brighter">Smart
+                    Automation</span> and <span class="text-new_orange-brighter">Energy Management</span></h1>
+            <img class="mt-8 md:mt-0 mx-auto md:w-3/4 md:h-3/4 lg:w-full lg:h-full" src="/static/img/other/2.png"
+                alt="modern 3d room (hero image)" />
+        </div>
+    </div>
+
+    <!-- features section -->
+    <div class="bg-gradient-to-r from-new_orange-lighter to-new_orange-brighter p-5 md:p-28 lg:p-36">
+        <div class="border-new_brown-brighter border-2 bg-new_white-lighter -mt-0 md:-mt-44 lg:-mt-52 rounded-2xl">
+            <!-- component inside card -->
+            <div class="px-12 py-10 mx-auto">
+                <h1 class="text-3xl font-bold text-new_orange-brighter capitalize lg:text-5xl">explore our
+                    <br><span class="underline decoration-new_orange-brighter">Features</span>
+                </h1>
+
+                <p class="mt-4 font-semibold text-new_brown-brighter xl:mt-6">
+                    Seamlessly integrating with a variety of smart devices, our cutting-edge technology puts you in
+                    control. Monitor and manage your energy consumption in real-time, optimizing efficiency and
+                    reducing costs.
+                </p>
+
+                <div class="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-12 md:grid-cols-2 xl:grid-cols-3">
+                    <div class="p-4 md:p-8 space-y-3 border-2 border-new_brown-brighter rounded-xl">
+                        <span class="inline-block text-new_orange-brighter ">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+                            </svg>
+                        </span>
+
+                        <h1 class="text-2xl font-bold text-new_orange-brighter capitalize">Smart Home
+                            Integration</h1>
+
+                        <p class="font-semibold text-new_brown-brighter">
+                            Highlight the ability of your solutions to seamlessly integrate with various smart
+                            devices and platforms, allowing users to control and manage their entire smart home
+                            ecosystem from a centralized interface.
+                        </p>
+                    </div>
+
+                    <div class="p-4 md:p-8 space-y-3 border-2 border-new_brown-brighter  rounded-xl">
+                        <span class="inline-block text-new_orange-brighter">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
+                            </svg>
+                        </span>
+
+                        <h1 class="text-2xl font-bold text-new_orange-brighter capitalize">Energy
+                            Efficiency Reports</h1>
+
+                        <p class="font-semibold text-new_brown-brighter">
+                            Highlight how your solutions provide detailed energy efficiency reports and actionable
+                            recommendations to help users optimize their energy usage and reduce their carbon
+                            footprint.
+                        </p>
+                    </div>
+
+                    <div class="p-4 md:p-8 space-y-3 border-2 border-new_brown-brighter rounded-xl">
+                        <span class="inline-block text-new_orange-brighter">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                            </svg>
+                        </span>
+
+                        <h1 class="text-2xl font-bold text-new_orange-brighter capitalize">Energy
+                            Monitoring and Management</h1>
+
+                        <p class="font-semibold text-new_brown-brighter">
+                            Showcase how your solutions enable users to monitor and manage their energy consumption
+                            in real-time. Emphasize features such as energy usage tracking, personalized insights,
+                            and recommendations for optimizing energy efficiency.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     {% endblock %}
-
 </body>
 
 </html>
