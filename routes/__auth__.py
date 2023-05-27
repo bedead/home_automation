@@ -7,7 +7,7 @@ auth_page_bp = Blueprint("auth_page", __name__)
 supabase = Config.supabase_
 
 @auth_page_bp.route("/auth/signup/", methods=['GET','POST'])
-def signup():
+def signup(pass_same=False):
     if not session:
         if request.method == 'POST':
             email = request.form['email']
@@ -27,22 +27,30 @@ def signup():
                     }})
                 except ConnectionError as e:
                     message, name, status = get_Exception_Details(e)
-                    return message
+                    return redirect(url_for('error_page.base_error',
+                                        status=status,
+                                        message=message,
+                                        ))
                 except Exception as e:
                     message, name, status = get_Exception_Details(e)
-                    return message
+                    return redirect(url_for('error_page.base_error',
+                                        status=status,
+                                        message=message,
+                                        ))
                 
                 if user.user.id != None:
                     set_User_Session(email=email, user_type=user_type)
 
                     return redirect(url_for('auth_page.email_verificatation'))
-                # add logic for condition if user is not created
 
             else:
+                pass_same = True
                 # flag error saying both password are not same
-                return "both password are not same"
+                return redirect(url_for('auth_page.signup', pass_same=pass_same))
         
-        return render_template("/auth/signup_page.html")
+        
+        # if pass_same is True render pop up in html saying passwords are same
+        return render_template("/auth/signup_page.html", pass_same=pass_same)
     elif session:
         dashboard_type = get_User_Type_Route()
 
@@ -67,10 +75,16 @@ def signin():
                     })
             except ConnectionError as e:
                 message, name, status = get_Exception_Details(e)
-                return message
+                return redirect(url_for('error_page.base_error',
+                                        status=status,
+                                        message=message,
+                                        ))
             except Exception as e:
                 message, name, status = get_Exception_Details(e)
-                return message
+                return redirect(url_for('error_page.base_error',
+                                        status=status,
+                                        message=message,
+                                        ))
 
             if user.user.id != None:
                 # getting user details in python format
@@ -87,6 +101,7 @@ def signin():
         return redirect(url_for(dashboard_type))
     else:
         # cases where internal error has occured
+        message = "Same Internal Error has occured"
         pass
 
 

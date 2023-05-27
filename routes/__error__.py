@@ -4,9 +4,17 @@ error_page_bp = Blueprint("error_page", __name__)
 
 @error_page_bp.route("/error/404")
 def error_404():
-    return "Error 404 | Page not found"
+    return render_template('/error/404_page.html')
 
 
 @error_page_bp.route("/error/underconstruction")
 def under_construction():
-    return "Page under construction"
+    return render_template('/error/under_construction_page.html')
+
+
+@error_page_bp.route("/error/<status>/<message>")
+def base_error(status, message):
+    return render_template('/error/base_error_page.html',
+                            status=status,
+                            message=message
+                            )
