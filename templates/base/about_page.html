@@ -13,9 +13,23 @@
 <body>
     {% extends "base_layout.html" %}
     {% block content %}
-        <div>
-            
+    <div class="mt-[78px] md:mt-20 lg:mt-[90px] py-16 bg-white">
+        <div class="container m-auto px-6 md:px-12 xl:px-6">
+            <div class="space-y-6 md:space-y-0 md:flex md:gap-6 lg:items-center lg:gap-12">
+                <div class="md:w-5/12 lg:w-5/12">
+                    <img src="https://tailus.io/sources/blocks/left-image/preview/images/startup.png" alt="side image"
+                        loading="lazy">
+                </div>
+                <div class="md:7/12 lg:w-6/12">
+                    <h2 class="text-2xl font-bold md:text-4xl">About Our Company</h2>
+                    <p class="mt-6">Our mission is to revolutionize the way people interact with their
+                        homes by offering cutting-edge technology and seamless automation.</p>
+                    <p class="mt-4">We envision a future where homes are smart, energy-efficient, and
+                        adaptable to the needs of individuals and families.</p>
+                </div>
+            </div>
         </div>
+    </div>
     {% endblock %}
 </body>
 

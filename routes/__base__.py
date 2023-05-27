@@ -8,9 +8,15 @@ base_page_bp = Blueprint("landing_page", __name__)
 def home():
     return render_template('/base/landing_page.html')
 
+
+
+
 @base_page_bp.route("/services")
 def services():
-    return render_template("/base/about_page.html")
+    return render_template("/base/services_page.html")
+
+
+
 
 @base_page_bp.route("/about")
 def about():
