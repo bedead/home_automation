@@ -52,10 +52,10 @@ def email_verificatation():
 def password_recovery():
     pass
 
-@auth_page_bp.route("/auth/logout/")
+@auth_page_bp.route("/auth/logout/", methods=['GET','POST'])
 def logout():
     if session:
         session.clear()
+        return redirect(url_for('auth_page.signin'))
     else:
         return redirect(url_for('auth_page.signin'))
-    return "Session logout"

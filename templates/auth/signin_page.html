@@ -15,19 +15,19 @@
     {% block content %}
     <!-- component -->
     <section
-        class="mt-[78px] md:mt-20 lg:mt-[90px] bg-gradient-to-r from-white-simple to-white-shade flex flex-col md:flex-row h-screen items-center">
+        class="mt-[78px] md:mt-20 lg:mt-[90px] bg-gradient-to-r from-white-simple to-white-shade flex flex-col md:flex-row items-center">
 
-        <div class="hidden lg:block w-full md:w-1/2 xl:w-2/3 h-screen">
-            <img src="https://source.unsplash.com/random/?city,night" alt="" class="w-full h-full object-cover">
+        <div class="hidden lg:block w-full md:w-1/2 xl:w-2/3">
+            <img src="https://source.unsplash.com/random/1024x858/?city,night" alt="" class="w-full h-full object-cover">
         </div>
 
-        <div class="md:mx-auto md:w-1/2 xl:w-1/3 h-screen md:mt-14 px-6 lg:px-16 xl:px-12
+        <div class="md:mx-auto md:w-1/2 xl:w-1/3 mt-10 md:mt-14 px-6 lg:px-16 xl:px-12
           items-center">
 
-            <h1 class="text-lg md:text-xl lg:text-2xl text-new_brown-brighter font-bold leading-tight">Account Login
+            <h1 class="text-lg md:text-2xl lg:text-3xl text-new_brown-brighter font-bold leading-tight">Account Login
             </h1>
 
-            <form class="mt-6" action="{{ url_for('auth_page.signin') }}" method="POST">
+            <form class="" action="{{ url_for('auth_page.signin') }}" method="POST">
                 <div>
                     <label class="block text-new_brown-brighter">Email Address</label>
                     <input type="email" name="email" placeholder="Enter Email Address"
