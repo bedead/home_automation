@@ -1,3 +1,4 @@
 => (sign up password are not same) if pass_same is True render pop up in html saying passwords are same
 => (sign in internal error has occured set up)
-=> 
+=> change sign in dropdown style
+=> active tab bg-color in dashboard

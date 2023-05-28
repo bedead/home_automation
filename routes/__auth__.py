@@ -119,7 +119,12 @@ def email_verificatation():
 
 
 
-
+@auth_page_bp.route("/auth/email_verify/ok")
+def email_verified(access_token):
+    if session:
+        return "Your email has been verified"
+    else:
+        return redirect(url_for('error_page.error_404'))
 
 
 

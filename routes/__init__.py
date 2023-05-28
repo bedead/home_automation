@@ -16,14 +16,20 @@ def create_app():
         # Import parts of our application
         from .__base__ import base_page_bp
         from .__auth__ import auth_page_bp
-        from .__dashboard__ import dashboard_page_bp
         from .__error__ import error_page_bp
+        from .users.__consumer__ import consumer_page_bp
+        from .users.__producer__ import producer_page_bp
+        from .users.__prosumer__ import prosumer_page_bp
+        from .users.__aggregator__ import aggregator_page_bp
 
         # Register Blueprints
         app.register_blueprint(base_page_bp)
         app.register_blueprint(auth_page_bp)
-        app.register_blueprint(dashboard_page_bp)
         app.register_blueprint(error_page_bp)
+        app.register_blueprint(consumer_page_bp)
+        app.register_blueprint(producer_page_bp)
+        app.register_blueprint(prosumer_page_bp)
+        app.register_blueprint(aggregator_page_bp)
 
         # returning app
         return app

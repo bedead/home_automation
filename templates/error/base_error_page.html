@@ -14,7 +14,7 @@
     {% extends "base_layout.html" %}
     {% block content %}
     <div class="mt-[78px] md:mt-20 lg:mt-[90px] py-16 bg-white">
-        <p class="text-lg text-center">Error | {{ message }} </p>
+        <p class="text-lg text-center">Error {{status}} | {{ message }} </p>
     </div>
     {% endblock %}
 </body>
