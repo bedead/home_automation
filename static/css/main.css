@@ -1041,10 +1041,6 @@ video {
   border-width: 2px;
 }
 
-.border-4 {
-  border-width: 4px;
-}
-
 .border-b {
   border-bottom-width: 1px;
 }
@@ -1071,6 +1067,16 @@ video {
   border-color: rgb(196 108 51 / var(--tw-border-opacity));
 }
 
+.border-new_orange-brighter {
+  --tw-border-opacity: 1;
+  border-color: rgb(251 132 28 / var(--tw-border-opacity));
+}
+
+.bg-gray-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+}
+
 .bg-new_brown-lighter {
   --tw-bg-opacity: 1;
   background-color: rgb(223 120 39 / var(--tw-bg-opacity));
@@ -1084,6 +1090,11 @@ video {
 .bg-new_white-lighter {
   --tw-bg-opacity: 1;
   background-color: rgb(252 222 196 / var(--tw-bg-opacity));
+}
+
+.bg-white-shade {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 235 217 / var(--tw-bg-opacity));
 }
 
 .bg-white-simple {
@@ -1323,6 +1334,11 @@ video {
   color: rgb(75 85 99 / var(--tw-text-opacity));
 }
 
+.text-gray-800 {
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity));
+}
+
 .text-new_brown-brighter {
   --tw-text-opacity: 1;
   color: rgb(196 108 51 / var(--tw-text-opacity));
@@ -1331,11 +1347,6 @@ video {
 .text-new_orange-brighter {
   --tw-text-opacity: 1;
   color: rgb(251 132 28 / var(--tw-text-opacity));
-}
-
-.text-red-600 {
-  --tw-text-opacity: 1;
-  color: rgb(220 38 38 / var(--tw-text-opacity));
 }
 
 .text-white-simple {
@@ -1379,14 +1390,24 @@ video {
   border-bottom-width: 2px;
 }
 
+.hover\:bg-gray-200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-gray-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+}
+
 .hover\:bg-new_brown-brighter:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(196 108 51 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-gray-200:hover {
+.hover\:bg-white-shade:hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+  background-color: rgb(255 235 217 / var(--tw-bg-opacity));
 }
 
 .hover\:text-gray-600:hover {
@@ -1414,6 +1435,11 @@ video {
   color: rgb(252 222 196 / var(--tw-text-opacity));
 }
 
+.focus\:bg-gray-200:focus {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
 .focus\:bg-gray-50:focus {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
@@ -1424,9 +1450,9 @@ video {
   background-color: rgb(196 108 51 / var(--tw-bg-opacity));
 }
 
-.focus\:bg-gray-200:focus {
+.focus\:bg-white-shade:focus {
   --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+  background-color: rgb(255 235 217 / var(--tw-bg-opacity));
 }
 
 .focus\:text-gray-600:focus {
@@ -1437,6 +1463,11 @@ video {
 .focus\:text-gray-800:focus {
   --tw-text-opacity: 1;
   color: rgb(31 41 55 / var(--tw-text-opacity));
+}
+
+.focus\:text-new_brown-brighter:focus {
+  --tw-text-opacity: 1;
+  color: rgb(196 108 51 / var(--tw-text-opacity));
 }
 
 .focus\:outline-none:focus {
@@ -1727,6 +1758,10 @@ video {
 
   .xl\:grid-flow-col {
     grid-auto-flow: column;
+  }
+
+  .xl\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .xl\:grid-cols-3 {

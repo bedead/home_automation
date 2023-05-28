@@ -2,3 +2,4 @@
 => (sign in internal error has occured set up)
 => change sign in dropdown style
 => active tab bg-color in dashboard
+=> onhover show tooltip for dashboard icons

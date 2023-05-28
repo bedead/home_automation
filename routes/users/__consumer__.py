@@ -23,7 +23,19 @@ def consumer_dashboard():
 def consumer_history():
     if session['user-type'] =="Consumer":
 
-        return render_template('/consumer/consumer_dashboard_page.html')
+        return render_template('/consumer/consumer_history_page.html')
+    elif not session:
+        return redirect(url_for('auth_page.signin'))
+
+
+
+
+
+@consumer_page_bp.route("/user/consumer/monitor")
+def consumer_monitor():
+    if session['user-type'] =="Consumer":
+
+        return render_template('/consumer/consumer_monitor_page.html')
     elif not session:
         return redirect(url_for('auth_page.signin'))
 
