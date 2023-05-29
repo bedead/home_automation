@@ -1,10 +1,12 @@
 from flask import Blueprint, redirect, render_template, request, url_for, session
 from __config__ import Config
 from .utility.general_methods import get_User_Type_Route, set_User_Session, get_Exception_Details
+from .utility.update_userMeta import update_User_Metadata_First_Login
 
 # Create a blueprint for the auth routes
 auth_page_bp = Blueprint("auth_page", __name__)
 supabase = Config.supabase_
+
 
 @auth_page_bp.route("/auth/signup/", methods=['GET','POST'])
 def signup(pass_same=False):
@@ -16,6 +18,7 @@ def signup(pass_same=False):
             confirm_password = request.form['reenter_password']
 
             if (password==confirm_password):
+
                 try:
                     user = supabase.auth.sign_up({
                     "email": email,
@@ -27,22 +30,14 @@ def signup(pass_same=False):
                     }})
                 except ConnectionError as e:
                     message, name, status = get_Exception_Details(e)
-                    return redirect(url_for('error_page.base_error',
-                                        status=status,
-                                        message=message,
-                                        ))
+                    return redirect(url_for('error_page.base_error',status=status,message=message))
                 except Exception as e:
                     message, name, status = get_Exception_Details(e)
-                    return redirect(url_for('error_page.base_error',
-                                        status=status,
-                                        message=message,
-                                        ))
+                    return redirect(url_for('error_page.base_error',status=status,message=message))
                 
                 if user.user.id != None:
-                    set_User_Session(email=email, user_type=user_type)
-
                     return redirect(url_for('auth_page.email_verificatation'))
-
+                
             else:
                 pass_same = True
                 # flag error saying both password are not same
@@ -72,27 +67,32 @@ def signin():
                 user = supabase.auth.sign_in_with_password({
                     "email": email,
                     "password": password
-                    })
+                })
+        
             except ConnectionError as e:
                 message, name, status = get_Exception_Details(e)
-                return redirect(url_for('error_page.base_error',
-                                        status=status,
-                                        message=message,
-                                        ))
+                return redirect(url_for('error_page.base_error',status=status,message=message))
             except Exception as e:
                 message, name, status = get_Exception_Details(e)
-                return redirect(url_for('error_page.base_error',
-                                        status=status,
-                                        message=message,
-                                        ))
-
+                return redirect(url_for('error_page.base_error',status=status,message=message))
+            
+            print(user)
             if user.user.id != None:
                 # getting user details in python format
                 user = user.user
-                user_type = user.user_metadata['user-type']
-                set_User_Session(email=email, user_type=user_type)
-                dashboard_type = get_User_Type_Route()
+                user_metadata = user.user_metadata
                 
+                # if first time login insert blank data with user_uuid in table user_stats
+                # if (user_metadata['first-login']):
+                    # res = insert_Empty_Into_User_Stats(user_uuid=user.id)
+                    # update_User_Metadata_First_Login(user.id, False)
+
+                
+                # setting user login session
+                set_User_Session(email=email, user_type=user_metadata['user-type'])
+                
+                # getting return dashboard type depending on user-type
+                dashboard_type = get_User_Type_Route()
                 return redirect(url_for(dashboard_type))
         return render_template("/auth/signin_page.html")
     elif session:
@@ -108,23 +108,11 @@ def signin():
 
 
 
-
-
 @auth_page_bp.route("/auth/email_verify/")
 def email_verificatation():
-    if session:
-        return "Email verification has been sent to you."
-    else:
-        return redirect(url_for('error_page.error_404'))
+    return "Email verification has been sent to you."
 
 
-
-@auth_page_bp.route("/auth/email_verify/ok")
-def email_verified(access_token):
-    if session:
-        return "Your email has been verified"
-    else:
-        return redirect(url_for('error_page.error_404'))
 
 
 
@@ -144,9 +132,6 @@ def password_recovery():
 
 @auth_page_bp.route("/auth/logout/", methods=['GET','POST'])
 def logout():
-    if session:
-        out = supabase.auth.sign_out()
-        session.clear()
-        return redirect(url_for('auth_page.signin'))
-    else:
-        return redirect(url_for('auth_page.signin'))
+    out = supabase.auth.sign_out()
+    session.clear()
+    return redirect(url_for('auth_page.signin'))

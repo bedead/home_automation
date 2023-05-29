@@ -10,6 +10,7 @@ supabase = Config.supabase_
 @consumer_page_bp.route("/user/consumer/dashboard")
 def consumer_dashboard():
     if session['user-type'] =="Consumer":
+        
 
         return render_template('/consumer/consumer_dashboard_page.html')
     elif not session:
