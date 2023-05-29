@@ -6,6 +6,9 @@ error_page_bp = Blueprint("error_page", __name__)
 def error_404():
     return render_template('/error/404_page.html')
 
+@error_page_bp.route("/error/403")
+def error_403():
+    return render_template('/error/403_page.html')
 
 @error_page_bp.route("/error/underconstruction")
 def under_construction():

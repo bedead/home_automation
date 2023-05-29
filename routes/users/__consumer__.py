@@ -9,12 +9,15 @@ supabase = Config.supabase_
 
 @consumer_page_bp.route("/user/consumer/dashboard")
 def consumer_dashboard():
-    if session['user-type'] =="Consumer":
-        
-
+    access = session['user-type'] =="Consumer"
+    if access:
         return render_template('/consumer/consumer_dashboard_page.html')
     elif not session:
         return redirect(url_for('auth_page.signin'))
+    elif not access:
+        return redirect(url_for('error_page.error_403'))
+    else:
+        return "Some error occured."
 
 
 
@@ -22,11 +25,16 @@ def consumer_dashboard():
 
 @consumer_page_bp.route("/user/consumer/history")
 def consumer_history():
-    if session['user-type'] =="Consumer":
+    access = session['user-type'] =="Consumer"
 
+    if access:
         return render_template('/consumer/consumer_history_page.html')
     elif not session:
         return redirect(url_for('auth_page.signin'))
+    elif not access:
+        return redirect(url_for('error_page.error_403'))
+    else:
+        return "Some error occured."
 
 
 
@@ -34,11 +42,15 @@ def consumer_history():
 
 @consumer_page_bp.route("/user/consumer/monitor")
 def consumer_monitor():
-    if session['user-type'] =="Consumer":
-
+    access = session['user-type'] =="Consumer"
+    if access:
         return render_template('/consumer/consumer_monitor_page.html')
     elif not session:
         return redirect(url_for('auth_page.signin'))
+    elif not access:
+        return redirect(url_for('error_page.error_403'))
+    else:
+        return "Some error occured."
 
 
 
@@ -46,10 +58,15 @@ def consumer_monitor():
 
 @consumer_page_bp.route("/user/consumer/settings")
 def consumer_settings():
-    if session['user-type'] =="Consumer":
+    access = session['user-type'] =="Consumer"
+    if access:
         return render_template('/consumer/consumer_settings_page.html')
     elif not session:
         return redirect(url_for('auth_page.signin'))
+    elif not access:
+        return redirect(url_for('error_page.error_403'))
+    else:
+        return "Some error occured."
 
 
 
