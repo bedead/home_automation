@@ -1,7 +1,9 @@
+from threading import Thread
+import time
 from flask import Blueprint, redirect, render_template, request, url_for, session
-from __config__ import Config
+from routes.__config__ import Config
+
 from .utility.general_methods import get_User_Type_Route, set_User_Session, get_Exception_Details
-from .utility.update_userMeta import update_User_Metadata_First_Login
 
 # Create a blueprint for the auth routes
 auth_page_bp = Blueprint("auth_page", __name__)
@@ -14,6 +16,7 @@ def signup(pass_same=False):
         if request.method == 'POST':
             email = request.form['email']
             user_type = request.form['user-type']
+            # encrypt password here using 3DES
             password = request.form['password']
             confirm_password = request.form['reenter_password']
 
@@ -52,16 +55,13 @@ def signup(pass_same=False):
         return redirect(url_for(dashboard_type))
 
 
-
-
-
-
 @auth_page_bp.route("/auth/signin/", methods=['GET', 'POST'])
 def signin():
     if not session:
         if request.method == 'POST':
             email = request.form['email']
             password = request.form['password']
+            # encrpt passeord here and send it to supabase server to auth
 
             try:
                 user = supabase.auth.sign_in_with_password({
@@ -81,6 +81,7 @@ def signin():
                 # getting user details in python format
                 user = user.user
                 user_metadata = user.user_metadata
+                user_id = user.id
                 
                 # if first time login insert blank data with user_uuid in table user_stats
                 # if (user_metadata['first-login']):
@@ -89,7 +90,8 @@ def signin():
 
                 
                 # setting user login session
-                set_User_Session(email=email, user_type=user_metadata['user-type'])
+                set_User_Session(email=email, user_type=user_metadata['user-type'], user_id=user_id)
+
                 
                 # getting return dashboard type depending on user-type
                 dashboard_type = get_User_Type_Route()
@@ -105,15 +107,9 @@ def signin():
         pass
 
 
-
-
-
 @auth_page_bp.route("/auth/email_verify/")
 def email_verificatation():
     return "Email verification has been sent to you."
-
-
-
 
 
 @auth_page_bp.route("/auth/password_recovery/")
@@ -123,11 +119,6 @@ def password_recovery():
         return redirect(url_for('error_page.under_construction'))
     else:
         return render_template('/auth/password_recovery_page.html')
-
-
-
-
-
 
 
 @auth_page_bp.route("/auth/logout/", methods=['GET','POST'])

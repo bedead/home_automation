@@ -2,7 +2,7 @@
 # @author Satyam Mishra
 
 from flask import Flask
-from __config__ import DevConfig, ProdConfig
+from routes.__config__ import DevConfig, ProdConfig
 
 def create_app():
     """Create Flask application."""

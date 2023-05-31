@@ -16,10 +16,11 @@ def get_User_Type_Route():
         return Aggregator
     
 
-def set_User_Session(email, user_type, session_token=None):
+def set_User_Session(email, user_type, user_id, session_token=None):
     session['email'] = email
     session['user-type'] = user_type
     session['session_token'] = session_token
+    session['user_id'] = user_id
 
 def clear_User_Session():
     session.clear()
