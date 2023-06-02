@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="/static/css/main.css">
     <link rel="stylesheet" href="/static/css/custom.css">
     <script src="/static/js/triggerLogout.js"></script>
+    <script>
+        setTimeout(function() {
+            location.reload();
+        }, 6000);
+    </script>
+
     <title>Home automation | Consumer</title>
 </head>
 
@@ -63,7 +69,7 @@
                                 d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
                     </button>
-                    <button  onclick="consumer_logout();"
+                    <button onclick="consumer_logout();"
                         class="relative p-2 text-gray-400 hover:bg-gray-200 hover:text-gray-600 focus:bg-gray-200 focus:text-gray-600 rounded-full">
                         <span class="sr-only">Log out</span>
                         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
@@ -117,7 +123,8 @@
                         </svg>
                     </div>
                     <div>
-                        <span class="block text-2xl text-gray-800 font-bold">12</span>
+                        <span id="total_trades" class="block text-2xl text-gray-800 font-bold"> {{total_trades}}
+                        </span>
                         <span class="block text-gray-600">Total trades</span>
                     </div>
                 </div>
@@ -130,7 +137,8 @@
                         </svg>
                     </div>
                     <div>
-                        <span class="block text-2xl text-gray-800 font-bold">6.8</span>
+                        <span id="average_wh_hour" class="block text-2xl text-gray-800 font-bold">
+                            {{average_wh_hour}} </span>
                         <span class="block text-gray-600">Average WH/Hour</span>
                     </div>
                 </div>
@@ -143,7 +151,8 @@
                         </svg>
                     </div>
                     <div>
-                        <span class="inline-block text-2xl text-gray-800 font-bold">13</span>
+                        <span id="average_cost_hour" class="inline-block text-2xl text-gray-800 font-bold">
+                            {{average_cost_hour}} </span>
                         <!-- <span class="inline-block text-xl text-gray-500 font-semibold">(14%)</span> -->
                         <span class="block text-gray-600">Average Cost/Hour</span>
                     </div>
@@ -157,7 +166,8 @@
                         </svg>
                     </div>
                     <div>
-                        <span class="block text-2xl text-gray-800 font-bold">50</span>
+                        <span id="some_other" class="block text-2xl text-gray-800 font-bold"> {{some_other}}
+                        </span>
                         <span class="block text-gray-600">Some other stats</span>
                     </div>
                 </div>
@@ -179,7 +189,8 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="block text-2xl text-gray-800 font-bold">10</span>
+                            <span id="access_grants" class="block text-2xl text-gray-800 font-bold">
+                                {{access_grants}} </span>
                             <span class="block text-gray-600">Access grants</span>
                         </div>
                     </div>
@@ -193,7 +204,8 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="block text-2xl text-gray-800 font-bold">3</span>
+                            <span id="access_rejected" class="block text-2xl text-gray-800 font-bold">
+                                {{access_rejected}} </span>
                             <span class="block text-gray-600">Access rejected</span>
                         </div>
                     </div>
@@ -207,101 +219,6 @@
                             Chart</div>
                     </div>
                 </div>
-
-
-
-                <!-- <div class="row-span-3 bg-white shadow rounded-lg">
-                    <div class="flex items-center justify-between px-6 py-5 font-semibold border-b border-gray-100">
-                        <span>Students by average mark</span>
-                        <button type="button"
-                            class="inline-flex justify-center rounded-md px-1 -mr-1 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-600"
-                            id="options-menu" aria-haspopup="true" aria-expanded="true">
-                            Descending
-                            <svg class="-mr-1 ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="overflow-y-auto" style="max-height: 24rem;">
-                        <ul class="p-6 space-y-6">
-                            <li class="flex items-center">
-                                <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/women/82.jpg"
-                                        alt="Annette Watson profile picture">
-                                </div>
-                                <span class="text-gray-600">Annette Watson</span>
-                                <span class="ml-auto font-semibold">9.3</span>
-                            </li>
-                            <li class="flex items-center">
-                                <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/men/81.jpg"
-                                        alt="Calvin Steward profile picture">
-                                </div>
-                                <span class="text-gray-600">Calvin Steward</span>
-                                <span class="ml-auto font-semibold">8.9</span>
-                            </li>
-                            <li class="flex items-center">
-                                <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/men/80.jpg"
-                                        alt="Ralph Richards profile picture">
-                                </div>
-                                <span class="text-gray-600">Ralph Richards</span>
-                                <span class="ml-auto font-semibold">8.7</span>
-                            </li>
-                            <li class="flex items-center">
-                                <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/men/79.jpg"
-                                        alt="Bernard Murphy profile picture">
-                                </div>
-                                <span class="text-gray-600">Bernard Murphy</span>
-                                <span class="ml-auto font-semibold">8.2</span>
-                            </li>
-                            <li class="flex items-center">
-                                <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/women/78.jpg"
-                                        alt="Arlene Robertson profile picture">
-                                </div>
-                                <span class="text-gray-600">Arlene Robertson</span>
-                                <span class="ml-auto font-semibold">8.2</span>
-                            </li>
-                            <li class="flex items-center">
-                                <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/women/77.jpg"
-                                        alt="Jane Lane profile picture">
-                                </div>
-                                <span class="text-gray-600">Jane Lane</span>
-                                <span class="ml-auto font-semibold">8.1</span>
-                            </li>
-                            <li class="flex items-center">
-                                <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/men/76.jpg"
-                                        alt="Pat Mckinney profile picture">
-                                </div>
-                                <span class="text-gray-600">Pat Mckinney</span>
-                                <span class="ml-auto font-semibold">7.9</span>
-                            </li>
-                            <li class="flex items-center">
-                                <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/men/75.jpg"
-                                        alt="Norman Walters profile picture">
-                                </div>
-                                <span class="text-gray-600">Norman Walters</span>
-                                <span class="ml-auto font-semibold">7.7</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div> -->
-                <!-- <div class="flex flex-col row-span-3 bg-white-simple shadow rounded-lg">
-                    <div class="px-6 py-5 font-semibold border-b border-gray-100">Students by type of studying</div>
-                    <div class="p-4 flex-grow">
-                        <div
-                            class="flex items-center justify-center h-full px-4 py-24 text-gray-400 text-3xl font-semibold bg-gray-100 border-2 border-gray-200 border-dashed rounded-md">
-                            Chart</div>
-                    </div>
-                </div> -->
             </section>
         </main>
     </div>

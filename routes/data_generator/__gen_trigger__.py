@@ -25,25 +25,25 @@ def gen_and_insert(user_id):
                 "user_id": user_id,
                 "full_name": name,
                 "email": email,
-                "wh/hour_price": energy_trade
+                "wh_hour_price": energy_trade
             })
-            time.sleep(2)
+            time.sleep(1)
 
             trades, energy_electricity, cost, other, grants, rejected = generate_Dummy_Electricity_Data()
             Electricity_Data.append({
                     "total_trades" :trades,
-                    "average_wh/hour": energy_electricity,
-                    "average_cost/hour": cost,
+                    "average_wh_hour": energy_electricity,
+                    "average_cost_hour": cost,
                     "some_other_stats": other,
                     "access_grants": grants,
                     "access_rejected": rejected,
                     "user_id": user_id
                     })
-            time.sleep(2)
+            time.sleep(1)
 
             lis = generate_Dummy_Room_Data(user_id)
             Room_Data.extend(lis)
-            time.sleep(2)
+            time.sleep(1)
 
             val -= 1
 
@@ -54,5 +54,8 @@ def gen_and_insert(user_id):
         Electricity_Data.clear()
         Histroy_Data.clear()
         Room_Data.clear()
+
+        print("Post complete.")
+        time.sleep(1)
 
 gen_and_insert('19353ea3-5608-4971-b168-cccf5a9324a7')

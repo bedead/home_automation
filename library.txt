@@ -2,3 +2,4 @@ flask
 python-dotenv
 supabase
 names
+turbo-flask

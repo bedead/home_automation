@@ -32,3 +32,7 @@ def get_Exception_Details(e):
     status = exception_dict['status']
             
     return message, name, status
+
+
+def compute_Average(lis):
+    return (sum(lis)/len(lis))    

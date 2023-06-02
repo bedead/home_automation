@@ -15,7 +15,7 @@ def generate_Dummy_Room_Data(user_id):
 
         data.append({
             "room": current_room,
-            "wh/hour": a_energy_consumption,
+            "wh_hour": a_energy_consumption,
             "temp": a_temp,
             "user_id": user_id
         })
