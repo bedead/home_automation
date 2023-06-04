@@ -1133,6 +1133,11 @@ video {
   background-color: rgb(251 132 28 / var(--tw-bg-opacity));
 }
 
+.bg-new_orange-lighter {
+  --tw-bg-opacity: 1;
+  background-color: rgb(252 148 51 / var(--tw-bg-opacity));
+}
+
 .bg-new_white-lighter {
   --tw-bg-opacity: 1;
   background-color: rgb(252 222 196 / var(--tw-bg-opacity));
@@ -1411,6 +1416,11 @@ video {
 .text-white-simple {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.text-white-shade {
+  --tw-text-opacity: 1;
+  color: rgb(255 235 217 / var(--tw-text-opacity));
 }
 
 .placeholder-gray-400::-moz-placeholder {

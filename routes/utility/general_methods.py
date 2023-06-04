@@ -25,7 +25,7 @@ def set_User_Session(email, user_type, user_id, session_token=None):
 def clear_User_Session():
     session.clear()
 
-def get_Exception_Details(e):
+def get_User_Exception_Details(e):
     exception_dict = e.__dict__
     message = exception_dict['message']
     name = exception_dict['name']
@@ -33,6 +33,6 @@ def get_Exception_Details(e):
             
     return message, name, status
 
-
-def compute_Average(lis):
-    return (sum(lis)/len(lis))    
+def get_Fetch_Exception_Details(e):
+    print(e)
+    pass

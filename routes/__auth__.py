@@ -3,7 +3,7 @@ import time
 from flask import Blueprint, redirect, render_template, request, url_for, session
 from routes.__config__ import Config
 
-from .utility.general_methods import get_User_Type_Route, set_User_Session, get_Exception_Details
+from .utility.general_methods import get_User_Exception_Details, get_User_Type_Route, set_User_Session
 
 # Create a blueprint for the auth routes
 auth_page_bp = Blueprint("auth_page", __name__)
@@ -32,10 +32,10 @@ def signup(pass_same=False):
                         }
                     }})
                 except ConnectionError as e:
-                    message, name, status = get_Exception_Details(e)
+                    message, name, status = get_User_Exception_Details(e)
                     return redirect(url_for('error_page.base_error',status=status,message=message))
                 except Exception as e:
-                    message, name, status = get_Exception_Details(e)
+                    message, name, status = get_User_Exception_Details(e)
                     return redirect(url_for('error_page.base_error',status=status,message=message))
                 
                 if user.user.id != None:
@@ -70,10 +70,10 @@ def signin():
                 })
         
             except ConnectionError as e:
-                message, name, status = get_Exception_Details(e)
+                message, name, status = get_User_Exception_Details(e)
                 return redirect(url_for('error_page.base_error',status=status,message=message))
             except Exception as e:
-                message, name, status = get_Exception_Details(e)
+                message, name, status = get_User_Exception_Details(e)
                 return redirect(url_for('error_page.base_error',status=status,message=message))
             
             print(user)

@@ -21,6 +21,8 @@
     {% extends "/base_user/consumer_aside.html" %}
 
     {% block content %}
+    
+
     <div class="flex-grow text-black">
         <header class="flex items-center h-20 px-6 sm:px-10 bg-white">
             <button id="open_consumer_sidepanel"
@@ -84,6 +86,9 @@
 
 
         <main class="p-6 sm:p-10 space-y-6 bg-gray-50">
+            <div class="notification z-50 bg-new_orange-lighter text-gray-800 ">
+                <p>This page refreshes every 6 seconds.</p>
+            </div>
             <!-- first row -->
             <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
                 <div class="mr-6">

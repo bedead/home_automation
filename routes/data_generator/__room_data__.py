@@ -1,4 +1,5 @@
 import random
+from encrypt import  encrypt_Text
 
 def generate_Dummy_Room_Data(user_id):
     # all rooms
@@ -7,16 +8,18 @@ def generate_Dummy_Room_Data(user_id):
     data = []
 
     for a in rooms:
-        current_room = a
+        current_room = encrypt_Text(str(a))
         # Generate random energy consumption per hour for a room
-        a_energy_consumption = round(random.uniform(0.1, 50), 2)
+        a_energy_consumption = round(random.uniform(0.1, 50), None)
+        cipher_energy = encrypt_Text(str(a_energy_consumption))
         # Generate random temperature for a room
-        a_temp = random.randint(1,100)
+        a_temp = random.randint(1,50)
+        cipher_temp = encrypt_Text(str(a_temp))
 
         data.append({
             "room": current_room,
-            "wh_hour": a_energy_consumption,
-            "temp": a_temp,
+            "wh_hour": cipher_energy,
+            "temp": cipher_temp,
             "user_id": user_id
         })
         # Print the data

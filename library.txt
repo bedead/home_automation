@@ -2,4 +2,5 @@ flask
 python-dotenv
 supabase
 names
-turbo-flask
+# turbo-flask
+pycryptodome
