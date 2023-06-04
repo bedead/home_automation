@@ -34,5 +34,5 @@ def get_User_Exception_Details(e):
     return message, name, status
 
 def get_Fetch_Exception_Details(e):
-    print(e)
+    
     pass

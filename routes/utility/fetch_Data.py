@@ -30,27 +30,31 @@ def fetch_From_Consumer_Dashboard(user_id):
     try:
         total_trades = q1.execute();average_wh_hour = q2.execute();average_cost_hour = q3.execute()
         access_grants = q4.execute();access_rejected = q5.execute();some_other = q6.execute()
+
+        total_trades_0 = int(decrypt_Text(total_trades.data[0][col1]))
+        access_grants_0 = int(decrypt_Text(access_grants.data[0][col4]))
+        access_rejected_0 = int(decrypt_Text(access_rejected.data[0][col5]))
+        some_other_0 = int(decrypt_Text(some_other.data[0][col6]))
+
+        # finding average of top 10 values of average_wh_hour and average_cost_hour 
+        average_wh_hour_0 = compute_Avg(average_wh_hour.data,col2)    
+        average_cost_hour_0 = compute_Avg(average_cost_hour.data,col3) 
+
+        # print(average_wh_hour)
+        # print(average_cost_hour)   
+
+        # returning all values (including average value)
+        return total_trades_0, average_wh_hour_0, average_cost_hour_0, access_grants_0, access_rejected_0, some_other_0
+
+
     except Exception as e:
-        get_Fetch_Exception_Details(e)
-        # return redirect(url_for('error_page.base_error'))
+        print(e.__dict__)
+
+        return redirect(url_for('error_page.unknown_error'))
+        
     
     # decryption
-    total_trades = int(decrypt_Text(total_trades.data[0][col1]))
-    access_grants = int(decrypt_Text(access_grants.data[0][col4]))
-    access_rejected = int(decrypt_Text(access_rejected.data[0][col5]))
-    some_other = int(decrypt_Text(some_other.data[0][col6]))
-
-    # finding average of top 10 values of average_wh_hour and average_cost_hour 
-    average_wh_hour = compute_Avg(average_wh_hour.data,col2)    
-    average_cost_hour = compute_Avg(average_cost_hour.data,col3) 
-
-    # print(average_wh_hour)
-    # print(average_cost_hour)   
     
-
-    # returning all values (including average value)
-    return total_trades, average_wh_hour, average_cost_hour, access_grants, access_rejected, some_other
-
 
 def fetch_From_Consumer_History(user_id):
     table_name = "consumer_history"

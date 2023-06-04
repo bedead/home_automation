@@ -14,6 +14,10 @@ def error_403():
 def under_construction():
     return render_template('/error/under_construction_page.html')
 
+@error_page_bp.route("/error/unknown")
+def unknown_error():
+    return render_template('/error/unknown_error_page.html')
+
 
 @error_page_bp.route("/error/<status>/<message>")
 def base_error(status, message):
