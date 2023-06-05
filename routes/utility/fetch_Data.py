@@ -99,4 +99,29 @@ def fetch_From_Consumer_Monitor(user_id):
     return response.data
 
 
+def fetch_From_Producer_Monitor(user_id):
+    table_name = "producer_monitor"
+    query = supabase_.table(table_name=table_name).select('*').eq('user_id', user_id).order('created_at', desc=True).limit(8)
+    try:
+        response = query.execute()
+    except Exception as e:
+        get_Fetch_Exception_Details(e)
+        return redirect(url_for('error_page.unknown_error'))
+    
+    # decrypting each column value 
+    data = response.data
+    for each_index in range(len(data)):
+        data[each_index]['load_type'] = decrypt_Text(data[each_index]['load_type'])
+        data[each_index]['volt'] = int(decrypt_Text(data[each_index]['volt']))
+        data[each_index]['power_factor'] = float(decrypt_Text(data[each_index]['power_factor']))
+        data[each_index]['current'] = int(decrypt_Text(data[each_index]['current']))
+        data[each_index]['frequency'] = int(decrypt_Text(data[each_index]['frequency']))
+        data[each_index]['power'] = float(decrypt_Text(data[each_index]['power']))
+        data[each_index]['current_total'] = int(decrypt_Text(data[each_index]['current_total']))
+        data[each_index]['power_total'] = float(decrypt_Text(data[each_index]['power_total']))
+
+    return response.data
+
+
+
 # fetch_From_Consumer_History('19353ea3-5608-4971-b168-cccf5a9324a7')

@@ -7,7 +7,12 @@
     <link rel="stylesheet" href="/static/css/main.css">
     <link rel="stylesheet" href="/static/css/custom.css">
     <script src="/static/js/triggerLogout.js"></script>
-
+    <script src="/static/js/triggerNav.js"></script>
+    <!-- <script>
+        setTimeout(function () {
+            location.reload();
+        }, 6000);
+    </script> -->
     <title>Home automation | Producer</title>
 </head>
 
@@ -20,7 +25,7 @@
 
         <!-- top navigation for search, user, logout -->
         <header class="flex items-center h-20 px-6 sm:px-10 bg-white">
-            <button
+            <button onclick="toggle_DashBoard();"
                 class="block sm:hidden relative flex-shrink-0 p-2 mr-2 text-black hover:bg-new_brown-brighter hover:text-gray-800 focus:bg-gray-100 focus:text-gray-800 rounded-full">
                 <span class="sr-only">Menu</span>
                 <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
@@ -81,13 +86,17 @@
 
 
         <main class="p-6 sm:p-10 space-y-6 bg-gray-50">
+            <div class="notification bg-new_orange-lighter text-gray-800 ">
+                <p>This page refreshes every 6 seconds.</p>
+            </div>
             <!-- first row -->
             <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
                 <div class="mr-6">
                     <h1 class="text-4xl font-semibold mb-2 text-gray-800">Monitor</h1>
                     <h2 class="text-gray-600 ml-0.5">Monitor and control your smart devices</h2>
                 </div>
-                <!-- <div class="flex flex-wrap items-start justify-end -mb-3">
+                <div class="flex flex-wrap items-start justify-end -mb-3">
+                    <!-- trigger change role endpoint to change user-type -->
                     <a href=""
                         class="inline-flex px-5 py-3 text-new_orange-brighter hover:text-new_brown-brighter focus:text-new_brown-brighter hover:bg-white-shade focus:bg-white-shade border border-new_orange-brighter rounded-md mb-3">
                         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -97,48 +106,82 @@
                         </svg>
                         Change role
                     </a>
-                    <a href=""
+                    <button onclick="toggle_Buy_Option();"
                         class="inline-flex px-5 py-3 text-white-simple bg-new_orange-brighter hover:bg-new_brown-brighter focus:bg-new_brown-brighter rounded-md ml-6 mb-3">
-                        Clear history
-                    </a>
-                </div> -->
+                        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            class="flex-shrink-0 h-6 w-6 text-white -ml-1 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Buy
+                    </button>
+                </div>
             </div>
+
             <!-- second row -->
-            <section class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-                <!-- first room -->
+            {% for each in data %}
+            {% if each['load_type'] == 'Grid' %}
+            <div class="flex flex-row justify-start items-center ">
+                <div class="mr-6">
+                    <h1 class="text-2xl font-semibold mb-2 text-gray-800">Total current</h1>
+                    <h2 class="text-gray-600 ml-0.5"> {{each['current_total']}} A </h2>
+                </div>
+                <div class="mr-6">
+                    <h1 class="text-2xl font-semibold mb-2 text-gray-800">Total power</h1>
+                    <h2 class="text-gray-600 ml-0.5"> {{ each['power_total'] }} W </h2>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            <!-- third row -->
+            <section class="grid md:grid-cols-2 text-3xl:grid-cols-3 gap-6">
+                {% for each in data %}
                 <div class="items-center p-6 bg-white-simple shadow rounded-lg">
                     <!-- room name -->
-                    <h2 class="font-medium text-left text-md md:text-xl">Living room</h2>
+                    <h2 class="font-medium text-left text-md md:text-xl"> {{ each['load_type'] }} </h2>
                     <!-- energy consumtion and temp -->
-                    <div class="mt-4 flex justify-center items-center gap-4">
+                    <div class="mt-4 flex justify-start flex-wrap items-center gap-4">
                         <div class="items-center text-center inline-flex justify-center">
                             <div
                                 class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 "
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5z" />
-                                </svg>
+                                V
                             </div>
-                            <p class="text-sm md:text-base text-gray-800 font-medium">12.1 wh/hour</p>
+                            <p class="text-sm md:text-base text-gray-800 font-medium">{{ each['volt'] }} V
+                            </p>
                         </div>
                         <div class="items-center text-center inline-flex justify-center">
                             <div
                                 class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M9.5 12.5a1.5 1.5 0 1 1-2-1.415V6.5a.5.5 0 0 1 1 0v4.585a1.5 1.5 0 0 1 1 1.415z" />
-                                    <path
-                                        d="M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0V2.5zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1z" />
-                                </svg>
+                                F
                             </div>
-                            <p class="text-sm md:text-base text-gray-800 font-medium">12 C</p>
+                            <p class="text-sm md:text-base text-gray-800 font-medium">{{ each['frequency'] }} Hz</p>
+                        </div>
+                        <div class="items-center text-center inline-flex justify-center">
+                            <div
+                                class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
+                                PF
+                            </div>
+                            <p class="text-sm md:text-base text-gray-800 font-medium">{{ each['power_factor'] }} %</p>
+                        </div>
+                        <div class="items-center text-center inline-flex justify-center">
+                            <div
+                                class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
+                                I
+                            </div>
+                            <p class="text-sm md:text-base text-gray-800 font-medium">{{ each['current'] }} A</p>
+                        </div>
+                        <div class="items-center text-center inline-flex justify-center">
+                            <div
+                                class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
+                                P
+                            </div>
+                            <p class="text-sm md:text-base text-gray-800 font-medium">{{ each['power'] }} W</p>
                         </div>
                     </div>
                     <!-- switches -->
+                    <!--
                     <div class="mt-6 bg-white-shade shadow-sm rounded-2xl p-4 space-y-6">
-                        <!-- light on off -->
+                         light on off 
                         <div class="flex justify-around items-center gap-4">
                             <div class="items-center">
                                 <div class="flex justify-center items-center text-center gap-2">
@@ -155,7 +198,7 @@
                                 class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-new_white-lighter before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-new_white-khaki after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-new_orange-brighter checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] "
                                 type="checkbox" role="switch" />
                         </div>
-                        <!-- music on off -->
+                        music on off 
                         <div class="flex justify-around items-center gap-4">
                             <div class="items-center">
                                 <div class="flex justify-center items-center text-center gap-2">
@@ -175,298 +218,12 @@
                                 type="checkbox" role="switch" />
                         </div>
                     </div>
+                    -->
                 </div>
-
-                <!-- second room -->
-                <div class="items-center p-6 bg-white-simple shadow rounded-lg">
-                    <!-- room name -->
-                    <h2 class="font-medium text-left text-md md:text-xl">Bedroom</h2>
-                    <!-- energy consumtion and temp -->
-                    <div class="mt-4 flex justify-center items-center gap-4">
-                        <div class="items-center text-center inline-flex justify-center">
-                            <div
-                                class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 "
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5z" />
-                                </svg>
-                            </div>
-                            <p class="text-sm md:text-base text-gray-800 font-medium">5.1 wh/hour</p>
-                        </div>
-                        <div class="items-center text-center inline-flex justify-center">
-                            <div
-                                class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M9.5 12.5a1.5 1.5 0 1 1-2-1.415V6.5a.5.5 0 0 1 1 0v4.585a1.5 1.5 0 0 1 1 1.415z" />
-                                    <path
-                                        d="M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0V2.5zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1z" />
-                                </svg>
-                            </div>
-                            <p class="text-sm md:text-base text-gray-800 font-medium">14.2 C</p>
-                        </div>
-                    </div>
-                    <!-- switches -->
-                    <div class="mt-6 bg-white-shade shadow-sm rounded-2xl p-4 space-y-6">
-                        <!-- light on off -->
-                        <div class="flex justify-around items-center gap-4">
-                            <div class="items-center">
-                                <div class="flex justify-center items-center text-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        class="w-6 h-6 text-new_orange-brighter" viewBox="0 0 16 16">
-                                        <path
-                                            d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1z" />
-                                    </svg>
-                                    <p class="text-gray-800 font-medium">Lights</p>
-                                </div>
-                                <p class="text-sm text-gray-600 text-end items-center">Closed</p>
-                            </div>
-                            <input
-                                class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-new_white-lighter before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-new_white-khaki after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-new_orange-brighter checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] "
-                                type="checkbox" role="switch" />
-                        </div>
-                        <!-- music on off -->
-                        <div class="flex justify-around items-center gap-4">
-                            <div class="items-center">
-                                <div class="flex justify-center items-center text-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        class="w-6 h-6 text-new_orange-brighter" viewBox="0 0 16 16">
-                                        <path
-                                            d="M10.304 3.13a1 1 0 0 1 1.196.98v1.8l-2.5.5v5.09c0 .495-.301.883-.662 1.123C7.974 12.866 7.499 13 7 13c-.5 0-.974-.134-1.338-.377-.36-.24-.662-.628-.662-1.123s.301-.883.662-1.123C6.026 10.134 6.501 10 7 10c.356 0 .7.068 1 .196V4.41a1 1 0 0 1 .804-.98l1.5-.3z" />
-                                        <path
-                                            d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
-                                    </svg>
-                                    <p class="text-gray-800 font-medium">Music</p>
-                                </div>
-                                <p class="text-sm text-gray-600 text-end items-center">Closed</p>
-                            </div>
-                            <input
-                                class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-new_white-lighter before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-new_white-khaki after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-new_orange-brighter checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] "
-                                type="checkbox" role="switch" />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- third room -->
-                <div class="items-center p-6 bg-white-simple shadow rounded-lg">
-                    <!-- room name -->
-                    <h2 class="font-medium text-left text-md md:text-xl">Kitchen</h2>
-                    <!-- energy consumtion and temp -->
-                    <div class="mt-4 flex justify-center items-center gap-4">
-                        <div class="items-center text-center inline-flex justify-center">
-                            <div
-                                class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 "
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5z" />
-                                </svg>
-                            </div>
-                            <p class="text-sm md:text-base text-gray-800 font-medium">5.1 wh/hour</p>
-                        </div>
-                        <div class="items-center text-center inline-flex justify-center">
-                            <div
-                                class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M9.5 12.5a1.5 1.5 0 1 1-2-1.415V6.5a.5.5 0 0 1 1 0v4.585a1.5 1.5 0 0 1 1 1.415z" />
-                                    <path
-                                        d="M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0V2.5zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1z" />
-                                </svg>
-                            </div>
-                            <p class="text-sm md:text-base text-gray-800 font-medium">14.2 C</p>
-                        </div>
-                    </div>
-                    <!-- switches -->
-                    <div class="mt-6 bg-white-shade shadow-sm rounded-2xl p-4 space-y-6">
-                        <!-- light on off -->
-                        <div class="flex justify-around items-center gap-4">
-                            <div class="items-center">
-                                <div class="flex justify-center items-center text-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        class="w-6 h-6 text-new_orange-brighter" viewBox="0 0 16 16">
-                                        <path
-                                            d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1z" />
-                                    </svg>
-                                    <p class="text-gray-800 font-medium">Lights</p>
-                                </div>
-                                <p class="text-sm text-gray-600 text-end items-center">Closed</p>
-                            </div>
-                            <input
-                                class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-new_white-lighter before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-new_white-khaki after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-new_orange-brighter checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] "
-                                type="checkbox" role="switch" />
-                        </div>
-                        <!-- music on off -->
-                        <div class="flex justify-around items-center gap-4">
-                            <div class="items-center">
-                                <div class="flex justify-center items-center text-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        class="w-6 h-6 text-new_orange-brighter" viewBox="0 0 16 16">
-                                        <path
-                                            d="M10.304 3.13a1 1 0 0 1 1.196.98v1.8l-2.5.5v5.09c0 .495-.301.883-.662 1.123C7.974 12.866 7.499 13 7 13c-.5 0-.974-.134-1.338-.377-.36-.24-.662-.628-.662-1.123s.301-.883.662-1.123C6.026 10.134 6.501 10 7 10c.356 0 .7.068 1 .196V4.41a1 1 0 0 1 .804-.98l1.5-.3z" />
-                                        <path
-                                            d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
-                                    </svg>
-                                    <p class="text-gray-800 font-medium">Music</p>
-                                </div>
-                                <p class="text-sm text-gray-600 text-end items-center">Closed</p>
-                            </div>
-                            <input
-                                class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-new_white-lighter before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-new_white-khaki after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-new_orange-brighter checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] "
-                                type="checkbox" role="switch" />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- fourth room -->
-                <div class="items-center p-6 bg-white-simple shadow rounded-lg">
-                    <!-- room name -->
-                    <h2 class="font-medium text-left text-md md:text-xl">Bathroom 1</h2>
-                    <!-- energy consumtion and temp -->
-                    <div class="mt-4 flex justify-center items-center gap-4">
-                        <div class="items-center text-center inline-flex justify-center">
-                            <div
-                                class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 "
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5z" />
-                                </svg>
-                            </div>
-                            <p class="text-sm md:text-base text-gray-800 font-medium">5.1 wh/hour</p>
-                        </div>
-                        <div class="items-center text-center inline-flex justify-center">
-                            <div
-                                class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M9.5 12.5a1.5 1.5 0 1 1-2-1.415V6.5a.5.5 0 0 1 1 0v4.585a1.5 1.5 0 0 1 1 1.415z" />
-                                    <path
-                                        d="M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0V2.5zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1z" />
-                                </svg>
-                            </div>
-                            <p class="text-sm md:text-base text-gray-800 font-medium">14.2 C</p>
-                        </div>
-                    </div>
-                    <!-- switches -->
-                    <div class="mt-6 bg-white-shade shadow-sm rounded-2xl p-4 space-y-6">
-                        <!-- light on off -->
-                        <div class="flex justify-around items-center gap-4">
-                            <div class="items-center">
-                                <div class="flex justify-center items-center text-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        class="w-6 h-6 text-new_orange-brighter" viewBox="0 0 16 16">
-                                        <path
-                                            d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1z" />
-                                    </svg>
-                                    <p class="text-gray-800 font-medium">Lights</p>
-                                </div>
-                                <p class="text-sm text-gray-600 text-end items-center">Closed</p>
-                            </div>
-                            <input
-                                class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-new_white-lighter before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-new_white-khaki after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-new_orange-brighter checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] "
-                                type="checkbox" role="switch" />
-                        </div>
-                        <!-- music on off -->
-                        <div class="flex justify-around items-center gap-4">
-                            <div class="items-center">
-                                <div class="flex justify-center items-center text-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        class="w-6 h-6 text-new_orange-brighter" viewBox="0 0 16 16">
-                                        <path
-                                            d="M10.304 3.13a1 1 0 0 1 1.196.98v1.8l-2.5.5v5.09c0 .495-.301.883-.662 1.123C7.974 12.866 7.499 13 7 13c-.5 0-.974-.134-1.338-.377-.36-.24-.662-.628-.662-1.123s.301-.883.662-1.123C6.026 10.134 6.501 10 7 10c.356 0 .7.068 1 .196V4.41a1 1 0 0 1 .804-.98l1.5-.3z" />
-                                        <path
-                                            d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
-                                    </svg>
-                                    <p class="text-gray-800 font-medium">Music</p>
-                                </div>
-                                <p class="text-sm text-gray-600 text-end items-center">Closed</p>
-                            </div>
-                            <input
-                                class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-new_white-lighter before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-new_white-khaki after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-new_orange-brighter checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] "
-                                type="checkbox" role="switch" />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- fifth room -->
-                <div class="items-center p-6 bg-white-simple shadow rounded-lg">
-                    <!-- room name -->
-                    <h2 class="font-medium text-left text-md md:text-xl">Bathroom 2</h2>
-                    <!-- energy consumtion and temp -->
-                    <div class="mt-4 flex justify-center items-center gap-4">
-                        <div class="items-center text-center inline-flex justify-center">
-                            <div
-                                class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 "
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5z" />
-                                </svg>
-                            </div>
-                            <p class="text-sm md:text-base text-gray-800 font-medium">5.1 wh/hour</p>
-                        </div>
-                        <div class="items-center text-center inline-flex justify-center">
-                            <div
-                                class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M9.5 12.5a1.5 1.5 0 1 1-2-1.415V6.5a.5.5 0 0 1 1 0v4.585a1.5 1.5 0 0 1 1 1.415z" />
-                                    <path
-                                        d="M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0V2.5zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1z" />
-                                </svg>
-                            </div>
-                            <p class="text-sm md:text-base text-gray-800 font-medium">14.2 C</p>
-                        </div>
-                    </div>
-                    <!-- switches -->
-                    <div class="mt-6 bg-white-shade shadow-sm rounded-2xl p-4 space-y-6">
-                        <!-- light on off -->
-                        <div class="flex justify-around items-center gap-4">
-                            <div class="items-center">
-                                <div class="flex justify-center items-center text-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        class="w-6 h-6 text-new_orange-brighter" viewBox="0 0 16 16">
-                                        <path
-                                            d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1z" />
-                                    </svg>
-                                    <p class="text-gray-800 font-medium">Lights</p>
-                                </div>
-                                <p class="text-sm text-gray-600 text-end items-center">Closed</p>
-                            </div>
-                            <input
-                                class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-new_white-lighter before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-new_white-khaki after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-new_orange-brighter checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] "
-                                type="checkbox" role="switch" />
-                        </div>
-                        <!-- music on off -->
-                        <div class="flex justify-around items-center gap-4">
-                            <div class="items-center">
-                                <div class="flex justify-center items-center text-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                        class="w-6 h-6 text-new_orange-brighter" viewBox="0 0 16 16">
-                                        <path
-                                            d="M10.304 3.13a1 1 0 0 1 1.196.98v1.8l-2.5.5v5.09c0 .495-.301.883-.662 1.123C7.974 12.866 7.499 13 7 13c-.5 0-.974-.134-1.338-.377-.36-.24-.662-.628-.662-1.123s.301-.883.662-1.123C6.026 10.134 6.501 10 7 10c.356 0 .7.068 1 .196V4.41a1 1 0 0 1 .804-.98l1.5-.3z" />
-                                        <path
-                                            d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
-                                    </svg>
-                                    <p class="text-gray-800 font-medium">Music</p>
-                                </div>
-                                <p class="text-sm text-gray-600 text-end items-center">Closed</p>
-                            </div>
-                            <input
-                                class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-new_white-lighter before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-new_white-khaki after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-new_orange-brighter checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] "
-                                type="checkbox" role="switch" />
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </section>
 
-            <!-- third row -->
+            <!-- fourith row -->
             <section class="space-y-6">
                 <h1 class="text-2xl font-semibold mb-2 text-gray-800">Smart devices</h1>
 

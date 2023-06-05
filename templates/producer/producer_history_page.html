@@ -5,8 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/main.css">
-    <link rel="stylesheet" href="/static/css/custom.css">
+    <link rel="stylesheet" href="/static/css/custom.css">    
     <script src="/static/js/triggerLogout.js"></script>
+    <script src="/static/js/triggerNav.js"></script>
+    <!-- <script>
+        setTimeout(function () {
+            location.reload();
+        }, 6000);
+    </script> -->
 
     <title>Home automation | Producer</title>
 </head>
@@ -20,7 +26,7 @@
 
         <!-- top navigation for search, user, logout -->
         <header class="flex items-center h-20 px-6 sm:px-10 bg-white">
-            <button
+            <button onclick="toggle_DashBoard();"
                 class="block sm:hidden relative flex-shrink-0 p-2 mr-2 text-black hover:bg-new_brown-brighter hover:text-gray-800 focus:bg-gray-100 focus:text-gray-800 rounded-full">
                 <span class="sr-only">Menu</span>
                 <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
@@ -81,6 +87,9 @@
 
 
         <main class="p-6 sm:p-10 space-y-6 bg-gray-50">
+            <div class="notification z-50 bg-new_orange-lighter text-gray-800 ">
+                <p>This page refreshes every 6 seconds.</p>
+            </div>
             <!-- first row -->
             <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
                 <div class="mr-6">
@@ -126,70 +135,16 @@
                     </div>
                     <div class="overflow-y-auto" style="max-height: 24rem;">
                         <ul class="p-6 space-y-6">
+                            {% for each in data %}
                             <li class="flex items-center">
                                 <div class="h-10 w-10 mr-3 bg-gray-50 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/women/82.jpg"
+                                    <img src="https://picsum.photos/40/40"
                                         alt="Annette Watson profile picture">
                                 </div>
-                                <span class="text-gray-600">Annette Watson</span>
-                                <span class="ml-auto font-semibold">9.3</span>
+                                <span class="text-gray-600"> {{ each['full_name'] }} </span>
+                                <span class="ml-auto font-semibold"> {{ each['wh_hour_price'] }} </span>
                             </li>
-                            <li class="flex items-center">
-                                <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/men/81.jpg"
-                                        alt="Calvin Steward profile picture">
-                                </div>
-                                <span class="text-gray-600">Calvin Steward</span>
-                                <span class="ml-auto font-semibold">8.9</span>
-                            </li>
-                            <li class="flex items-center">
-                                <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/men/80.jpg"
-                                        alt="Ralph Richards profile picture">
-                                </div>
-                                <span class="text-gray-600">Ralph Richards</span>
-                                <span class="ml-auto font-semibold">8.7</span>
-                            </li>
-                            <li class="flex items-center">
-                                <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/men/79.jpg"
-                                        alt="Bernard Murphy profile picture">
-                                </div>
-                                <span class="text-gray-600">Bernard Murphy</span>
-                                <span class="ml-auto font-semibold">8.2</span>
-                            </li>
-                            <li class="flex items-center">
-                                <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/women/78.jpg"
-                                        alt="Arlene Robertson profile picture">
-                                </div>
-                                <span class="text-gray-600">Arlene Robertson</span>
-                                <span class="ml-auto font-semibold">8.2</span>
-                            </li>
-                            <li class="flex items-center">
-                                <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/women/77.jpg"
-                                        alt="Jane Lane profile picture">
-                                </div>
-                                <span class="text-gray-600">Jane Lane</span>
-                                <span class="ml-auto font-semibold">8.1</span>
-                            </li>
-                            <li class="flex items-center">
-                                <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/men/76.jpg"
-                                        alt="Pat Mckinney profile picture">
-                                </div>
-                                <span class="text-gray-600">Pat Mckinney</span>
-                                <span class="ml-auto font-semibold">7.9</span>
-                            </li>
-                            <li class="flex items-center">
-                                <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                                    <img src="https://randomuser.me/api/portraits/men/75.jpg"
-                                        alt="Norman Walters profile picture">
-                                </div>
-                                <span class="text-gray-600">Norman Walters</span>
-                                <span class="ml-auto font-semibold">7.7</span>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>

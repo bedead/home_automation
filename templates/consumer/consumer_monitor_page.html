@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="/static/css/custom.css">
     <script src="/static/js/triggerLogout.js"></script>
     <script src="/static/js/triggerNav.js"></script>
-    <script>
+    <!-- <script>
         setTimeout(function () {
             location.reload();
         }, 6000);
-    </script>
+    </script> -->
     <title>Home automation | Consumer</title>
 </head>
 
@@ -86,7 +86,7 @@
 
 
         <main class="p-6 sm:p-10 space-y-6 bg-gray-50">
-            <div class="notification z-50 bg-new_orange-lighter text-gray-800 ">
+            <div class="notification bg-new_orange-lighter text-gray-800 ">
                 <p>This page refreshes every 6 seconds.</p>
             </div>
             <!-- first row -->
@@ -106,7 +106,7 @@
                         </svg>
                         Change role
                     </a>
-                    <button onclick=""
+                    <button onclick="toggle_Buy_Option();"
                         class="inline-flex px-5 py-3 text-white-simple bg-new_orange-brighter hover:bg-new_brown-brighter focus:bg-new_brown-brighter rounded-md ml-6 mb-3">
                         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             class="flex-shrink-0 h-6 w-6 text-white -ml-1 mr-2">

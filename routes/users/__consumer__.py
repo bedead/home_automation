@@ -1,10 +1,8 @@
 from flask import Blueprint, redirect, render_template, request, url_for,session
-from routes.__config__ import Config
 from routes.utility.fetch_Data import fetch_From_Consumer_Dashboard, fetch_From_Consumer_History, fetch_From_Consumer_Monitor
 
 # Create a blueprint for the home routes
 consumer_page_bp = Blueprint("consumer_page", __name__)
-supabase = Config.supabase_
 
 
 @consumer_page_bp.route("/user/consumer/dashboard")
