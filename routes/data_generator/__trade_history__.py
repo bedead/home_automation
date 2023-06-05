@@ -1,6 +1,6 @@
 from names import get_full_name
 import random
-from encrypt import encrypt_Text
+from triple_des import encrypt_Text
 
 def generate_Dummy_Trade_History():
     # Generate random full name

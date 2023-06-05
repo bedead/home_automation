@@ -1,6 +1,6 @@
 import random
 
-from encrypt import encrypt_Text
+from triple_des import encrypt_Text
 
 def generate_Dummy_Electricity_Data():
     # generate random total_trade

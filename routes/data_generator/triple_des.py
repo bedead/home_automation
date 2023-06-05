@@ -1,6 +1,5 @@
 from Crypto.Cipher import DES3
 from Crypto.Util.Padding import pad, unpad
-import base64
 
 encryption_key = b'93bd9vn&Bke7qoH*#bk86N8n'
 cipher = DES3.new(encryption_key, DES3.MODE_ECB)

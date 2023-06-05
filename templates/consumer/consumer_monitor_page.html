@@ -95,7 +95,8 @@
                     <h1 class="text-4xl font-semibold mb-2 text-gray-800">Monitor</h1>
                     <h2 class="text-gray-600 ml-0.5">Monitor and control your smart devices</h2>
                 </div>
-                <!-- <div class="flex flex-wrap items-start justify-end -mb-3">
+                <div class="flex flex-wrap items-start justify-end -mb-3">
+                    <!-- trigger change role endpoint to change user-type -->
                     <a href=""
                         class="inline-flex px-5 py-3 text-new_orange-brighter hover:text-new_brown-brighter focus:text-new_brown-brighter hover:bg-white-shade focus:bg-white-shade border border-new_orange-brighter rounded-md mb-3">
                         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -105,50 +106,66 @@
                         </svg>
                         Change role
                     </a>
-                    <a href=""
+                    <button onclick=""
                         class="inline-flex px-5 py-3 text-white-simple bg-new_orange-brighter hover:bg-new_brown-brighter focus:bg-new_brown-brighter rounded-md ml-6 mb-3">
-                        Clear history
-                    </a>
-                </div> -->
+                        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            class="flex-shrink-0 h-6 w-6 text-white -ml-1 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Buy
+                    </button>
+                </div>
             </div>
             <!-- second row -->
-            <section class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {% for each_room in data %}
+            <section class="grid md:grid-cols-2 text-3xl:grid-cols-3 gap-6">
+                {% for each in data %}
                 <div class="items-center p-6 bg-white-simple shadow rounded-lg">
                     <!-- room name -->
-                    <h2 class="font-medium text-left text-md md:text-xl"> {{ each_room['room'] }} </h2>
+                    <h2 class="font-medium text-left text-md md:text-xl"> {{ each['load_type'] }} </h2>
                     <!-- energy consumtion and temp -->
-                    <div class="mt-4 flex justify-center items-center gap-4">
+                    <div class="mt-4 flex justify-start flex-wrap items-center gap-4">
                         <div class="items-center text-center inline-flex justify-center">
                             <div
                                 class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4 "
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5z" />
-                                </svg>
+                                V
                             </div>
-                            <p class="text-sm md:text-base text-gray-800 font-medium">{{ each_room['wh_hour'] }} wh/hour
+                            <p class="text-sm md:text-base text-gray-800 font-medium">{{ each['volt'] }} V
                             </p>
                         </div>
                         <div class="items-center text-center inline-flex justify-center">
                             <div
                                 class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-4 h-4"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M9.5 12.5a1.5 1.5 0 1 1-2-1.415V6.5a.5.5 0 0 1 1 0v4.585a1.5 1.5 0 0 1 1 1.415z" />
-                                    <path
-                                        d="M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0V2.5zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1z" />
-                                </svg>
+                                F
                             </div>
-                            <p class="text-sm md:text-base text-gray-800 font-medium">{{ each_room['temp'] }} C</p>
+                            <p class="text-sm md:text-base text-gray-800 font-medium">{{ each['frequency'] }} Hz</p>
+                        </div>
+                        <div class="items-center text-center inline-flex justify-center">
+                            <div
+                                class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
+                                PF
+                            </div>
+                            <p class="text-sm md:text-base text-gray-800 font-medium">{{ each['power_factor'] }} %</p>
+                        </div>
+                        <div class="items-center text-center inline-flex justify-center">
+                            <div
+                                class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
+                                I
+                            </div>
+                            <p class="text-sm md:text-base text-gray-800 font-medium">{{ each['current'] }} A</p>
+                        </div>
+                        <div class="items-center text-center inline-flex justify-center">
+                            <div
+                                class="inline-flex flex-shrink-0 items-center justify-center h-12 w-12 text-new_orange-brighter bg-white-shade rounded-full mr-6">
+                                P
+                            </div>
+                            <p class="text-sm md:text-base text-gray-800 font-medium">{{ each['power'] }} W</p>
                         </div>
                     </div>
-
                     <!-- switches -->
+                    <!--
                     <div class="mt-6 bg-white-shade shadow-sm rounded-2xl p-4 space-y-6">
-                        <!-- light on off -->
+                         light on off 
                         <div class="flex justify-around items-center gap-4">
                             <div class="items-center">
                                 <div class="flex justify-center items-center text-center gap-2">
@@ -165,7 +182,7 @@
                                 class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-new_white-lighter before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-new_white-khaki after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-new_orange-brighter checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] "
                                 type="checkbox" role="switch" />
                         </div>
-                        <!-- music on off -->
+                        music on off 
                         <div class="flex justify-around items-center gap-4">
                             <div class="items-center">
                                 <div class="flex justify-center items-center text-center gap-2">
@@ -185,6 +202,7 @@
                                 type="checkbox" role="switch" />
                         </div>
                     </div>
+                    -->
                 </div>
                 {% endfor %}
             </section>

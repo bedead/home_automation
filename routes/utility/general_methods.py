@@ -1,17 +1,14 @@
 from flask import session
 
 def get_User_Type_Route():
-    consumer = "consumer_page.consumer_dashboard"
-    producer = "producer_page.producer_dashboard"
-    prosumer = "prosumer_page.prosumer_dashboard"
-    Aggregator = "aggregator_page.aggregator_dashboard"
+    consumer = "consumer_page.consumer_monitor"
+    producer = "producer_page.producer_monitor"
+    Aggregator = "aggregator_page.aggregator_monitor"
 
     if session['user-type'] == "Consumer":
         return consumer
     elif session['user-type'] == "Producer":
         return producer
-    elif session['user-type'] == "Prosumer":
-        return prosumer
     elif session['user-type'] == "Aggregator":
         return Aggregator
     
