@@ -117,7 +117,23 @@
                     </button>
                 </div>
             </div>
+
             <!-- second row -->
+            {% for each in data %}
+            {% if each['load_type'] == 'Grid' %}
+            <div class="flex flex-row justify-start items-center ">
+                <div class="mr-6">
+                    <h1 class="text-2xl font-semibold mb-2 text-gray-800">Total current</h1>
+                    <h2 class="text-gray-600 ml-0.5"> {{each['current_total']}} A </h2>
+                </div>
+                <div class="mr-6">
+                    <h1 class="text-2xl font-semibold mb-2 text-gray-800">Total power</h1>
+                    <h2 class="text-gray-600 ml-0.5"> {{ each['power_total'] }} W </h2>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            <!-- third row -->
             <section class="grid md:grid-cols-2 text-3xl:grid-cols-3 gap-6">
                 {% for each in data %}
                 <div class="items-center p-6 bg-white-simple shadow rounded-lg">
@@ -207,7 +223,7 @@
                 {% endfor %}
             </section>
 
-            <!-- third row -->
+            <!-- fourith row -->
             <section class="space-y-6">
                 <h1 class="text-2xl font-semibold mb-2 text-gray-800">Smart devices</h1>
 
