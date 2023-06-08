@@ -6,19 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/main.css">
     <link rel="stylesheet" href="/static/css/custom.css">
-    <script src="/static/js/triggerLogout.js"></script>
-
     <title>Home automation | Aggregator</title>
 </head>
 
 <body class="flex bg-gradient-to-r from-white-simple to-white-shade min-h-screen">
+
     {% extends "/base_user/aggregator_aside.html" %}
 
     {% block content %}
     <div class="flex-grow text-black">
+
+        <!-- top navigation for search, user, logout -->
         <header class="flex items-center h-20 px-6 sm:px-10 bg-white">
-            <button id="open_consumer_sidepanel" onclick="toggle_DashBoard();"
-                class="block sm:hidden relative flex-shrink-0 p-2 mr-2 text-black hover:text-gray-800 focus:bg-gray-100 focus:text-gray-800 rounded-full">
+            <button onclick="toggle_DashBoard();"
+                class="block sm:hidden relative flex-shrink-0 p-2 mr-2 text-black hover:bg-new_brown-brighter hover:text-gray-800 focus:bg-gray-100 focus:text-gray-800 rounded-full">
                 <span class="sr-only">Menu</span>
                 <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
@@ -35,7 +36,7 @@
                     class="py-2 pl-10 pr-4 w-full border-2 border-transparent placeholder-gray-400 focus:bg-gray-50 hover:bg-gray-50 rounded-lg" />
             </div>
             <div class="flex flex-shrink-0 items-center ml-auto">
-                <button class="inline-flex items-center p-2 hover:bg-white-simple focus:bg-white-simple rounded-lg">
+                <button class="inline-flex items-center p-2 hover:bg-gray-200 focus:bg-gray-200 rounded-lg">
                     <span class="sr-only">User Menu</span>
                     <div class="hidden md:flex md:flex-col md:items-end md:leading-tight">
                         <span class="font-semibold text-gray-800">Satyam Mishra</span>
@@ -53,7 +54,7 @@
                 </button>
                 <div class="border-l pl-3 ml-3 space-x-1">
                     <button
-                        class="relative p-2 text-gray-400 hover:bg-white-simple hover:text-gray-600 focus:bg-white-simple focus:text-gray-600 rounded-full">
+                        class="relative p-2 text-gray-400 hover:bg-gray-200 hover:text-gray-600 focus:bg-gray-200 focus:text-gray-600 rounded-full">
                         <span class="sr-only">Notifications</span>
                         <span class="absolute top-0 right-0 h-2 w-2 mt-1 mr-2 bg-red-500 rounded-full"></span>
                         <span
@@ -64,7 +65,7 @@
                         </svg>
                     </button>
                     <button onclick="consumer_logout();"
-                        class="relative p-2 text-gray-400 hover:bg-white-simple hover:text-gray-600 focus:bg-white-simple focus:text-gray-600 rounded-full">
+                        class="relative p-2 text-gray-400 hover:bg-gray-200 hover:text-gray-600 focus:bg-gray-200 focus:text-gray-600 rounded-full">
                         <span class="sr-only">Log out</span>
                         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -82,21 +83,68 @@
                 <p>This page refreshes every 6 seconds.</p>
             </div> -->
             <!-- first row -->
-            <!-- <h1 class="text-4xl font-semibold mb-2 text-gray-800">Welcome back, Satyam Mishra </h1> -->
             <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
                 <div class="mr-6">
-                    <h1 class="text-3xl font-semibold mb-2 text-gray-800">Dashboard</h1>
-                    <h2 class="text-gray-600 ml-0.5">Buy requests</h2>
+                    <h1 class="text-4xl font-semibold mb-2 text-gray-800">History</h1>
+                    <h2 class="text-gray-600 ml-0.5">Buy accepted history</h2>
                 </div>
                 <div class="flex flex-wrap items-start justify-end -mb-3">
-
+                    <a href=""
+                        class="inline-flex px-5 py-3 text-white-simple bg-new_orange-brighter hover:bg-new_brown-brighter focus:bg-new_brown-brighter rounded-md ml-6 mb-3">
+                        Clear history
+                    </a>
                 </div>
             </div>
-            <!-- seocnd roe (table) -->
-            
+
+            <!-- third columns -->
+            <section class="grid md:grid-cols-2 xl:grid-cols-2 xl:grid-rows-3 xl:grid-flow-col gap-6">
+
+                <!-- buy history from differnt sellers -->
+                <div class="row-span-3 bg-white shadow rounded-lg">
+                    <div class="flex items-center justify-between px-6 py-5 font-semibold border-b border-gray-200">
+                        <span class="text-gray-800">Seller username</span>
+                        <button type="button"
+                            class="inline-flex justify-center rounded-md px-1 -mr-1 bg-white-simple text-sm leading-5 font-medium text-gray-600 hover:text-gray-600"
+                            id="options-menu" aria-haspopup="true" aria-expanded="true">
+                            WH/Hour
+                            <!-- <svg class="-mr-1 ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd" />
+                            </svg> -->
+                        </button>
+                    </div>
+                    <div class="overflow-y-auto" style="max-height: 24rem;">
+                        <ul class="p-6 space-y-6">
+                            {% for each in data %}
+                            <li class="flex items-center">
+                                <div class="h-10 w-10 mr-3 bg-gray-50 rounded-full overflow-hidden">
+                                    <img src="https://picsum.photos/40/40"
+                                        alt="Annette Watson profile picture">
+                                </div>
+                                <span class="text-gray-600"> {{ each['full_name'] }} </span>
+                                <span class="ml-auto font-semibold"> {{ each['wh_hour_price'] }} </span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- buy analytic chart -->
+                <div class="flex flex-col row-span-3 bg-white-simple shadow rounded-lg">
+                    <div class="px-6 py-5 font-semibold text-gray-800 border-b border-gray-200">Buy history chart</div>
+                    <div class="p-4 flex-grow">
+                        <div
+                            class="flex items-center justify-center h-full px-4 py-24 text-gray-400 text-3xl font-semibold bg-gray-50 border-2 border-gray-200 border-dashed rounded-md">
+                            Chart</div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
     {% endblock %}
+
 </body>
 
 </html>

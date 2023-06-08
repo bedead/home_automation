@@ -46,6 +46,7 @@ def gen_and_insert(user_id):
 
         # insert_Many_Into_Consumer_Dashboard(Electricity_Data)
         # insert_Many_Into_Consumer_History(Histroy_Data)
+        print(Room_Data)
         insert_Many_into_Consumer_Monitor(Room_Data)
         # print(Room_Data)
         

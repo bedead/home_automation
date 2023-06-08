@@ -8,7 +8,7 @@ function toggleNav() {
 
 function toggle_DashBoard() {
     // toggle dashboard nav
-    obj = document.getElementById('Dashboard')
+    var obj = document.getElementById('Consumer_Dashboard');
     obj.classList.toggle('hidden');
     obj.classList.toggle('absolute');
     obj.classList.toggle('top-20');
@@ -16,5 +16,12 @@ function toggle_DashBoard() {
 
 function toggle_Buy_Option() {
     // show dialog box to buy 
-    
+    var buyDialogBox = document.getElementById('buyDialogBox');
+    buyDialogBox.classList.toggle('opacity-0');
+    buyDialogBox.classList.toggle('pointer-events-none');
+}
+
+// close pop up by redirecting to normal endpoint (/user/consumer/monitor)
+function closePopUp() {
+    window.location.href = "/user/consumer/monitor";
 }

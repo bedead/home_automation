@@ -1,6 +1,8 @@
+# pip install pycryptodome
 from Crypto.Cipher import DES3
 from Crypto.Util.Padding import pad, unpad
 
+# 3DES secret key 24 bits in bytes format
 encryption_key = b'93bd9vn&Bke7qoH*#bk86N8n'
 cipher = DES3.new(encryption_key, DES3.MODE_ECB)
 

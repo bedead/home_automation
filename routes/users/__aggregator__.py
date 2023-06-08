@@ -6,7 +6,39 @@ aggregator_page_bp = Blueprint("aggregator_page", __name__)
 
 @aggregator_page_bp.route("/user/aggregator/dashboard")
 def aggregator_dashboard():
-    if session['user-type'] == "Aggregator":
+    if session:
+        if not (session['user-type'] == "Aggregator"):
+            return redirect(url_for('error_page.error_403'))
+        print("Uer id: ", session['user_id'])
+
         return render_template('/aggregator/aggregator_dashboard_page.html')
     elif not session:
         return redirect(url_for('auth_page.signin'))
+    else:
+        return "Some error occured."
+    
+@aggregator_page_bp.route("/user/aggregator/history")
+def aggregator_history():
+    if session:
+        if not (session['user-type'] == "Aggregator"):
+            return redirect(url_for('error_page.error_403'))
+        print("Uer id: ", session['user_id'])
+
+        return render_template('/aggregator/aggregator_history_page.html')
+    elif not session:
+        return redirect(url_for('auth_page.signin'))
+    else:
+        return "Some error occured."
+    
+@aggregator_page_bp.route("/user/aggregator/settings")
+def aggregator_settings():
+    if session:
+        if not (session['user-type'] == "Aggregator"):
+            return redirect(url_for('error_page.error_403'))
+        print("Uer id: ", session['user_id'])
+
+        return render_template('/aggregator/aggregator_settings_page.html')
+    elif not session:
+        return redirect(url_for('auth_page.signin'))
+    else:
+        return "Some error occured."

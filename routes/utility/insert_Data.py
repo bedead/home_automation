@@ -27,3 +27,4 @@ def insert_Many_Into_Consumer_History(data):
 def insert_Many_into_Consumer_Monitor(data):
     table_name = 'consumer_monitor'
     response = supabase_.table(table_name=table_name).insert(data).execute()
+    
