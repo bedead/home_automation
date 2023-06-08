@@ -122,6 +122,7 @@ def fetch_From_Producer_Monitor(user_id):
 
     return response.data
 
+
 def fetch_From_Aggregator_Dashboard():
     table_name = "aggregator_dasboard"
     query = supabase_.table(table_name=table_name).select('*').order('created_at', desc=True).limit(6)

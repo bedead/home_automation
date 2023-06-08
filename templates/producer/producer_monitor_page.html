@@ -106,19 +106,20 @@
                         </svg>
                         Change role
                     </a>
-                    <button onclick="toggle_Buy_Option();"
+                    <button onclick="toggle_Sell_Option();"
                         class="inline-flex px-5 py-3 text-white-simple bg-new_orange-brighter hover:bg-new_brown-brighter focus:bg-new_brown-brighter rounded-md ml-6 mb-3">
                         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                             class="flex-shrink-0 h-6 w-6 text-white -ml-1 mr-2">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
-                        Buy
+                        Sell Energy
                     </button>
                 </div>
             </div>
 
             <!-- second row -->
+            {% if data != None %}
             {% for each in data %}
             {% if each['load_type'] == 'Grid' %}
             <div class="flex flex-row justify-start items-center ">
@@ -222,7 +223,7 @@
                 </div>
                 {% endfor %}
             </section>
-
+            {% endif %}
             <!-- fourith row -->
             <section class="space-y-6">
                 <h1 class="text-2xl font-semibold mb-2 text-gray-800">Smart devices</h1>
@@ -280,6 +281,43 @@
             </section>
         </main>
     </div>
+
+    <div id="sellDialogBox"
+        class="pointer-events-none opacity-0 fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-300">
+        <div
+            class="relative m-4 lg:w-1/4 min-w-[25%] rounded-lg bg-white-simple font-sans text-base font-light leading-relaxed text-gray-800 antialiased shadow-2xl">
+            <div
+                class="flex shrink-0 items-center p-4 font-sans text-2xl font-semibold leading-snug text-gray-800 antialiased">
+                Sell energy
+            </div>
+            <form action="{{ url_for('producer_page.sell_energy') }}" method="POST">
+                <div
+                    class="relative border-t border-b border-t-new_white-khaki border-b-white-shade p-4 font-sans text-base font-light leading-relaxed text-gray-800 antialiased">
+                    <div class="">
+                        <label class="block text-base text-new_orange-brighter capitalize">Power/hour</label>
+                        <!-- <label class="block text-base text-new_orange-brighter capitalize">Consumption ( {{ total_w
+                            }}
+                            Watts/Hour ) </label> -->
+                        <input type="number" name="wh_hour" placeholder="Enter Energy per hour"
+                            class="w-full px-4 py-3 rounded-lg mt-2 border focus:outline-none" autofocus autocomplete
+                            required>
+                    </div>
+                </div>
+
+                <div class="flex shrink-0 flex-wrap items-center justify-end p-4 text-new_orange-brighter">
+                    <button onclick="toggle_Sell_Option();"
+                        class="cursor-pointer center mr-1 rounded-lg py-3 px-6 font-sans text-xs font-bold uppercase text-red-500 transition-all disabled:opacity-50 disabled:shadow-none">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                        class="cursor-pointer center rounded-lg bg-gradient-to-tr from-new_brown-brighter to-new_orange-brighter py-3 px-6 font-sans text-xs font-bold uppercase text-white-simple shadow-md transition-all hover:shadow-lg active:opacity-[0.85] disabled:opacity-50 disabled:shadow-none">
+                        Confirm Buy
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     {% endblock %}
 
 </body>

@@ -38,6 +38,13 @@ function toggle_Buy_Option() {
 }
 
 // close pop up by redirecting to normal endpoint (/user/consumer/monitor)
-function closePopUp() {
+function closeBuyPopUp() {
     window.location.href = "/user/consumer/monitor";
+}
+
+function toggle_Sell_Option() {
+    // show dialog box to buy 
+    var buyDialogBox = document.getElementById('sellDialogBox');
+    buyDialogBox.classList.toggle('opacity-0');
+    buyDialogBox.classList.toggle('pointer-events-none');
 }

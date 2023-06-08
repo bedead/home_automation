@@ -36,8 +36,9 @@ def producer_history():
         return "Some error occured."
 
 
-
-
+@producer_page_bp.route("/user/producer/monitor/sell", methods=['POST'])
+def sell_energy():
+    print('sell endpoint trigger')
 
 @producer_page_bp.route("/user/producer/monitor")
 def producer_monitor():
@@ -46,9 +47,9 @@ def producer_monitor():
             print("Uer id: ", session['user_id'])
             return redirect(url_for('error_page.error_403'))
         
-        data = fetch_From_Producer_Monitor(session['user_id'])
+        # data = fetch_From_Producer_Monitor(session['user_id'])
 
-        return render_template('/producer/producer_monitor_page.html', data=data)
+        return render_template('/producer/producer_monitor_page.html', data=None)
     elif not session:
         return redirect(url_for('auth_page.signin'))
     else:
