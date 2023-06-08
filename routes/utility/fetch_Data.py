@@ -122,8 +122,14 @@ def fetch_From_Producer_Monitor(user_id):
 
     return response.data
 
-def fetch_From_Aggregator_Dashboard(user_id):
-    pass
+def fetch_From_Aggregator_Dashboard():
+    table_name = "aggregator_dasboard"
+    query = supabase_.table(table_name=table_name).select('*').order('created_at', desc=True).limit(6)
+    try:
+        response = query.execute()
+    except Exception as e:
+        get_Fetch_Exception_Details(e)
+        return redirect(url_for('error_page.unknown_error'))
 
-
+    return response.data
 # fetch_From_Consumer_History('19353ea3-5608-4971-b168-cccf5a9324a7')

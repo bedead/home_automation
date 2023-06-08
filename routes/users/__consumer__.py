@@ -58,6 +58,7 @@ def insert_One_Into_Aggregator_Dashboard(wh_hour):
         "user_email":user_email,
         "wh_hours":wh_hour,
         "user_type":user_type,
+        "status": 'PENDING',
     }
     table_name = 'aggregator_dasboard'
     try:
@@ -70,7 +71,6 @@ def insert_One_Into_Aggregator_Dashboard(wh_hour):
 def buy_energy():
     if (request.method == 'POST'):
         wh_hour = request.form['wh_hour']
-        print('post')
         insert_One_Into_Aggregator_Dashboard(wh_hour)
         return redirect(url_for('consumer_page.consumer_monitor', status=True))
 
@@ -108,6 +108,5 @@ def consumer_settings():
         return redirect(url_for('auth_page.signin'))
     else:
         return "Some error occured."
-
 
 

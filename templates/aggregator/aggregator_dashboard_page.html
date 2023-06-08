@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/static/css/main.css">
     <link rel="stylesheet" href="/static/css/custom.css">
     <script src="/static/js/triggerLogout.js"></script>
+    <script src="/static/js/triggerNav.js"></script>
 
     <title>Home automation | Aggregator</title>
 </head>
@@ -17,7 +18,7 @@
     {% block content %}
     <div class="flex-grow text-black">
         <header class="flex items-center h-20 px-6 sm:px-10 bg-white">
-            <button id="open_consumer_sidepanel" onclick="toggle_DashBoard();"
+            <button id="open_consumer_sidepanel" onclick="toggle_Aggregator_DashBoard();"
                 class="block sm:hidden relative flex-shrink-0 p-2 mr-2 text-black hover:text-gray-800 focus:bg-gray-100 focus:text-gray-800 rounded-full">
                 <span class="sr-only">Menu</span>
                 <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
@@ -92,8 +93,52 @@
 
                 </div>
             </div>
-            <!-- seocnd roe (table) -->
-            
+            <!-- seocnd row (table) -->
+            <!-- component -->
+            <section class="container mx-auto p-6 font-sans">
+                <div class="w-full mb-8 overflow-hidden bg-white-simple rounded-xl shadow-lg">
+                    <div class="w-full overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr
+                                    class="text-md font-semibold tracking-wide text-left text-gray-800 bg-gray-50 uppercase border-b border-gray-600">
+                                    <th class="px-4 py-3">Email</th>
+                                    <th class="px-4 py-3">Power/hour</th>
+                                    <th class="px-4 py-3">Status</th>
+                                    <th class="px-4 py-3">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white">
+                                {% for each in data %}
+                                <tr class="text-gray-700">
+                                    <td class="px-4 py-3 border">
+                                        <div class="flex items-center text-sm">
+                                            <div class="relative w-8 h-8 mr-3 rounded-full md:block">
+                                                <img class="object-cover w-full h-full rounded-full"
+                                                    src="https://images.pexels.com/photos/5212324/pexels-photo-5212324.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+                                                    alt="" loading="lazy" />
+                                                <div class="absolute inset-0 rounded-full shadow-inner"
+                                                    aria-hidden="true"></div>
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold text-black"> {{ each['user_email'] }} </p>
+                                                <p class="text-xs text-gray-600"> {{ each['user_type'] }} </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-ms font-semibold border"> {{ each['wh_hours'] }} </td>
+                                    <td class="px-4 py-3 text-xs border">
+                                        <span
+                                            class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm"> {{ each['status'] }} </span>
+                                    </td>
+                                    <td class="px-4 py-3 text-sm border"> {{ each['created_at'][0:10] }} </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
     {% endblock %}

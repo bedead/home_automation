@@ -6,9 +6,25 @@ function toggleNav() {
 }
 
 
-function toggle_DashBoard() {
+function toggle_Consumer_DashBoard() {
     // toggle dashboard nav
     var obj = document.getElementById('Consumer_Dashboard');
+    obj.classList.toggle('hidden');
+    obj.classList.toggle('absolute');
+    obj.classList.toggle('top-20');
+}
+
+function toggle_Producer_DashBoard() {
+    // toggle dashboard nav
+    var obj = document.getElementById('Producer_Dashboard');
+    obj.classList.toggle('hidden');
+    obj.classList.toggle('absolute');
+    obj.classList.toggle('top-20');
+}
+
+function toggle_Aggregator_DashBoard() {
+    // toggle dashboard nav
+    var obj = document.getElementById('Aggregator_Dashboard');
     obj.classList.toggle('hidden');
     obj.classList.toggle('absolute');
     obj.classList.toggle('top-20');
