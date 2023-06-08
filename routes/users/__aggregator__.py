@@ -14,7 +14,7 @@ def aggregator_dashboard():
         
         print("Uer id: ", session['user_id'])
         data = fetch_From_Aggregator_Dashboard()
-
+        
         return render_template('/aggregator/aggregator_dashboard_page.html', data=data)
     elif not session:
         return redirect(url_for('auth_page.signin'))

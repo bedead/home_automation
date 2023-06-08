@@ -132,4 +132,6 @@ def fetch_From_Aggregator_Dashboard():
         return redirect(url_for('error_page.unknown_error'))
 
     return response.data
+
+
 # fetch_From_Consumer_History('19353ea3-5608-4971-b168-cccf5a9324a7')
