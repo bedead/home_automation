@@ -40,6 +40,8 @@ def producer_history():
 def sell_energy():
     print('sell endpoint trigger')
 
+    return redirect(url_for('producer_page.producer_monitor'))
+
 @producer_page_bp.route("/user/producer/monitor")
 def producer_monitor():
     if session:
