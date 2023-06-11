@@ -13,7 +13,6 @@ def compute_Avg(info,column_name):
     val = val / len(info)
     return round(val, 2)
 
-
 def fetch_From_Consumer_Dashboard(user_id):
     table_name = "consumer_dashboard"
     col1 = 'total_trades'; col2='average_wh_hour';col3='average_cost_hour';col4="access_grants"
@@ -45,17 +44,12 @@ def fetch_From_Consumer_Dashboard(user_id):
 
         # returning all values (including average value)
         return total_trades_0, average_wh_hour_0, average_cost_hour_0, access_grants_0, access_rejected_0, some_other_0
-
-
+    
     except Exception as e:
         print(e.__dict__)
-
-        return redirect(url_for('error_page.unknown_error'))
-        
-    
+        return redirect(url_for('error_page.unknown_error'))    
     # decryption
     
-
 def fetch_From_Consumer_History(user_id):
     table_name = "consumer_history"
     query = supabase_.table(table_name=table_name).select('*').eq('user_id', user_id).order('created_at', desc=True).limit(7)
@@ -73,7 +67,6 @@ def fetch_From_Consumer_History(user_id):
         
 
     return data
-
 
 def fetch_From_Consumer_Monitor(user_id):
     table_name = "consumer_monitor"
@@ -98,7 +91,6 @@ def fetch_From_Consumer_Monitor(user_id):
 
     return response.data
 
-
 def fetch_From_Producer_Monitor(user_id):
     table_name = "producer_monitor"
     query = supabase_.table(table_name=table_name).select('*').eq('user_id', user_id).order('created_at', desc=True).limit(8)
@@ -122,8 +114,7 @@ def fetch_From_Producer_Monitor(user_id):
 
     return response.data
 
-
-def fetch_From_Aggregator_Dashboard():
+def fetch_All_From_Aggregator_Dashboard():
     table_name = "aggregator_dasboard"
     query = supabase_.table(table_name=table_name).select('*').order('created_at', desc=True).limit(6)
     try:
@@ -134,5 +125,15 @@ def fetch_From_Aggregator_Dashboard():
 
     return response.data
 
+def fetch_One_From_Aggregator_Dashboard(user_id: str, created_at: str):
+    table_name = "aggregator_dasboard"
+    query = supabase_.table(table_name=table_name).select('*').eq('user_id',user_id).eq('created_at', created_at)
+    try:
+        response = query.execute()
+    except Exception as e:
+        get_Fetch_Exception_Details(e)
+        return redirect(url_for('error_page.unknown_error'))
+
+    return response.data
 
 # fetch_From_Consumer_History('19353ea3-5608-4971-b168-cccf5a9324a7')

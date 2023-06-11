@@ -1,8 +1,7 @@
-from threading import Thread
-import time
 from flask import Blueprint, redirect, render_template, request, url_for, session
 from routes.__config__ import Config
-
+# from routes.utility.fetch_Data import fetch_Private_Key_From_Private_Data
+from routes.utility.gen_secret_key_helper import generate_Hex_Private_Public_Key
 from .utility.general_methods import get_User_Exception_Details, get_User_Type_Route, set_User_Session
 
 # Create a blueprint for the auth routes
@@ -16,12 +15,13 @@ def signup(pass_same=False):
         if request.method == 'POST':
             email = request.form['email']
             user_type = request.form['user-type']
+            aggre_type = request.form['aggre-type']
             # encrypt password here using 3DES
             password = request.form['password']
             confirm_password = request.form['reenter_password']
-
+            
             if (password==confirm_password):
-
+                user_private_key_hex, user_public_key_hex = generate_Hex_Private_Public_Key()
                 try:
                     user = supabase.auth.sign_up({
                     "email": email,
@@ -29,14 +29,37 @@ def signup(pass_same=False):
                     "options": {
                         "data":{
                             "user-type": user_type,
+                            "private-key": user_private_key_hex,
                         }
                     }})
+                    
+                    table_name = 'private_data'
+                    row = {
+                            'user_id': user.user.id,
+                            'public_key': user_public_key_hex,
+                        }
+
+                    if (user_type != 'Aggregator'):
+                        if (aggre_type == 'Aggregator-1'):
+                            row['aggregator_id'] = '1b13b94d-b1b0-4153-8d1c-6589104565e7'
+                        elif (aggre_type == 'Aggregator-2'):
+                            row['aggregator_id'] = '62566149-0408-4c0b-b515-a3093021677f'
+                    else:
+                        aggre_type = None
+
+                    try:
+                        response = supabase.table(table_name=table_name).insert(row).execute()
+                    except Exception as e:
+                        return redirect(url_for('error_page.unknown_error'))
+
                 except ConnectionError as e:
-                    message, name, status = get_User_Exception_Details(e)
-                    return redirect(url_for('error_page.base_error',status=status,message=message))
+                    message = get_User_Exception_Details(e)
+                    print(message)
+                    return redirect(url_for('error_page.unknown_error'))
                 except Exception as e:
-                    message, name, status = get_User_Exception_Details(e)
-                    return redirect(url_for('error_page.base_error',status=status,message=message))
+                    message = get_User_Exception_Details(e)
+                    print(message)
+                    return redirect(url_for('error_page.unknown_error'))
                 
                 if user.user.id != None:
                     return redirect(url_for('auth_page.email_verificatation'))
@@ -62,7 +85,7 @@ def signin():
             email = request.form['email']
             password = request.form['password']
             # encrpt passeord here and send it to supabase server to auth
-
+            user = None
             try:
                 user = supabase.auth.sign_in_with_password({
                     "email": email,
@@ -70,28 +93,49 @@ def signin():
                 })
         
             except ConnectionError as e:
-                message, name, status = get_User_Exception_Details(e)
-                return redirect(url_for('error_page.base_error',status=status,message=message))
+                print(e.strerror)
             except Exception as e:
-                message, name, status = get_User_Exception_Details(e)
-                return redirect(url_for('error_page.base_error',status=status,message=message))
+                print(e.__dict__)
             
             print(user)
             if user.user.id != None:
                 # getting user details in python format
-                user = user.user
-                user_metadata = user.user_metadata
-                user_id = user.id
-                
-                # if first time login insert blank data with user_uuid in table user_stats
-                # if (user_metadata['first-login']):
-                    # res = insert_Empty_Into_User_Stats(user_uuid=user.id)
-                    # update_User_Metadata_First_Login(user.id, False)
+                user_metadata = user.user.user_metadata
+                user_id = user.user.id
+                user_access_token = user.session.access_token
 
+                supabase.postgrest.auth(user_access_token)
                 
-                # setting user login session
-                set_User_Session(email=email, user_type=user_metadata['user-type'], user_id=user_id)
+                if (user_metadata['user-type'] != 'Aggregator'):
+                    user_private_key = user_metadata['private-key']
+                    # for consumer, producer and prosumer
+                    
+                    table_name = 'private_data'
+                    response = supabase.table(table_name=table_name).select('aggregator_id').eq('user_id',user_id).execute()
 
+                    print(response.data)
+                    aggregator_id = response.data[0]['aggregator_id']
+
+                    response1= supabase.table(table_name=table_name).select('public_key').eq('user_id',aggregator_id).execute()
+                    aggregator_public_key = response1.data[0]['public_key']
+                    print(user_private_key)
+                    print(aggregator_public_key)
+
+                    # setting user login session
+                    set_User_Session(email=email,
+                                    user_type=user_metadata['user-type'],
+                                    access_token=user_access_token,
+                                    user_id=user_id,
+                                    other_public_key=aggregator_public_key,
+                                    user_private_key = user_private_key
+                                    )
+                else:
+                    aggregator_private_key = user_metadata['private-key']
+                    set_User_Session(email=email,
+                                    user_type=user_metadata['user-type'],
+                                    access_token=user_access_token,
+                                    user_id=user_id,
+                                    user_private_key=aggregator_private_key)
                 
                 # getting return dashboard type depending on user-type
                 dashboard_type = get_User_Type_Route()

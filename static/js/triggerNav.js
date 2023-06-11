@@ -48,3 +48,13 @@ function toggle_Sell_Option() {
     buyDialogBox.classList.toggle('opacity-0');
     buyDialogBox.classList.toggle('pointer-events-none');
 }
+
+
+function toggleAggregator(selected) {
+    var option = document.getElementById('aggregatorOption');
+    if (selected.options[selected.selectedIndex].text == "Aggregator") {
+        option.classList.add('hidden');
+    } else {
+        option.classList.remove('hidden');
+    }
+}

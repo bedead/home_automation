@@ -4,3 +4,4 @@ supabase
 names
 # turbo-flask
 pycryptodome
+cryptography
