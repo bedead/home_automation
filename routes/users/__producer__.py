@@ -119,7 +119,7 @@ def producer_monitor(status=None):
         data = []
         # try:
         data = fetch_From_Producer_Monitor(session['user_id'])
-            # print(data)
+        print(data)
         total_current = data[len(data)-1]['current_total']
         total_w = data[len(data)-1]['power_total']
         # except TypeError as e:
