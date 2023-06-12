@@ -29,8 +29,9 @@ def decode_All_Data():
         dashboard_row = {}
         for key,each_d in each_row.items():
             if (('am' in key) or ('pm' in key)):
-                plain_text_each_d = decrypt_Text(cipher_text=each_d, secret_key=shared_key_hex)
-                dashboard_row[key] = plain_text_each_d
+                # plain_text_each_d = decrypt_Text(cipher_text=each_d, secret_key=shared_key_hex)
+                # dashboard_row[key] = plain_text_each_d
+                pass
             else:
                 dashboard_row[key] = each_d
         dashboard_data.append(dashboard_row)

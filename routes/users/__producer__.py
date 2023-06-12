@@ -4,7 +4,7 @@ from routes.__config__ import Config
 from routes.data_generator.triple_des import encrypt_Text
 from routes.utility.fetch_Data import fetch_From_Producer_Monitor
 from routes.utility.gen_secret_key_helper import get_Shared_Key
-from routes.utility.general_methods import get_User_Session_Details, get_User_Session_Other_Public_Key, get_User_Session_Private_Key
+from routes.utility.general_methods import get_User_Session_Details, get_User_Session_Other_Public_Key, get_User_Session_Private_Key, get_User_Aggregator_Id
 
 # Create a blueprint for the home routes
 producer_page_bp = Blueprint("producer_page", __name__)
@@ -42,6 +42,7 @@ def producer_history():
 
 def insert_One_Into_Aggregator_Dashboard(data: dict):
     user_email, user_type, user_id = get_User_Session_Details()
+    aggregator_id = get_User_Aggregator_Id()
     table_name = 'aggregator_dasboard'
     created_at = datetime.now()
     row = {
@@ -50,13 +51,16 @@ def insert_One_Into_Aggregator_Dashboard(data: dict):
         "user_email":user_email,
         "user_type":user_type,
         "status": 'PENDING',
-        'type': 'SELL'
+        'type': 'SELL',
+        'aggregator_id': aggregator_id
     }    
     
     for key, value in data.items():
         row[key] = value
+    # print(row)
     try:
         response = supabase_.table(table_name=table_name).insert(row).execute()
+        print(response.data)
     except Exception as e:
         return redirect(url_for('error_page.unknown_error'))
 
@@ -95,9 +99,11 @@ def sell_energy():
         for key,each_d in data.items():
             hex_ciphertext_each_d = encrypt_Text(plaintext=each_d, secret_key=shared_key_hex)
             data[key] = hex_ciphertext_each_d
-
+        
         insert_One_Into_Aggregator_Dashboard(data)
-    return redirect(url_for('producer_page.producer_monitor'))
+
+        print("Sell request made.")
+        return redirect(url_for('producer_page.producer_monitor', status=True))
 
 @producer_page_bp.route("/user/producer/monitor")
 @producer_page_bp.route("/user/producer/monitor/<status>")
@@ -106,21 +112,21 @@ def producer_monitor(status=None):
         if not (session['user-type'] =="Producer"):
             return redirect(url_for('error_page.error_403'))
         
-        print("Uer id: ", session['user_id'])
+        print("User id: ", session['user_id'])
 
         total_current = 0
         total_w = 0
         data = []
-        try:
-            data = fetch_From_Producer_Monitor(session['user_id'])
-            print(data)
-            total_current = data[len(data)-1]['current_total']
-            total_w = data[len(data)-1]['power_total']
-        except TypeError as e:
-            return redirect(url_for('error_page.unknown_error'))
-        except IndexError as e:
+        # try:
+        data = fetch_From_Producer_Monitor(session['user_id'])
+            # print(data)
+        total_current = data[len(data)-1]['current_total']
+        total_w = data[len(data)-1]['power_total']
+        # except TypeError as e:
+            # return redirect(url_for('error_page.unknown_error'))
+        # except IndexError as e:
             # (no enough entries in consumer_monitor table in database)
-            return redirect(url_for('error_page.unknown_error'))
+            # return redirect(url_for('error_page.unknown_error'))
 
         return render_template('/producer/producer_monitor_page.html', data=data, total_current=total_current, total_w=total_w, status=status)
     elif not session:

@@ -86,6 +86,30 @@
 
 
         <main class="p-6 sm:p-10 space-y-6 bg-gray-50">
+            {% if (status) %}
+            <div class="mb-3 inline-flex w-full items-center rounded-lg bg-success-100 px-6 py-5 text-base text-success-700"
+                role="alert">
+                <span class="mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                        <path fill-rule="evenodd"
+                            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </span>
+                Sell request has been sent.
+                <button type="button" id="buy-pop-up-close" onclick="closeSellPopUp();"
+                    class="ml-auto box-content rounded-none border-none p-1 text-success-700 opacity-50 hover:text-success-900 hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                    <span
+                    class="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
+                        <path fill-rule="evenodd"
+                            d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    </span>
+                </button>
+            </div>
+            {% endif %}
             <div class="notification bg-new_orange-lighter text-gray-800 ">
                 <p>This page refreshes every 6 seconds.</p>
             </div>
@@ -245,7 +269,7 @@
     <div id="sellDialogBox"
         class="pointer-events-none opacity-0 fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-300">
         <div
-            class="relative m-4 lg:w-1/4 min-w-[50%] rounded-lg bg-white-simple font-sans text-base font-light leading-relaxed text-gray-800 antialiased shadow-2xl">
+            class="relative m-4 lg:w-1/2 min-w-[50%] rounded-lg bg-white-simple font-sans text-base font-light leading-relaxed text-gray-800 antialiased shadow-2xl">
             <div
                 class="flex shrink-0 items-center p-4 font-sans text-2xl font-semibold leading-snug text-gray-800 antialiased">
                 Sell energy
@@ -426,7 +450,7 @@
                     </button>
                     <button type="submit"
                         class="cursor-pointer center rounded-lg bg-gradient-to-tr from-new_brown-brighter to-new_orange-brighter py-3 px-6 font-sans text-xs font-bold uppercase text-white-simple shadow-md transition-all hover:shadow-lg active:opacity-[0.85] disabled:opacity-50 disabled:shadow-none">
-                        Confirm Buy
+                        Confirm sell
                     </button>
                 </div>
             </form>

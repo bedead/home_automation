@@ -153,7 +153,8 @@ def signin():
 
 
 @auth_page_bp.route("/auth/email_verify/")
-def email_verificatation(email=None):
+def email_verificatation():
+    email = request.args.get('email', None)
     return f"Email verification has been sent to {email} mail."
 
 

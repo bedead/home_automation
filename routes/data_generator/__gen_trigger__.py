@@ -61,4 +61,4 @@ def gen_and_insert(user_id, type):
 # gen_and_insert('1a06b542-5f57-445e-b544-3b17c482d87a', 'consumer')
 
 # producer
-gen_and_insert('71f28c50-1945-4095-bd0c-41ce6d6278b9', 'producer')
+gen_and_insert('48a6cc6b-93c7-4a31-b0c9-bef7b27675bb', 'producer')

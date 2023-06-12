@@ -113,6 +113,7 @@ def buy_energy():
             data[key] = hex_ciphertext_each_d
 
         insert_One_Into_Aggregator_Dashboard(data)
+        print("Buy request made.")
         return redirect(url_for('consumer_page.consumer_monitor', status=True))
 
 @consumer_page_bp.route("/user/consumer/monitor")
@@ -126,13 +127,13 @@ def consumer_monitor(status=None):
         total_current = 0
         total_w = 0
         data = []
-        try:
-            data = fetch_From_Consumer_Monitor(session['user_id'])
-            total_current = data[len(data)-1]['current_total']
-            total_w = data[len(data)-1]['power_total']
-        except IndexError as e:
-            # (no enough entries in consumer_monitor table in database)
-            return redirect(url_for('error_page.unknown_error'))
+        # try:
+        data = fetch_From_Consumer_Monitor(session['user_id'])
+        total_current = data[len(data)-1]['current_total']
+        total_w = data[len(data)-1]['power_total']
+        # except IndexError as e:
+            # # (no enough entries in consumer_monitor table in database)
+            # return redirect(url_for('error_page.unknown_error'))
         
         return render_template('/consumer/consumer_monitor_page.html', data=data, total_current=total_current, total_w=total_w, status=status)
 

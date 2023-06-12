@@ -49,6 +49,10 @@ function toggle_Sell_Option() {
     buyDialogBox.classList.toggle('pointer-events-none');
 }
 
+function closeSellPopUp() {
+    window.location.href = "/user/producer/monitor";
+}
+
 // close pop up by redirecting to normal endpoint (/user/consumer/monitor)
 function closeBuyPopUp() {
     window.location.href = "/user/consumer/monitor";
