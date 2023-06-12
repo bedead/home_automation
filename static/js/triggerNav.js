@@ -49,6 +49,10 @@ function toggle_Sell_Option() {
     buyDialogBox.classList.toggle('pointer-events-none');
 }
 
+// close pop up by redirecting to normal endpoint (/user/consumer/monitor)
+function closeBuyPopUp() {
+    window.location.href = "/user/consumer/monitor";
+}
 
 function toggleAggregator(selected) {
     var option = document.getElementById('aggregatorOption');

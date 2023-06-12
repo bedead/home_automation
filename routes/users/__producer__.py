@@ -113,8 +113,9 @@ def producer_monitor(status=None):
         data = []
         try:
             data = fetch_From_Producer_Monitor(session['user_id'])
-            total_current = data[-1]['current_total']
-            total_w = data[-1]['power_total']
+            print(data)
+            total_current = data[len(data)-1]['current_total']
+            total_w = data[len(data)-1]['power_total']
         except TypeError as e:
             return redirect(url_for('error_page.unknown_error'))
         except IndexError as e:

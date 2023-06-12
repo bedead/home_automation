@@ -11,7 +11,7 @@ from utility.insert_Data import insert_Many_Into_Consumer_Dashboard, insert_Many
 
 
 
-def gen_and_insert(user_id):
+def gen_and_insert(user_id, type):
     while True:
         # Histroy_Data = []
         # Electricity_Data = []
@@ -47,7 +47,7 @@ def gen_and_insert(user_id):
         # insert_Many_Into_Consumer_Dashboard(Electricity_Data)
         # insert_Many_Into_Consumer_History(Histroy_Data)
         print(Room_Data)
-        insert_Many_into_Consumer_Monitor(Room_Data)
+        insert_Many_into_Consumer_Monitor(Room_Data, type)
         # print(Room_Data)
         
         # Electricity_Data.clear()
@@ -57,4 +57,8 @@ def gen_and_insert(user_id):
         print("Post complete.")
         time.sleep(6)
 
-gen_and_insert('1a06b542-5f57-445e-b544-3b17c482d87a')
+# consumer
+# gen_and_insert('1a06b542-5f57-445e-b544-3b17c482d87a', 'consumer')
+
+# producer
+gen_and_insert('71f28c50-1945-4095-bd0c-41ce6d6278b9', 'producer')

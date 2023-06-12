@@ -62,7 +62,7 @@ def signup(pass_same=False):
                     return redirect(url_for('error_page.unknown_error'))
                 
                 if user.user.id != None:
-                    return redirect(url_for('auth_page.email_verificatation'))
+                    return redirect(url_for('auth_page.email_verificatation', email=email))
                 
             else:
                 pass_same = True
@@ -153,8 +153,8 @@ def signin():
 
 
 @auth_page_bp.route("/auth/email_verify/")
-def email_verificatation():
-    return "Email verification has been sent to you."
+def email_verificatation(email=None):
+    return f"Email verification has been sent to {email} mail."
 
 
 @auth_page_bp.route("/auth/password_recovery/")
