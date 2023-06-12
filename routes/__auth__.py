@@ -127,7 +127,8 @@ def signin():
                                     access_token=user_access_token,
                                     user_id=user_id,
                                     other_public_key=aggregator_public_key,
-                                    user_private_key = user_private_key
+                                    user_private_key = user_private_key,
+                                    aggregator_id=aggregator_id
                                     )
                 else:
                     aggregator_private_key = user_metadata['private-key']

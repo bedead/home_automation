@@ -4,7 +4,7 @@ from routes.data_generator.triple_des import decrypt_Text
 
 from routes.utility.fetch_Data import fetch_All_From_Aggregator_Dashboard, fetch_One_From_Aggregator_Dashboard
 from routes.utility.gen_secret_key_helper import get_Shared_Key
-from routes.utility.general_methods import get_User_Session_Private_Key
+from routes.utility.general_methods import get_User_Session_Private_Key, get_User_User_Id
 
 supabase = Config.supabase_
 
@@ -12,7 +12,8 @@ supabase = Config.supabase_
 aggregator_page_bp = Blueprint("aggregator_page", __name__)
 
 def decode_All_Data():
-    data = fetch_All_From_Aggregator_Dashboard()
+    aggregator_id = get_User_User_Id()
+    data = fetch_All_From_Aggregator_Dashboard(aggregator_id=aggregator_id)
     user_private_key = get_User_Session_Private_Key()
     # print("Aggregator private key :",user_private_key)
     # print(data)
@@ -71,10 +72,10 @@ def aggregator_dashboard():
         if not (session['user-type'] == "Aggregator"):
             return redirect(url_for('error_page.error_403'))
         
-        print("Uer id: ", session['user_id'])
+        print("User id: ", session['user_id'])
 
         data = decode_All_Data()
-        # print(data)
+        print(data)
         return render_template('/aggregator/aggregator_dashboard_page.html', data=data)
     elif not session:
         return redirect(url_for('auth_page.signin'))

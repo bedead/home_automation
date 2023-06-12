@@ -16,11 +16,12 @@ def get_User_Type_Route():
         return Aggregator
     
 
-def set_User_Session(email, user_type, user_id, access_token, other_public_key=None, user_private_key=None):
+def set_User_Session(email, user_type, user_id, access_token, other_public_key=None, user_private_key=None,aggregator_id=None):
     session['email'] = email
     session['access_token'] = access_token
     session['user-type'] = user_type
     session['user_id'] = user_id
+    session['aggregator_id'] = aggregator_id
     session['other_public_key'] = other_public_key
     session['user_private_key'] = user_private_key
 
@@ -32,6 +33,12 @@ def get_User_Session_Other_Public_Key():
 
 def get_User_Session_Private_Key():
     return session['user_private_key']
+
+def get_User_Aggregator_Id():
+    return session['aggregator_id']
+
+def get_User_User_Id():
+    return session['user_id']
 
 def clear_User_Session():
     session.clear()

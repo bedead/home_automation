@@ -3,7 +3,7 @@ from routes.data_generator.triple_des import encrypt_Text
 from routes.utility.fetch_Data import fetch_From_Consumer_Dashboard, fetch_From_Consumer_History, fetch_From_Consumer_Monitor
 from routes.__config__ import Config
 from routes.utility.gen_secret_key_helper import get_Shared_Key
-from routes.utility.general_methods import get_User_Session_Details, get_User_Session_Other_Public_Key, get_User_Session_Private_Key
+from routes.utility.general_methods import get_User_Session_Details, get_User_Session_Other_Public_Key, get_User_Session_Private_Key, get_User_Aggregator_Id
 from datetime import datetime
 
 # Create a blueprint for the home routes
@@ -18,7 +18,7 @@ def consumer_dashboard():
 
         if not (session['user-type'] =="Consumer"): 
             return redirect(url_for('error_page.error_403'))
-
+        total_trades, average_wh_hour, average_cost_hour, access_grants, access_rejected, some_other = 0
         try:
             total_trades, average_wh_hour, average_cost_hour, access_grants, access_rejected, some_other = fetch_From_Consumer_Dashboard(session['user_id'])
         except UnboundLocalError as e:
@@ -40,26 +40,21 @@ def consumer_dashboard():
     else:
         return "Some error occured."
 
-
-
-
-
 @consumer_page_bp.route("/user/consumer/history")
 def consumer_history():
     if session:
-        print("Uer id: ", session['user_id'])
-        data = fetch_From_Consumer_History(session['user_id'])
-
         if not (session['user-type'] =="Consumer"):
             return redirect(url_for('error_page.error_403'))
         
+        print("Uer id: ", session['user_id'])
+        data = fetch_From_Consumer_History(session['user_id'])
+        
+
         return render_template('/consumer/consumer_history_page.html', data=data)
     elif not session:
         return redirect(url_for('auth_page.signin'))
     else:
         return "Some error occured."
-
-
 
 def insert_One_Into_Aggregator_Dashboard(data: dict):
     user_email, user_type, user_id = get_User_Session_Details()
@@ -71,7 +66,8 @@ def insert_One_Into_Aggregator_Dashboard(data: dict):
         "user_email":user_email,
         "user_type":user_type,
         "status": 'PENDING',
-        'type': 'BUY'
+        'type': 'BUY',
+        'aggregator_id': get_User_Aggregator_Id()
     }    
     
     for key, value in data.items():
@@ -126,16 +122,14 @@ def consumer_monitor(status=None):
         if not (session['user-type'] =="Consumer"):
             return redirect(url_for('error_page.error_403'))
 
-        print("Uer id: ", session['user_id'])
+        print("User id: ", session['user_id'])
         total_current = 0
         total_w = 0
         data = []
         try:
             data = fetch_From_Consumer_Monitor(session['user_id'])
-            total_current = data[-1]['current_total']
-            total_w = data[-1]['power_total']
-        except TypeError as e:
-            return redirect(url_for('error_page.unknown_error'))
+            total_current = data[len(data)-1]['current_total']
+            total_w = data[len(data)-1]['power_total']
         except IndexError as e:
             # (no enough entries in consumer_monitor table in database)
             return redirect(url_for('error_page.unknown_error'))
@@ -146,10 +140,6 @@ def consumer_monitor(status=None):
         return redirect(url_for('auth_page.signin'))
     else:
         return "Some error occured."
-
-
-
-
 
 @consumer_page_bp.route("/user/consumer/settings")
 def consumer_settings():

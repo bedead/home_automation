@@ -114,16 +114,16 @@ def fetch_From_Producer_Monitor(user_id):
 
     return response.data
 
-def fetch_All_From_Aggregator_Dashboard():
+def fetch_All_From_Aggregator_Dashboard(aggregator_id: str):
     table_name = "aggregator_dasboard"
-    query = supabase_.table(table_name=table_name).select('*').order('created_at', desc=True).limit(6)
-    try:
-        response = query.execute()
-    except Exception as e:
-        get_Fetch_Exception_Details(e)
-        return redirect(url_for('error_page.unknown_error'))
+    # try:
+        # response = query.execute()
+    query = supabase_.table(table_name=table_name).select('*').eq('aggregator_id', aggregator_id).order('created_at', desc=True).limit(6).execute()    
+    # except Exception as e:
+        # get_Fetch_Exception_Details(e)
+        # return redirect(url_for('error_page.unknown_error'))
 
-    return response.data
+    return query.data
 
 def fetch_One_From_Aggregator_Dashboard(user_id: str, created_at: str):
     table_name = "aggregator_dasboard"

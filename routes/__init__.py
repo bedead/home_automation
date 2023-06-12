@@ -27,6 +27,7 @@ def create_app():
         app.register_blueprint(error_page_bp)
         app.register_blueprint(consumer_page_bp)
         app.register_blueprint(producer_page_bp)
+        # app.register_blueprint(prosumer_page_bp)
         app.register_blueprint(aggregator_page_bp)
 
         # returning app
