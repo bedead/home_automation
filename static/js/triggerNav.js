@@ -60,7 +60,7 @@ function closeBuyPopUp() {
 
 function toggleAggregator(selected) {
     var option = document.getElementById('aggregatorOption');
-    if (selected.options[selected.selectedIndex].text == "Aggregator") {
+    if (selected.options[selected.selectedIndex].text == "Aggregator" || "Utility") {
         option.classList.add('hidden');
     } else {
         option.classList.remove('hidden');

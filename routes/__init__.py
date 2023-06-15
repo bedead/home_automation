@@ -20,6 +20,7 @@ def create_app():
         from .users.__consumer__ import consumer_page_bp
         from .users.__producer__ import producer_page_bp
         from .users.__aggregator__ import aggregator_page_bp
+        from .users.__utility__ import utility_page_bp
 
         # Register Blueprints
         app.register_blueprint(base_page_bp)
@@ -28,6 +29,7 @@ def create_app():
         app.register_blueprint(consumer_page_bp)
         app.register_blueprint(producer_page_bp)
         # app.register_blueprint(prosumer_page_bp)
+        app.register_blueprint(utility_page_bp)
         app.register_blueprint(aggregator_page_bp)
 
         # returning app

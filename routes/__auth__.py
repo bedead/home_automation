@@ -6,7 +6,7 @@ from .utility.general_methods import get_User_Exception_Details, get_User_Type_R
 
 # Create a blueprint for the auth routes
 auth_page_bp = Blueprint("auth_page", __name__)
-supabase = Config.supabase_
+supabase_ = Config.supabase_
 
 
 @auth_page_bp.route("/auth/signup/", methods=['GET','POST'])
@@ -23,7 +23,7 @@ def signup(pass_same=False):
             if (password==confirm_password):
                 user_private_key_hex, user_public_key_hex = generate_Hex_Private_Public_Key()
                 try:
-                    user = supabase.auth.sign_up({
+                    user = supabase_.auth.sign_up({
                     "email": email,
                     "password": password,
                     "options": {
@@ -39,7 +39,7 @@ def signup(pass_same=False):
                             'public_key': user_public_key_hex,
                         }
 
-                    if (user_type != 'Aggregator'):
+                    if (user_type not in ['Utility', 'Aggregator'] ):
                         if (aggre_type == 'Aggregator-1'):
                             row['aggregator_id'] = '1b13b94d-b1b0-4153-8d1c-6589104565e7'
                         elif (aggre_type == 'Aggregator-2'):
@@ -48,7 +48,7 @@ def signup(pass_same=False):
                         aggre_type = None
 
                     try:
-                        response = supabase.table(table_name=table_name).insert(row).execute()
+                        response = supabase_.table(table_name=table_name).insert(row).execute()
                     except Exception as e:
                         return redirect(url_for('error_page.unknown_error'))
 
@@ -87,7 +87,7 @@ def signin():
             # encrpt passeord here and send it to supabase server to auth
             user = None
             try:
-                user = supabase.auth.sign_in_with_password({
+                user = supabase_.auth.sign_in_with_password({
                     "email": email,
                     "password": password
                 })
@@ -104,19 +104,19 @@ def signin():
                 user_id = user.user.id
                 user_access_token = user.session.access_token
 
-                supabase.postgrest.auth(user_access_token)
+                supabase_.postgrest.auth(user_access_token)
                 
-                if (user_metadata['user-type'] != 'Aggregator'):
+                if (user_metadata['user-type'] not in ['Aggregator','Utility']):
                     user_private_key = user_metadata['private-key']
                     # for consumer, producer and prosumer
                     
                     table_name = 'private_data'
-                    response = supabase.table(table_name=table_name).select('aggregator_id').eq('user_id',user_id).execute()
+                    response = supabase_.table(table_name=table_name).select('aggregator_id').eq('user_id',user_id).execute()
 
                     print(response.data)
                     aggregator_id = response.data[0]['aggregator_id']
 
-                    response1= supabase.table(table_name=table_name).select('public_key').eq('user_id',aggregator_id).execute()
+                    response1= supabase_.table(table_name=table_name).select('public_key').eq('user_id',aggregator_id).execute()
                     aggregator_public_key = response1.data[0]['public_key']
                     print(user_private_key)
                     print(aggregator_public_key)
@@ -169,6 +169,7 @@ def password_recovery():
 
 @auth_page_bp.route("/auth/logout/", methods=['GET','POST'])
 def logout():
-    out = supabase.auth.sign_out()
+    out = supabase_.auth.sign_out()
     session.clear()
+    print(out)
     return redirect(url_for('auth_page.signin'))
