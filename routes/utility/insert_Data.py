@@ -24,11 +24,12 @@ def insert_Many_Into_Consumer_History(data):
     table_name = 'consumer_history'
     response = supabase_.table(table_name=table_name).insert(data).execute()
 
-def insert_Many_into_Consumer_Monitor(data, type):
+def insert_Many_into_Consumer_Monitor(data, type) :
     table_name = None
     if (type == 'producer'):
         table_name = 'producer_monitor'
     elif (type == 'consumer'):
         table_name = 'consumer_monitor'
+
     response = supabase_.table(table_name=table_name).insert(data).execute()
     

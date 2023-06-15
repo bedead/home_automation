@@ -5,6 +5,7 @@ def get_User_Type_Route():
     producer = "producer_page.producer_monitor"
     procumer = "producer_page.prosumer_monitor"
     Aggregator = "aggregator_page.aggregator_dashboard"
+    Utility = "utility_page.utility_dashboard"
 
     if session['user-type'] == "Consumer":
         return consumer
@@ -14,6 +15,8 @@ def get_User_Type_Route():
         return procumer
     elif session['user-type'] == "Aggregator":
         return Aggregator
+    elif session['user-type'] == "Utility":
+        return Utility
     
 
 def set_User_Session(email, user_type, user_id, access_token, other_public_key=None, user_private_key=None,aggregator_id=None):

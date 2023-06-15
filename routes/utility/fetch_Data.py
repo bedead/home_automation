@@ -1,8 +1,9 @@
 from flask import redirect, url_for
 from routes.data_generator.triple_des import decrypt_Text
-
 from routes.utility.general_methods import get_Fetch_Exception_Details
 from ..__config__ import Config
+# from gotrue.errors import Au
+# httpx.ConnectTimeout:
 supabase_ = Config.supabase_
 
 def compute_Avg(info,column_name):
@@ -137,3 +138,39 @@ def fetch_One_From_Aggregator_Dashboard(user_id: str, created_at: str):
     return response.data
 
 # fetch_From_Consumer_History('19353ea3-5608-4971-b168-cccf5a9324a7')
+def fetch_All_Aggregator_From_Private_Data():
+    table = "private_data"
+    query = supabase_.table(table_name=table).select('*').eq('user_type', "Aggregator").order('created_at', desc=True).limit(6).execute()    
+        # return redirect(url_for('error_page.unknown_error'))
+    return query.data
+
+def fetch_All_Market_Players_From_Private_Data():
+    table = "private_data"
+    query = supabase_.table(table_name=table).select('*').in_("user_type", ['Consumer', 'Producer']).order('created_at', desc=True).limit(6).execute()    
+    
+    return query.data
+
+def fetch_All_Buy_Request_From_Aggregator_Dashboard():
+    table = "aggregator_dashboard"
+    query = supabase_.table(table_name=table).select(
+        'user_id','user_email','aggregator_id','type','status','user_type','created_at'
+        ).eq('type', "BUY"
+             ).order(
+                'created_at', desc=True
+                ).limit(6).execute()    
+    # print(query)
+
+    return query.data
+
+def fetch_All_Sell_Request_From_Aggregator_Dashboard():
+    table = "aggregator_dashboard"
+    query = supabase_.table(table_name=table).select(
+        'user_id','user_email','aggregator_id','type','status','user_type','created_at'
+        ).eq('type', "SELL"
+             ).order(
+                'created_at', desc=True
+                ).limit(6).execute()    
+    # print(query)
+
+    return query.data
+
