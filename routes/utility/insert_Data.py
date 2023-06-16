@@ -1,5 +1,16 @@
-from __config__ import Config
-supabase_ = Config.supabase_
+import os
+import httpx
+from supabase import create_client, Client
+from dotenv import load_dotenv
+load_dotenv()
+
+SECRET_KEY = os.environ.get("SECRET_KEY")
+DEBUG = True
+SUPABASE_URL: str = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY: str = os.environ.get("SUPABASE_KEY")
+
+supabase_: Client = create_client(supabase_url=SUPABASE_URL, supabase_key=SUPABASE_KEY)
+
 
 # def insert_One_Into_Consumer_Dashboard(user_id, total_trades, access_grants, access_rejected, average_wh_hour, average_cost_hour, some_other_stats):
 #     table_name = 'consumer_dashboard'
@@ -30,6 +41,9 @@ def insert_Many_into_Consumer_Monitor(data, type) :
         table_name = 'producer_monitor'
     elif (type == 'consumer'):
         table_name = 'consumer_monitor'
-
-    response = supabase_.table(table_name=table_name).insert(data).execute()
-    
+    try:
+        response = supabase_.table(table_name=table_name).insert(data).execute()
+    except httpx.ConnectTimeout as e:
+        print(e.args)
+    except httpx.WriteTimeout as e:
+        print(e.args)
