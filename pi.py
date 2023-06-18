@@ -1,14 +1,50 @@
 import ast
 import csv
 import time
+from dotenv import load_dotenv
+load_dotenv()
 import random
 import os
 from datetime import datetime
+import httpx
 # from pymongo import MongoClient
 import psutil
 import schedule
-from routes.data_generator.triple_des import encrypt_Text
-from routes.utility.insert_Data import insert_Many_into_Consumer_Monitor
+from supabase import create_client, Client
+from Crypto.Cipher import DES3
+from Crypto.Util.Padding import pad, unpad
+
+SUPABASE_URL: str = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY: str = os.environ.get("SUPABASE_KEY")
+# print(SUPABASE_URL, SUPABASE_KEY)
+supabase_: Client = create_client(supabase_url=SUPABASE_URL, supabase_key=SUPABASE_KEY)
+encryption_key = '93bd9vn&Bke7qoH*#bk86N8n'
+
+def encrypt_Text(plaintext: str, secret_key=encryption_key):
+    secret_key = bytes(secret_key, encoding='utf-8')
+    cipher = DES3.new(secret_key, DES3.MODE_ECB)
+
+    bytes_text = plaintext.encode("utf-8")
+
+    padded_plaintext = pad(bytes_text, DES3.block_size)
+    ciphertext = cipher.encrypt(padded_plaintext)
+
+    hex_ciphertext = ciphertext.hex()
+
+    return hex_ciphertext
+
+def insert_Many_into_Consumer_Monitor(data, type) :
+    table_name = None
+    if (type == 'producer'):
+        table_name = 'producer_monitor'
+    elif (type == 'consumer'):
+        table_name = 'consumer_monitor'
+    try:
+        response = supabase_.table(table_name=table_name).insert(data).execute()
+    except httpx.ConnectTimeout as e:
+        print(e.args)
+    except httpx.WriteTimeout as e:
+        print(e.args)
 
 def import_data():
     print("Importing data from local csv file to the supabase cloud")
@@ -27,7 +63,8 @@ def import_data():
                 # di = json.loads(each_dict)
                 new_data.append(d)
             print(new_data)
-            insert_Many_into_Consumer_Monitor(data=new_data, type='consumer')        
+            insert_Many_into_Consumer_Monitor(data=new_data, type='consumer')
+            count += 8      
             new_data.clear()
 
 

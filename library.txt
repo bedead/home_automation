@@ -2,6 +2,9 @@ flask
 python-dotenv
 supabase
 names
-# turbo-flask
 pycryptodome
 cryptography
+# flaskwebgui
+# waitress
+# PyNeutralino
+# turbo-flask
