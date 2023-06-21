@@ -1,8 +1,8 @@
 import time
 
 from flask import session
-# from __trade_history__ import generate_Dummy_Trade_History
-# from __electricity_data__ import generate_Dummy_Electricity_Data
+from __trade_history__ import generate_Dummy_Trade_History
+from __electricity_data__ import generate_Dummy_Electricity_Data
 from __room_data__ import generate_Dummy_Room_Data
 import sys
 sys.path.append("..")
@@ -44,8 +44,8 @@ def gen_and_insert(user_id, type):
 
         # val -= 1
 
-        # insert_Many_Into_Consumer_Dashboard(Electricity_Data)
-        # insert_Many_Into_Consumer_History(Histroy_Data)
+        # insert_Many_Into_Consumer_Dashboard(Electricity_Data, type)
+        # insert_Many_Into_Consumer_History(Histroy_Data, type)
         print(Room_Data)
         insert_Many_into_Consumer_Monitor(Room_Data, type)
         # print(Room_Data)
@@ -58,7 +58,7 @@ def gen_and_insert(user_id, type):
         time.sleep(6)
 
 # consumer
-# gen_and_insert('1a06b542-5f57-445e-b544-3b17c482d87a', 'consumer')
+gen_and_insert('1a06b542-5f57-445e-b544-3b17c482d87a', 'consumer')
 
 # producer
-gen_and_insert('48a6cc6b-93c7-4a31-b0c9-bef7b27675bb', 'producer')
+# gen_and_insert('48a6cc6b-93c7-4a31-b0c9-bef7b27675bb', 'producer')
