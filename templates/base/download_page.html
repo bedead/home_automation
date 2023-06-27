@@ -12,8 +12,109 @@
 <body>
     {% extends "base_layout.html" %}
     {% block content %}
-    <div class="mt-[78px] md:mt-20 lg:mt-[90px] py-16 bg-white">
+    <div class="mt-[78px] md:mt-20 lg:mt-[90px]">
+        <div class="relative w-full">
+            <div class="absolute hidden w-full bg-gray-50 lg:block "></div>
+            <div
+                class="relative px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-2 lg:px-8 lg:py-20">
+                <div class="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
+                    <h2
+                        class="max-w-lg mb-6 font-sans text-3xl font-bold leading-none tracking-tight text-gray-800 sm:text-4xl md:mx-auto">
+                        <span class="relative inline-block">
+                            <svg viewBox="0 0 52 24" fill="currentColor"
+                                class="absolute top-0 left-0 z-0 hidden w-32 -mt-8 -ml-20 text-gray-400 lg:w-32 lg:-ml-28 lg:-mt-10 sm:block">
+                                <defs>
+                                    <pattern id="2c67e949-4a23-49f7-bf27-ca140852cf21" x="0" y="0" width=".135"
+                                        height=".30">
+                                        <circle cx="1" cy="1" r=".7"></circle>
+                                    </pattern>
+                                </defs>
+                                <rect fill="url(#2c67e949-4a23-49f7-bf27-ca140852cf21)" width="52" height="24"></rect>
+                            </svg>
+                            <span class="relative">Download</span>
+                        </span>
+                        for your machine
+                    </h2>
+                    <p class="text-base text-gray-700 md:text-lg">
+                        Whether you're using Windows, or Linux, our user-friendly interface ensures a seamless
+                        experience.
+                    </p>
+                </div>
+                <div class="grid max-w-screen-lg gap-10 md:grid-cols-3 sm:mx-auto">
 
+                    <div>
+                        <div class="p-8 bg-gray-800 rounded-lg">
+                            <div class="mb-4 text-center">
+                                <p class="text-xl font-medium tracking-wide text-white-simple">
+                                    Market Players
+                                </p>
+                                <div class="mt-2 flex items-center justify-center">
+                                    <p class="mr-2 text-2xl font-semibold text-white-simple lg:text-3xl">
+                                        Consumer
+                                    </p>
+                                    <p class="text-lg text-gray-400">/ Producer</p>
+                                </div>
+                            </div>
+
+                            <p class="font-medium text-gray-200 mb-3">Executable File</p>
+
+                            <a href=" {{url_for('landing_page.market_player_raspbian_64_bit')}} "
+                                class="inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-black transition duration-200 rounded shadow-md bg-new_orange-lighter hover:bg-new_brown-brighter focus:shadow-outline focus:outline-none">
+                                Download for Raspbian OS 64 Bit
+                            </a>
+                        </div>
+                        <div class="w-11/12 h-2 mx-auto bg-gray-800 rounded-b opacity-75"></div>
+                        <div class="w-10/12 h-2 mx-auto bg-gray-800 rounded-b opacity-50"></div>
+                        <div class="w-9/12 h-2 mx-auto bg-gray-800 rounded-b opacity-25"></div>
+                    </div>
+
+                    <div>
+                        <div class="p-8 bg-gray-800 rounded-lg">
+                            <div class="mb-4 text-center">
+                                <div class="flex items-center justify-center">
+                                    <p class="mr-2 text-xl font-semibold text-white-simple lg:text-3xl">
+                                        For Aggregator's
+                                    </p>
+                                </div>
+                            </div>
+
+                            <p class="font-medium text-gray-200 mb-3">Executable File</p>
+
+                            <a href="{{url_for('landing_page.aggregator_raspbian_64_bit')}}"
+                                class="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-black transition duration-200 rounded shadow-md bg-new_orange-lighter hover:bg-new_brown-brighter focus:shadow-outline focus:outline-none">
+                                Download for Raspbian OS 64 Bit
+                            </a>
+                        </div>
+                        <div class="w-11/12 h-2 mx-auto bg-gray-800 rounded-b opacity-75"></div>
+                        <div class="w-10/12 h-2 mx-auto bg-gray-800 rounded-b opacity-50"></div>
+                        <div class="w-9/12 h-2 mx-auto bg-gray-800 rounded-b opacity-25"></div>
+                    </div>
+
+                    <div>
+                        <div class="p-8 bg-gray-800 rounded-lg">
+                            <div class="mb-4 text-center">
+                                <div class="flex items-center justify-center">
+                                    <p class="mr-2 text-2xl font-semibold text-white-simple lg:text-3xl">
+                                        For Utility's
+                                    </p>
+                                </div>
+                            </div>
+
+                            <p class="font-medium text-gray-200 mb-3">Executable File</p>
+
+                            <a href="{{url_for('landing_page.utility_raspbian_64_bit')}}"
+                                class="inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-black transition duration-200 rounded shadow-md bg-new_orange-lighter hover:bg-new_brown-brighter focus:shadow-outline focus:outline-none">
+                                Download for Raspbian OS 64 Bit
+                            </a>
+                        </div>
+                        <div class="w-11/12 h-2 mx-auto bg-gray-800 rounded-b opacity-75"></div>
+                        <div class="w-10/12 h-2 mx-auto bg-gray-800 rounded-b opacity-50"></div>
+                        <div class="w-9/12 h-2 mx-auto bg-gray-800 rounded-b opacity-25"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
     {% endblock %}
 </body>
