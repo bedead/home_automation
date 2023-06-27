@@ -59,3 +59,4 @@ def utility_buy_sell_request():
         return redirect(url_for('auth_page.signin'))
     else:
         return "Some error occured."
+

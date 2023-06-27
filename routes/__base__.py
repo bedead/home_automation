@@ -17,6 +17,17 @@ def services():
 
 
 
+@base_page_bp.route("/become_a_aggregator")
+def become_aggregator():
+    return render_template("/base/become_aggregator_page.html")
+
+
+
+@base_page_bp.route("/products")
+def products():
+    return render_template("/base/download_page.html")
+
+
 
 @base_page_bp.route("/about")
 def about():
