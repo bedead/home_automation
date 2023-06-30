@@ -18,7 +18,7 @@ def consumer_dashboard():
 
         if not (session['user-type'] =="Consumer"): 
             return redirect(url_for('error_page.error_403'))
-        total_trades, average_wh_hour, average_cost_hour, access_grants, access_rejected, some_other = 0
+        total_trades, average_wh_hour, average_cost_hour, access_grants, access_rejected, some_other = 0, 0, 0, 0, 0, 0
         try:
             total_trades, average_wh_hour, average_cost_hour, access_grants, access_rejected, some_other = fetch_From_Consumer_Dashboard(session['user_id'])
         except UnboundLocalError as e:

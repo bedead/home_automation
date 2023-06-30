@@ -70,8 +70,12 @@ def fetch_From_Consumer_History(user_id):
     return data
 
 def fetch_From_Consumer_Monitor(user_id):
+
+    total_appliances = int(fetch_User_Total_Appliances(user_id))
+    # print(total_appliances)
+
     table_name = "consumer_monitor"
-    query = supabase_.table(table_name=table_name).select('*').eq('user_id', user_id).order('created_at', desc=True).limit(8)
+    query = supabase_.table(table_name=table_name).select('*').eq('user_id', user_id).order('created_at', desc=True).limit(total_appliances)
     try:
         response = query.execute()
     except Exception as e:
@@ -93,8 +97,11 @@ def fetch_From_Consumer_Monitor(user_id):
     return response.data
 
 def fetch_From_Producer_Monitor(user_id):
+
+    total_appliances = int(fetch_User_Total_Appliances(user_id))
+
     table_name = "producer_monitor"
-    query = supabase_.table(table_name=table_name).select('*').eq('user_id', user_id).order('created_at', desc=True).limit(8)
+    query = supabase_.table(table_name=table_name).select('*').eq('user_id', user_id).order('created_at', desc=True).limit(total_appliances)
     try:
         response = query.execute()
     except Exception as e:
@@ -174,3 +181,10 @@ def fetch_All_Sell_Request_From_Aggregator_Dashboard():
 
     return query.data
 
+def fetch_User_Total_Appliances(user_id: str):
+    table_name = 'private_data'
+    query = supabase_.table(table_name=table_name).select('total_appliances').eq('user_id', user_id).execute() 
+    
+    return query.data[0]['total_appliances']
+
+# print(fetch_User_Total_Appliances("48a6cc6b-93c7-4a31-b0c9-bef7b27675bb"))
