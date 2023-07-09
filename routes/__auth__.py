@@ -3,6 +3,7 @@ from routes.__config__ import Config
 # from routes.utility.fetch_Data import fetch_Private_Key_From_Private_Data
 from routes.utility.gen_secret_key_helper import generate_Hex_Private_Public_Key
 from .utility.general_methods import get_User_Exception_Details, get_User_Type_Route, set_User_Session
+from gotrue.errors import AuthApiError
 
 # Create a blueprint for the auth routes
 auth_page_bp = Blueprint("auth_page", __name__)
@@ -91,56 +92,58 @@ def signin():
                     "email": email,
                     "password": password
                 })
+
+                print(user)
+                if user.user.id != None:
+                    # getting user details in python format
+                    user_metadata = user.user.user_metadata
+                    user_id = user.user.id
+                    user_access_token = user.session.access_token
+
+                    supabase_.postgrest.auth(user_access_token)
+                    
+                    if (user_metadata['user-type'] not in ['Aggregator','Utility']):
+                        user_private_key = user_metadata['private-key']
+                        # for consumer, producer and prosumer
+                        
+                        table_name = 'private_data'
+                        response = supabase_.table(table_name=table_name).select('aggregator_id').eq('user_id',user_id).execute()
+
+                        print(response.data)
+                        aggregator_id = response.data[0]['aggregator_id']
+
+                        response1= supabase_.table(table_name=table_name).select('public_key').eq('user_id',aggregator_id).execute()
+                        aggregator_public_key = response1.data[0]['public_key']
+                        print(user_private_key)
+                        print(aggregator_public_key)
+
+                        # setting user login session
+                        set_User_Session(email=email,
+                                        user_type=user_metadata['user-type'],
+                                        access_token=user_access_token,
+                                        user_id=user_id,
+                                        other_public_key=aggregator_public_key,
+                                        user_private_key = user_private_key,
+                                        aggregator_id=aggregator_id
+                                        )
+                    else:
+                        aggregator_private_key = user_metadata['private-key']
+                        set_User_Session(email=email,
+                                        user_type=user_metadata['user-type'],
+                                        access_token=user_access_token,
+                                        user_id=user_id,
+                                        user_private_key=aggregator_private_key)
+                    
+                    # getting return dashboard type depending on user-type
+                    dashboard_type = get_User_Type_Route()
+                    return redirect(url_for(dashboard_type))
         
             except ConnectionError as e:
                 print(e.strerror)
-            except Exception as e:
-                print(e.__dict__)
+            except AuthApiError as e:
+                # status code == 400 for invalid credientials
+                print(e.message)
             
-            print(user)
-            if user.user.id != None:
-                # getting user details in python format
-                user_metadata = user.user.user_metadata
-                user_id = user.user.id
-                user_access_token = user.session.access_token
-
-                supabase_.postgrest.auth(user_access_token)
-                
-                if (user_metadata['user-type'] not in ['Aggregator','Utility']):
-                    user_private_key = user_metadata['private-key']
-                    # for consumer, producer and prosumer
-                    
-                    table_name = 'private_data'
-                    response = supabase_.table(table_name=table_name).select('aggregator_id').eq('user_id',user_id).execute()
-
-                    print(response.data)
-                    aggregator_id = response.data[0]['aggregator_id']
-
-                    response1= supabase_.table(table_name=table_name).select('public_key').eq('user_id',aggregator_id).execute()
-                    aggregator_public_key = response1.data[0]['public_key']
-                    print(user_private_key)
-                    print(aggregator_public_key)
-
-                    # setting user login session
-                    set_User_Session(email=email,
-                                    user_type=user_metadata['user-type'],
-                                    access_token=user_access_token,
-                                    user_id=user_id,
-                                    other_public_key=aggregator_public_key,
-                                    user_private_key = user_private_key,
-                                    aggregator_id=aggregator_id
-                                    )
-                else:
-                    aggregator_private_key = user_metadata['private-key']
-                    set_User_Session(email=email,
-                                    user_type=user_metadata['user-type'],
-                                    access_token=user_access_token,
-                                    user_id=user_id,
-                                    user_private_key=aggregator_private_key)
-                
-                # getting return dashboard type depending on user-type
-                dashboard_type = get_User_Type_Route()
-                return redirect(url_for(dashboard_type))
         return render_template("/auth/signin_page.html")
     elif session:
         dashboard_type = get_User_Type_Route()
