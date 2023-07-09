@@ -48,7 +48,8 @@ def fetch_From_Consumer_Dashboard(user_id):
     
     except Exception as e:
         print(e.__dict__)
-        return redirect(url_for('error_page.unknown_error'))    
+        return 0, 0, 0, 0, 0, 0 
+   
     # decryption
     
 def fetch_From_Consumer_History(user_id):
