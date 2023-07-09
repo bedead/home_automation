@@ -49,7 +49,7 @@ def utility_buy_sell_request():
             return redirect(url_for('error_page.error_403'))
 
         print("User id: ", session['user_id'])
-
+        
         buy_request = fetch_All_Buy_Request_From_Aggregator_Dashboard()
         sell_request = fetch_All_Sell_Request_From_Aggregator_Dashboard()
         return render_template('/utililty/utility_aggregator_request_page.html', 

@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Blueprint, redirect, render_template, request, url_for,session
 from routes.__config__ import Config
 from routes.data_generator.triple_des import encrypt_Text
-from routes.utility.fetch_Data import fetch_From_Producer_Monitor
+from routes.utility.fetch_Data import fetch_From_Producer_Monitor, fetch_From_Producer_Dashboard, fetch_From_Producer_History
 from routes.utility.gen_secret_key_helper import get_Shared_Key
 from routes.utility.general_methods import get_User_Session_Details, get_User_Session_Other_Public_Key, get_User_Session_Private_Key, get_User_Aggregator_Id
 
@@ -19,8 +19,21 @@ def producer_dashboard():
 
         print("User id: ", session['user_id'])
 
+        total_trades, average_wh_hour, average_cost_hour, access_grants, access_rejected, some_other = 0, 0, 0, 0, 0, 0
+        try:
+            total_trades, average_wh_hour, average_cost_hour, access_grants, access_rejected, some_other = fetch_From_Producer_Dashboard(session['user_id'])
+        except UnboundLocalError as e:
+            # no internet (create new error page for this type)
+            return redirect(url_for('error_page.unknown_error'))
+        except TypeError as e:
+            return redirect(url_for('error_page.unknown_error'))
 
-        return render_template('/producer/producer_dashboard_page.html')
+        return render_template('/producer/producer_dashboard_page.html',total_trades=total_trades,
+                               average_wh_hour=average_wh_hour,
+                               average_cost_hour=average_cost_hour,
+                               access_grants=access_grants,
+                               access_rejected=access_rejected,
+                               some_other=some_other)
     elif not session:
         return redirect(url_for('auth_page.signin'))
     else:
@@ -34,7 +47,9 @@ def producer_history():
 
         print("User id: ", session['user_id'])
 
-        return render_template('/producer/producer_history_page.html')
+        data = fetch_From_Producer_History(session['user_id'])
+
+        return render_template('/producer/producer_history_page.html', data=data)
     elif not session:
         return redirect(url_for('auth_page.signin'))
     else:
@@ -43,7 +58,7 @@ def producer_history():
 def insert_One_Into_Aggregator_Dashboard(data: dict):
     user_email, user_type, user_id = get_User_Session_Details()
     aggregator_id = get_User_Aggregator_Id()
-    table_name = 'aggregator_dasboard'
+    table_name = 'aggregator_dashboard'
     created_at = datetime.now()
     row = {
         'created_at': str(created_at),
@@ -60,7 +75,7 @@ def insert_One_Into_Aggregator_Dashboard(data: dict):
     # print(row)
     try:
         response = supabase_.table(table_name=table_name).insert(row).execute()
-        print(response.data)
+        # print(response.data)
     except Exception as e:
         return redirect(url_for('error_page.unknown_error'))
 
@@ -105,6 +120,19 @@ def sell_energy():
         print("Sell request made.")
         return redirect(url_for('producer_page.producer_monitor', status=True))
 
+def get_Total_Current_And_Power(data):
+    total_current = 0
+    total_w = 0
+
+    for each_row in data:
+        for key, values in each_row.items():
+            if (key == 'current'):
+                total_current += values
+            elif (key == 'power'):
+                total_w += values
+
+    return round(total_current, 1), round(total_w, 2)
+
 @producer_page_bp.route("/user/producer/monitor")
 @producer_page_bp.route("/user/producer/monitor/<status>")
 def producer_monitor(status=None):
@@ -114,19 +142,11 @@ def producer_monitor(status=None):
         
         print("User id: ", session['user_id'])
 
-        total_current = 0
-        total_w = 0
         data = []
         # try:
         data = fetch_From_Producer_Monitor(session['user_id'])
         print(data)
-        total_current = data[len(data)-1]['current_total']
-        total_w = data[len(data)-1]['power_total']
-        # except TypeError as e:
-            # return redirect(url_for('error_page.unknown_error'))
-        # except IndexError as e:
-            # (no enough entries in consumer_monitor table in database)
-            # return redirect(url_for('error_page.unknown_error'))
+        total_current, total_w = get_Total_Current_And_Power(data)
 
         return render_template('/producer/producer_monitor_page.html', data=data, total_current=total_current, total_w=total_w, status=status)
     elif not session:

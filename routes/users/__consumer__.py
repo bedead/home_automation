@@ -14,7 +14,7 @@ supabase_ = Config.supabase_
 @consumer_page_bp.route("/user/consumer/dashboard")
 def consumer_dashboard():
     if session:
-        print("Uer id: ", session['user_id'])
+        print("User id: ", session['user_id'])
 
         if not (session['user-type'] =="Consumer"): 
             return redirect(url_for('error_page.error_403'))
@@ -46,7 +46,7 @@ def consumer_history():
         if not (session['user-type'] =="Consumer"):
             return redirect(url_for('error_page.error_403'))
         
-        print("Uer id: ", session['user_id'])
+        print("User id: ", session['user_id'])
         data = fetch_From_Consumer_History(session['user_id'])
         
 
@@ -58,7 +58,7 @@ def consumer_history():
 
 def insert_One_Into_Aggregator_Dashboard(data: dict):
     user_email, user_type, user_id = get_User_Session_Details()
-    table_name = 'aggregator_dasboard'
+    table_name = 'aggregator_dashboard'
     created_at = datetime.now()
     row = {
         'created_at': str(created_at),
@@ -128,7 +128,7 @@ def get_Total_Current_And_Power(data):
             elif (key == 'power'):
                 total_w += values
 
-    return total_current, total_w
+    return round(total_current, 1), round(total_w, 1)
 
 @consumer_page_bp.route("/user/consumer/monitor")
 @consumer_page_bp.route("/user/consumer/monitor/<status>")
