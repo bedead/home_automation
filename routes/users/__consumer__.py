@@ -116,6 +116,20 @@ def buy_energy():
         print("Buy request made.")
         return redirect(url_for('consumer_page.consumer_monitor', status=True))
 
+
+def get_Total_Current_And_Power(data):
+    total_current = 0
+    total_w = 0
+
+    for each_row in data:
+        for key, values in each_row.items():
+            if (key == 'current'):
+                total_current += values
+            elif (key == 'power'):
+                total_w += values
+
+    return total_current, total_w
+
 @consumer_page_bp.route("/user/consumer/monitor")
 @consumer_page_bp.route("/user/consumer/monitor/<status>")
 def consumer_monitor(status=None):
@@ -124,16 +138,9 @@ def consumer_monitor(status=None):
             return redirect(url_for('error_page.error_403'))
 
         print("User id: ", session['user_id'])
-        total_current = 0
-        total_w = 0
         data = []
-        # try:
         data = fetch_From_Consumer_Monitor(session['user_id'])
-        total_current = data[len(data)-1]['current_total']
-        total_w = data[len(data)-1]['power_total']
-        # except IndexError as e:
-            # # (no enough entries in consumer_monitor table in database)
-            # return redirect(url_for('error_page.unknown_error'))
+        total_current, total_w = get_Total_Current_And_Power(data)
         
         return render_template('/consumer/consumer_monitor_page.html', data=data, total_current=total_current, total_w=total_w, status=status)
 

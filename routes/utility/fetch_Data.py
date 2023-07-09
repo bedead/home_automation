@@ -82,19 +82,29 @@ def fetch_From_Consumer_Monitor(user_id):
         get_Fetch_Exception_Details(e)
         return redirect(url_for('error_page.unknown_error'))
     
-    # decrypting each column value 
-    data = response.data
-    for each_index in range(len(data)):
-        data[each_index]['load_type'] = decrypt_Text(data[each_index]['load_type'])
-        data[each_index]['volt'] = int(decrypt_Text(data[each_index]['volt']))
-        data[each_index]['power_factor'] = float(decrypt_Text(data[each_index]['power_factor']))
-        data[each_index]['current'] = int(decrypt_Text(data[each_index]['current']))
-        data[each_index]['frequency'] = int(decrypt_Text(data[each_index]['frequency']))
-        data[each_index]['power'] = float(decrypt_Text(data[each_index]['power']))
-        data[each_index]['current_total'] = int(decrypt_Text(data[each_index]['current_total']))
-        data[each_index]['power_total'] = float(decrypt_Text(data[each_index]['power_total']))
+    all_loads = []
 
-    return response.data
+    # decrypting each column value 
+    data = []
+    for each_index in range(len(response.data)):
+        data_load = decrypt_Text(response.data[each_index]['load_type'])
+
+        if (data_load not in all_loads):
+            all_loads.append(data_load)
+            ne = {
+                'load_type': data_load,
+                'volt': int(decrypt_Text(response.data[each_index]['volt'])),
+                'power_factor' : float(decrypt_Text(response.data[each_index]['power_factor'])),
+                'current' : int(decrypt_Text(response.data[each_index]['current'])),
+                'frequency' : int(decrypt_Text(response.data[each_index]['frequency'])),
+                'power' : float(decrypt_Text(response.data[each_index]['power'])),
+                'energy' : float(decrypt_Text(response.data[each_index]['energy'])),
+                'user_id' : response.data[each_index]['user_id'],
+                'created_at' : response.data[each_index]['created_at'],
+            }
+            data.append(ne)
+
+    return data
 
 def fetch_From_Producer_Monitor(user_id):
 

@@ -1,8 +1,6 @@
 import ast
 import csv
 import time
-from dotenv import load_dotenv
-load_dotenv()
 import random
 import os
 from datetime import datetime
@@ -14,8 +12,8 @@ from supabase import create_client, Client
 from Crypto.Cipher import DES3
 from Crypto.Util.Padding import pad, unpad
 
-SUPABASE_URL: str = os.environ.get("SUPABASE_URL")
-SUPABASE_KEY: str = os.environ.get("SUPABASE_KEY")
+SUPABASE_URL: str = "https://dvywdtjzuqgctliqaoix.supabase.co"
+SUPABASE_KEY: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2eXdkdGp6dXFnY3RsaXFhb2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODUwODk4OTYsImV4cCI6MjAwMDY2NTg5Nn0.Tz0qflBoehtTWSFKgbVyczAwvvepQGQNBgxof4M-nFQ"
 # print(SUPABASE_URL, SUPABASE_KEY)
 supabase_: Client = create_client(supabase_url=SUPABASE_URL, supabase_key=SUPABASE_KEY)
 encryption_key = '93bd9vn&Bke7qoH*#bk86N8n'
@@ -46,7 +44,7 @@ def insert_Many_into_Consumer_Monitor(data, type) :
     except httpx.WriteTimeout as e:
         print(e.args)
 
-def import_data():
+def import_data(type):
     print("Importing data from local csv file to the supabase cloud")
     for i in range(0,4):
         print('.', end='')
@@ -63,7 +61,7 @@ def import_data():
                 # di = json.loads(each_dict)
                 new_data.append(d)
             print(new_data)
-            insert_Many_into_Consumer_Monitor(data=new_data, type='consumer')
+            insert_Many_into_Consumer_Monitor(data=new_data, type=type)
             count += 8      
             new_data.clear()
 
@@ -78,9 +76,8 @@ def import_data():
 # Clear the data file after successful import
     open('data.csv', 'w').close()
 
-
 # Function to generate data
-def generate_data(user_id):
+def generate_data(user_id, type):
         try:
             while True:
                 # Generate random timestamp between 2021-01-01 and 2023-12-31
@@ -139,7 +136,6 @@ def check_storage():
     # Storage is full, trigger data import
         import_data()
 
-
 # Function to check storage of the data file
 def check_data_file_storage():
     file_size = os.path.getsize("data.csv") 
@@ -160,7 +156,8 @@ log_file.flush() # Flush the write operation to the log file
 schedule.every(5).minutes.do(check_storage)
 schedule.every(5).minutes.do(check_data_file_storage)
 # Generate data
-generate_data('1a06b542-5f57-445e-b544-3b17c482d87a')
+type = "consumer"
+generate_data('1a06b542-5f57-445e-b544-3b17c482d87a',type)
 # Run the scheduler
 try:
     while True:
@@ -169,7 +166,7 @@ try:
 except KeyboardInterrupt:
     print('Program interrupted by user')
     # Import data before exiting the program
-    import_data()
+    import_data(type=type)
 
 
 # Close the CSV file

@@ -2,3 +2,4 @@
 venv
 __pycache__
 /routes/data_generator/__sir_data__.py
+pi.py
