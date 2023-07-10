@@ -94,10 +94,10 @@ def fetch_From_Consumer_Monitor(user_id):
             all_loads.append(data_load)
             ne = {
                 'load_type': data_load,
-                'volt': int(decrypt_Text(response.data[each_index]['volt'])),
+                'volt': float(decrypt_Text(response.data[each_index]['volt'])),
                 'power_factor' : float(decrypt_Text(response.data[each_index]['power_factor'])),
-                'current' : int(decrypt_Text(response.data[each_index]['current'])),
-                'frequency' : int(decrypt_Text(response.data[each_index]['frequency'])),
+                'current' : float(decrypt_Text(response.data[each_index]['current'])),
+                'frequency' : float(decrypt_Text(response.data[each_index]['frequency'])),
                 'power' : float(decrypt_Text(response.data[each_index]['power'])),
                 'energy' : float(decrypt_Text(response.data[each_index]['energy'])),
                 'user_id' : response.data[each_index]['user_id'],
@@ -186,10 +186,10 @@ def fetch_From_Producer_Monitor(user_id):
             all_loads.append(data_load)
             ne = {
                 'load_type': data_load,
-                'volt': int(decrypt_Text(response.data[each_index]['volt'])),
+                'volt': float(decrypt_Text(response.data[each_index]['volt'])),
                 'power_factor' : float(decrypt_Text(response.data[each_index]['power_factor'])),
-                'current' : int(decrypt_Text(response.data[each_index]['current'])),
-                'frequency' : int(decrypt_Text(response.data[each_index]['frequency'])),
+                'current' : float(decrypt_Text(response.data[each_index]['current'])),
+                'frequency' : float(decrypt_Text(response.data[each_index]['frequency'])),
                 'power' : float(decrypt_Text(response.data[each_index]['power'])),
                 'energy' : float(decrypt_Text(response.data[each_index]['energy'])),
                 'user_id' : response.data[each_index]['user_id'],
