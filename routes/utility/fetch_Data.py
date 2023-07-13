@@ -76,7 +76,7 @@ def fetch_From_Consumer_Monitor(user_id):
     # print(total_appliances)
 
     table_name = "consumer_monitor"
-    query = supabase_.table(table_name=table_name).select('*').eq('user_id', user_id).order('created_at', desc=True).limit(total_appliances)
+    query = supabase_.table(table_name=table_name).select('*').eq('user_id', user_id).order('id', desc=True).limit(total_appliances)
     try:
         response = query.execute()
     except Exception as e:
@@ -92,14 +92,21 @@ def fetch_From_Consumer_Monitor(user_id):
 
         if (data_load not in all_loads):
             all_loads.append(data_load)
+            # print(response.data[each_index]['id'])
+            volt = decrypt_Text(response.data[each_index]['volt'])
+            pf = decrypt_Text(response.data[each_index]['power_factor'])
+            current = decrypt_Text(response.data[each_index]['current'])
+            f = decrypt_Text(response.data[each_index]['frequency'])
+            p = decrypt_Text(response.data[each_index]['power'])
+            e = decrypt_Text(response.data[each_index]['energy'])
             ne = {
                 'load_type': data_load,
-                'volt': float(decrypt_Text(response.data[each_index]['volt'])),
-                'power_factor' : float(decrypt_Text(response.data[each_index]['power_factor'])),
-                'current' : float(decrypt_Text(response.data[each_index]['current'])),
-                'frequency' : float(decrypt_Text(response.data[each_index]['frequency'])),
-                'power' : float(decrypt_Text(response.data[each_index]['power'])),
-                'energy' : float(decrypt_Text(response.data[each_index]['energy'])),
+                'volt': (0 if volt == 'nan' else float(volt)),
+                'power_factor' : (0 if pf == 'nan' else float(pf)),
+                'current' : (0 if current == 'nan' else float(current)),
+                'frequency' : (0 if f == 'nan' else float(f)),
+                'power' : (0 if p == 'nan' else float(p)),
+                'energy' : (0 if e == 'nan' else float(e)),
                 'user_id' : response.data[each_index]['user_id'],
                 'created_at' : response.data[each_index]['created_at'],
             }
@@ -168,7 +175,7 @@ def fetch_From_Producer_Monitor(user_id):
     total_appliances = int(fetch_User_Total_Appliances(user_id))
 
     table_name = "producer_monitor"
-    query = supabase_.table(table_name=table_name).select('*').eq('user_id', user_id).order('created_at', desc=True).limit(total_appliances)
+    query = supabase_.table(table_name=table_name).select('*').eq('user_id', user_id).order('id', desc=True).limit(total_appliances)
     try:
         response = query.execute()
     except Exception as e:
@@ -184,14 +191,20 @@ def fetch_From_Producer_Monitor(user_id):
 
         if (data_load not in all_loads):
             all_loads.append(data_load)
+            volt = decrypt_Text(response.data[each_index]['volt'])
+            pf = decrypt_Text(response.data[each_index]['power_factor'])
+            current = decrypt_Text(response.data[each_index]['current'])
+            f = decrypt_Text(response.data[each_index]['frequency'])
+            p = decrypt_Text(response.data[each_index]['power'])
+            e = decrypt_Text(response.data[each_index]['energy'])
             ne = {
                 'load_type': data_load,
-                'volt': float(decrypt_Text(response.data[each_index]['volt'])),
-                'power_factor' : float(decrypt_Text(response.data[each_index]['power_factor'])),
-                'current' : float(decrypt_Text(response.data[each_index]['current'])),
-                'frequency' : float(decrypt_Text(response.data[each_index]['frequency'])),
-                'power' : float(decrypt_Text(response.data[each_index]['power'])),
-                'energy' : float(decrypt_Text(response.data[each_index]['energy'])),
+                'volt': (0 if volt == 'nan' else float(volt)),
+                'power_factor' : (0 if pf == 'nan' else float(pf)),
+                'current' : (0 if current == 'nan' else float(current)),
+                'frequency' : (0 if f == 'nan' else float(f)),
+                'power' : (0 if p == 'nan' else float(p)),
+                'energy' : (0 if e == 'nan' else float(e)),
                 'user_id' : response.data[each_index]['user_id'],
                 'created_at' : response.data[each_index]['created_at'],
             }
