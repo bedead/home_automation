@@ -1,9 +1,9 @@
 from flask import Blueprint, redirect, render_template, request, url_for,session
 from routes.__config__ import Config
-from routes.data_generator.triple_des import decrypt_Text
-
+from routes.data_generator.tp_chaos_generator.tp_chaos_generator.triple_pendulum import decrypt_Text_New
+from ast import literal_eval
 from routes.utility.fetch_Data import fetch_All_From_Aggregator_Dashboard, fetch_One_From_Aggregator_Dashboard
-from routes.utility.gen_secret_key_helper import get_Shared_Key
+from routes.utility.diffi_hellman_EC import get_Shared_Key
 from routes.utility.general_methods import get_User_Session_Private_Key, get_User_User_Id
 
 supabase = Config.supabase_
@@ -22,15 +22,13 @@ def decode_All_Data():
         row_user_id = each_row['user_id']
         user_row_public_key = get_Public_Key_For_ID(row_user_id)
         
-        shared_key_hex = get_Shared_Key(private_key_hex=user_private_key, public_key_hex=user_row_public_key)
+        shared_key_hex = get_Shared_Key(user_private_key, user_row_public_key)
         shared_key_hex = shared_key_hex[:24]
         print("Shared key :", shared_key_hex)
 
         dashboard_row = {}
         for key,each_d in each_row.items():
             if (('am' in key) or ('pm' in key)):
-                # plain_text_each_d = decrypt_Text(cipher_text=each_d, secret_key=shared_key_hex)
-                # dashboard_row[key] = plain_text_each_d
                 pass
             else:
                 dashboard_row[key] = each_d
@@ -47,13 +45,13 @@ def decode_One_Data(request_user_id: str, created_at: str):
     user_private_key = get_User_Session_Private_Key()
     user_row_public_key = get_Public_Key_For_ID(row_user_id)
     
-    shared_key_hex = get_Shared_Key(private_key_hex=user_private_key, public_key_hex=user_row_public_key)
-    shared_key_hex = shared_key_hex[:24]
+    shared_key_hex = get_Shared_Key(user_private_key, user_row_public_key)
     print("Shared key :", shared_key_hex)
 
     for key,each_d in detail_data.items():
         if (('am' in key) or ('pm' in key)):
-            plain_text_each_d = decrypt_Text(cipher_text=each_d, secret_key=shared_key_hex)
+            each_d = literal_eval(each_d)
+            plain_text_each_d = decrypt_Text_New(each_d, shared_key_hex)
             dashboard_row[key] = plain_text_each_d
         else:
             dashboard_row[key] = each_d

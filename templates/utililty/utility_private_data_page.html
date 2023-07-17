@@ -98,6 +98,8 @@
             <!-- seocnd row  -->
             <section class="overflow-x p-5 rounded-lg shadow-md bg-white-simple">
                 <h2 class="leading-3 text-lg font-semibold mb-3">User data</h2>
+                <hr>
+                {% if market_player_data != [] %}
                 <table class="table-auto overflow-scroll w-full">
                     <thead class="border-b text-base font-medium">
                         <tr>
@@ -129,11 +131,18 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                {% else %}
+                <div class="mt-4 text-center">
+                    No data to show
+                </div>
+                {% endif %}
             </section>
 
             <!-- third row  -->
             <section class="overflow-x p-5 rounded-lg shadow-md bg-white-simple">
                 <h2 class="leading-3 text-lg font-semibold mb-3">Aggregator data</h2>
+                <hr>
+                {% if aggregator_data != [] %}
                 <table class="table-auto overflow-scroll w-full">
                     <thead class="border-b text-base font-medium">
                         <tr>
@@ -164,6 +173,11 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                {% else %}
+                <div class="mt-4 text-center">
+                    No data to show
+                </div>
+                {% endif %}
             </section>
 
         </main>

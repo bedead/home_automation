@@ -61,7 +61,7 @@ def get_X25519PublicKey_From_Hex(hex_key: str):
 
 def generate_Hex_Private_Public_Key():
     # user private key of type (X25519PrivateKey)
-    user_private_key = x25519.X25519PrivateKey.generate()
+    user_private_key = x25519.X25519PrivateKey().generate
 
     # user public key of type (bytes)
     user_public_key = user_private_key.public_key().public_bytes(
@@ -85,3 +85,4 @@ def get_Shared_Key(private_key_hex, public_key_hex):
     shared_key_hex = bytes_shared_key.hex()
 
     return shared_key_hex
+

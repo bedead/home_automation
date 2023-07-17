@@ -98,6 +98,8 @@
             <!-- seocnd row  -->
             <section class="overflow-x p-5 rounded-lg shadow-md bg-white-simple">
                 <h2 class="leading-3 text-lg font-semibold mb-3">Buy request's</h2>
+                <hr>
+                {% if buy_request != [] %}
                 <table class="table-auto overflow-scroll w-full">
                     <thead class="border-b text-base font-medium">
                         <tr>
@@ -127,11 +129,18 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                {% else %}
+                <div class="mt-4 text-center">
+                    No data to show
+                </div>
+                {% endif %}
             </section>
 
             <!-- third row  -->
             <section class="overflow-x p-5 rounded-lg shadow-md bg-white-simple">
                 <h2 class="leading-3 text-lg font-semibold mb-3">Sell request's</h2>
+                <hr>
+                {% if sell_request != [] %}
                 <table class="table-auto overflow-scroll w-full">
                     <thead class="border-b text-base font-medium">
                         <tr>
@@ -161,6 +170,11 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                {% else %}
+                <div class="mt-4 text-center">
+                    No data to show
+                </div>
+                {% endif %}
             </section>
 
         </main>

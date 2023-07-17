@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, render_template, request, url_for, session
 from routes.__config__ import Config
 # from routes.utility.fetch_Data import fetch_Private_Key_From_Private_Data
-from routes.utility.gen_secret_key_helper import generate_Hex_Private_Public_Key
+from routes.utility.diffi_hellman_EC import generate_Hex_Private_Public_Key
 from .utility.general_methods import get_User_Exception_Details, get_User_Type_Route, set_User_Session
 from gotrue.errors import AuthApiError
 
@@ -38,13 +38,15 @@ def signup(pass_same=False):
                     row = {
                             'user_id': user.user.id,
                             'public_key': user_public_key_hex,
+                            'user_type': user_type,
+                            'email_id': email,
                         }
 
                     if (user_type not in ['Utility', 'Aggregator'] ):
                         if (aggre_type == 'Aggregator-1'):
-                            row['aggregator_id'] = '1b13b94d-b1b0-4153-8d1c-6589104565e7'
+                            row['aggregator_id'] = '79867cfd-e0d5-4d5c-999e-492e02207cd5'
                         elif (aggre_type == 'Aggregator-2'):
-                            row['aggregator_id'] = '62566149-0408-4c0b-b515-a3093021677f'
+                            row['aggregator_id'] = 'b9f77962-6db7-468a-9178-1f19d342bf4f'
                     else:
                         aggre_type = None
 

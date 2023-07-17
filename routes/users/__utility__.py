@@ -51,6 +51,7 @@ def utility_buy_sell_request():
         print("User id: ", session['user_id'])
         
         buy_request = fetch_All_Buy_Request_From_Aggregator_Dashboard()
+        # print(buy_request)
         sell_request = fetch_All_Sell_Request_From_Aggregator_Dashboard()
         return render_template('/utililty/utility_aggregator_request_page.html', 
                                buy_request=buy_request,
