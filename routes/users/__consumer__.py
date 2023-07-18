@@ -3,7 +3,7 @@ from routes.data_generator.tp_chaos_generator.tp_chaos_generator.triple_pendulum
 from routes.utility.fetch_Data import fetch_From_Consumer_Dashboard, fetch_From_Consumer_History, fetch_From_Consumer_Monitor
 from routes.__config__ import Config
 from routes.utility.diffi_hellman_EC import get_Shared_Key
-from routes.utility.general_methods import get_User_Session_Details, get_User_Session_Other_Public_Key, get_User_Session_Private_Key, get_User_Aggregator_Id
+from routes.utility.general_methods import get_Shared_Key_List, get_User_Session_Details, get_User_Session_Other_Public_Key, get_User_Session_Private_Key, get_User_Aggregator_Id
 from datetime import datetime
 
 # Create a blueprint for the home routes
@@ -103,14 +103,14 @@ def buy_energy():
             '9-10pm': ten_pm,'10-11pm': eleven_pm,'11-12pm': twelve_pm,
         }
     
-        aggregator_public_key = get_User_Session_Other_Public_Key()
-        user_private_key = get_User_Session_Private_Key()
-        shared_key_hex = get_Shared_Key(user_private_key, aggregator_public_key)
+        # aggregator_public_key = get_User_Session_Other_Public_Key()
+        # user_private_key = get_User_Session_Private_Key()
+        shared_key_list = get_Shared_Key_List()
 
-        print("Shared key :",shared_key_hex)
+        print("Shared key :",shared_key_list)
 
         for key,each_d in data.items():
-            hex_ciphertext_each_d = encrypt_Text_New(each_d, shared_key_hex)
+            hex_ciphertext_each_d = encrypt_Text_New(each_d, shared_key_list)
             data[key] = str(hex_ciphertext_each_d)
 
         res = insert_One_Into_Aggregator_Dashboard(data)
@@ -139,7 +139,8 @@ def consumer_monitor(status=None):
         if not (session['user-type'] =="Consumer"):
             return redirect(url_for('error_page.error_403'))
 
-        print("User id: ", session['user_id'])
+        print(f'User id {session["user_id"]} in Consumer Monitor Page')
+
         data = []
         data = fetch_From_Consumer_Monitor(session['user_id'])
         total_current, total_w = get_Total_Current_And_Power(data)
@@ -154,10 +155,14 @@ def consumer_monitor(status=None):
 @consumer_page_bp.route("/user/consumer/settings")
 def consumer_settings():
     if session:
-
         if not (session['user-type'] =="Consumer"):
             return redirect(url_for('error_page.error_403'))
         
+
+        print(f'User id {session["user_id"]} in Consumer Settings Page')
+
+
+
         return render_template('/consumer/consumer_settings_page.html')
     elif not session:
         return redirect(url_for('auth_page.signin'))

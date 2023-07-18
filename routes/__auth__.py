@@ -1,10 +1,11 @@
 from flask import Blueprint, redirect, render_template, request, url_for, session, make_response
 from routes.__config__ import Config
+from routes.data_generator.tp_chaos_generator.tp_chaos_generator.triple_pendulum import decode_key, get_encoded_key
 # from routes.utility.fetch_Data import fetch_Private_Key_From_Private_Data
-from routes.utility.diffi_hellman_EC import generate_Hex_Private_Public_Key
+from routes.utility.diffi_hellman_EC import generate_Hex_Private_Public_Key, get_Shared_Key
 from .utility.general_methods import get_User_Exception_Details, get_User_Type_Route, set_User_Session
 from gotrue.errors import AuthApiError
-
+import csv, time
 # Create a blueprint for the auth routes
 auth_page_bp = Blueprint("auth_page", __name__)
 supabase_ = Config.supabase_
@@ -90,12 +91,13 @@ def signin():
             # encrpt passeord here and send it to supabase server to auth
             user = None
             try:
+                start_time = time.time()
                 user = supabase_.auth.sign_in_with_password({
                     "email": email,
                     "password": password
                 })
 
-                print(user)
+                # print(user)
                 if user.user.id != None:
                     # getting user details in python format
                     user_metadata = user.user.user_metadata
@@ -106,16 +108,36 @@ def signin():
                     
                     if (user_metadata['user-type'] not in ['Aggregator','Utility']):
                         user_private_key = user_metadata['private-key']
+                        end_time = time.time()
+                        time_taken_private_key_exchange = end_time - start_time
                         # for consumer, producer and prosumer
-                        
+
                         table_name = 'private_data'
                         response = supabase_.table(table_name=table_name).select('aggregator_id').eq('user_id',user_id).execute()
 
                         # print(response.data)
+                        start_time = time.time()
                         aggregator_id = response.data[0]['aggregator_id']
 
                         response1= supabase_.table(table_name=table_name).select('public_key').eq('user_id',aggregator_id).execute()
                         aggregator_public_key = response1.data[0]['public_key']
+                        end_time = time.time()
+                        time_taken_pubic_key_exchange = end_time - start_time
+                        
+                        start_time = time.time()
+                        shared_key_hex = get_Shared_Key(user_private_key, aggregator_public_key)
+                        encoded_key = get_encoded_key(shared_key_hex)
+                        generate_keys_list = decode_key(encoded_key[0])
+                        end_time = time.time()
+                        time_taken_shared_key = end_time - start_time
+                        
+                        
+                        # saveing time in csv file
+                        with open('session_key_exchange.csv', 'a', newline='') as file:
+                            writer = csv.writer(file)
+                            # writer.writerow(['Public key exchange time','Private key exchange time'])
+                            writer.writerow([time_taken_pubic_key_exchange, time_taken_private_key_exchange, time_taken_shared_key])
+                        file.close()
                         # print(user_private_key)
                         # print(aggregator_public_key)
 
@@ -124,8 +146,9 @@ def signin():
                                         user_type=user_metadata['user-type'],
                                         access_token=user_access_token,
                                         user_id=user_id,
-                                        other_public_key=aggregator_public_key,
-                                        user_private_key = user_private_key,
+                                        shared_key_list=generate_keys_list,
+                                        # other_public_key=aggregator_public_key,
+                                        # user_private_key = user_private_key,
                                         aggregator_id=aggregator_id
                                         )
                     else:
@@ -138,6 +161,7 @@ def signin():
                     
                     # getting return dashboard type depending on user-type
                     dashboard_type = get_User_Type_Route()
+                    print("New user joined-id:", user_id)
                     return redirect(url_for(dashboard_type))
 
             except ConnectionError as e:

@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import csv
 import os
 
-from routes.data_generator.tp_chaos_generator.tp_chaos_generator.triple_pendulum import decrypt_Text_New
+from routes.data_generator.triple_des import decrypt_Text
 
 load_dotenv()
 
@@ -36,7 +36,7 @@ with open(filename, 'w', newline='') as csvfile:
             if (key in decrypt):
                 row.append(values)
             else:
-                new_val = decrypt_Text_New(str(values))
+                new_val = decrypt_Text(str(values))
                 row.append(new_val)
         writer.writerow(row)
         
