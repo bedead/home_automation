@@ -74,6 +74,8 @@ def insert_One_Into_Aggregator_Dashboard(data: dict):
         row[key] = value
     try:
         response = supabase_.table(table_name=table_name).insert(row).execute()
+
+        return response
     except Exception as e:
         return redirect(url_for('error_page.unknown_error'))
 
@@ -108,10 +110,11 @@ def buy_energy():
         print("Shared key :",shared_key_hex)
 
         for key,each_d in data.items():
-            hex_ciphertext_each_d = encrypt_Text_New(plaintext=each_d, secret_key=shared_key_hex)
-            data[key] = hex_ciphertext_each_d
+            hex_ciphertext_each_d = encrypt_Text_New(each_d, shared_key_hex)
+            data[key] = str(hex_ciphertext_each_d)
 
-        insert_One_Into_Aggregator_Dashboard(data)
+        res = insert_One_Into_Aggregator_Dashboard(data)
+        print(res.data)
         print("Buy request made.")
         return redirect(url_for('consumer_page.consumer_monitor', status=True))
 

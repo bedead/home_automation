@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, request, url_for, session
+from flask import Blueprint, redirect, render_template, request, url_for, session, make_response
 from routes.__config__ import Config
 # from routes.utility.fetch_Data import fetch_Private_Key_From_Private_Data
 from routes.utility.diffi_hellman_EC import generate_Hex_Private_Public_Key
@@ -111,13 +111,13 @@ def signin():
                         table_name = 'private_data'
                         response = supabase_.table(table_name=table_name).select('aggregator_id').eq('user_id',user_id).execute()
 
-                        print(response.data)
+                        # print(response.data)
                         aggregator_id = response.data[0]['aggregator_id']
 
                         response1= supabase_.table(table_name=table_name).select('public_key').eq('user_id',aggregator_id).execute()
                         aggregator_public_key = response1.data[0]['public_key']
-                        print(user_private_key)
-                        print(aggregator_public_key)
+                        # print(user_private_key)
+                        # print(aggregator_public_key)
 
                         # setting user login session
                         set_User_Session(email=email,
@@ -139,7 +139,7 @@ def signin():
                     # getting return dashboard type depending on user-type
                     dashboard_type = get_User_Type_Route()
                     return redirect(url_for(dashboard_type))
-        
+
             except ConnectionError as e:
                 print(e.strerror)
             except AuthApiError as e:
@@ -174,6 +174,7 @@ def password_recovery():
 
 @auth_page_bp.route("/auth/logout/", methods=['GET','POST'])
 def logout():
+    print(session['email'])
     out = supabase_.auth.sign_out()
     session.clear()
     print(out)
