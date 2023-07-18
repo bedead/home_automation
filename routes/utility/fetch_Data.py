@@ -2,6 +2,7 @@ from flask import redirect, url_for
 from routes.data_generator.tp_chaos_generator.tp_chaos_generator.triple_pendulum import decrypt_Text_New
 from routes.utility.general_methods import get_Fetch_Exception_Details
 from ..__config__ import Config
+import time
 from ast import literal_eval
 # from gotrue.errors import Au
 # httpx.ConnectTimeout:
@@ -90,6 +91,7 @@ def fetch_From_Consumer_Monitor(user_id):
         all_loads = []
 
         # decrypting each column value 
+        start_time = time.time()
         data = []
         for each_index in range(len(response.data)):
             data_load = decrypt_Text_New(literal_eval(response.data[each_index]['load_type']))
@@ -115,7 +117,10 @@ def fetch_From_Consumer_Monitor(user_id):
                     'created_at' : response.data[each_index]['created_at'],
                 }
                 data.append(ne)
-    
+
+        end_time = time.time()
+        decryption_time_taken = end_time - start_time
+
         return data
 
 

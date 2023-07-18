@@ -1,3 +1,4 @@
+import csv
 from flask import Blueprint, redirect, render_template, request, url_for,session
 from routes.data_generator.tp_chaos_generator.tp_chaos_generator.triple_pendulum import encrypt_Text_New
 from routes.utility.fetch_Data import fetch_From_Consumer_Dashboard, fetch_From_Consumer_History, fetch_From_Consumer_Monitor
@@ -5,6 +6,7 @@ from routes.__config__ import Config
 from routes.utility.diffi_hellman_EC import get_Shared_Key
 from routes.utility.general_methods import get_Shared_Key_List, get_User_Session_Details, get_User_Session_Other_Public_Key, get_User_Session_Private_Key, get_User_Aggregator_Id
 from datetime import datetime
+import time
 
 # Create a blueprint for the home routes
 consumer_page_bp = Blueprint("consumer_page", __name__)
@@ -109,11 +111,24 @@ def buy_energy():
 
         print("Shared key :",shared_key_list)
 
+        start_time = time.time()
         for key,each_d in data.items():
             hex_ciphertext_each_d = encrypt_Text_New(each_d, shared_key_list)
             data[key] = str(hex_ciphertext_each_d)
+        end_time = time.time()
+        encryption_time_taken = end_time - start_time
 
+        start_time = time.time()
         res = insert_One_Into_Aggregator_Dashboard(data)
+        end_time = time.time()
+        datasending_to_database_time_taken = end_time - start_time
+
+        with open('chaos.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
+            # writer.writerow(['Data Encrytion time','Data sending time'])
+            writer.writerow([encryption_time_taken, datasending_to_database_time_taken])
+        file.close()
+
         print(res.data)
         print("Buy request made.")
         return redirect(url_for('consumer_page.consumer_monitor', status=True))
