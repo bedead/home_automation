@@ -18,10 +18,13 @@ def signup(pass_same=False):
             email = request.form['email']
             user_type = request.form['user-type']
             aggre_type = request.form['aggre-type']
+            user_address = request.form['address']
+            ip_address = request.form['ip_address']
             # encrypt password here using 3DES
             password = request.form['password']
             confirm_password = request.form['reenter_password']
             
+            # print(ip_address)
             if (password==confirm_password):
                 user_private_key_hex, user_public_key_hex = generate_Hex_Private_Public_Key()
                 try:
@@ -41,6 +44,9 @@ def signup(pass_same=False):
                             'public_key': user_public_key_hex,
                             'user_type': user_type,
                             'email_id': email,
+                            'user_address': user_address,
+                            # 'mac_address': 'sd',
+                            'ip_address': ip_address
                         }
 
                     if (user_type not in ['Utility', 'Aggregator'] ):
@@ -146,10 +152,10 @@ def signin():
                                         user_type=user_metadata['user-type'],
                                         access_token=user_access_token,
                                         user_id=user_id,
-                                        shared_key_list=generate_keys_list,
                                         # other_public_key=aggregator_public_key,
                                         # user_private_key = user_private_key,
-                                        aggregator_id=aggregator_id
+                                        aggregator_id=aggregator_id,
+                                        chaos_key=generate_keys_list,
                                         )
                     else:
                         aggregator_private_key = user_metadata['private-key']

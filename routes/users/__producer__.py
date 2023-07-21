@@ -3,8 +3,7 @@ from flask import Blueprint, redirect, render_template, request, url_for,session
 from routes.__config__ import Config
 from routes.data_generator.tp_chaos_generator.tp_chaos_generator.triple_pendulum import encrypt_Text_New
 from routes.utility.fetch_Data import fetch_From_Producer_Monitor, fetch_From_Producer_Dashboard, fetch_From_Producer_History
-from routes.utility.diffi_hellman_EC import get_Shared_Key
-from routes.utility.general_methods import get_User_Session_Details, get_User_Session_Other_Public_Key, get_User_Session_Private_Key, get_User_Aggregator_Id
+from routes.utility.general_methods import get_Chaos_Key_List, get_User_Session_Details, get_User_Aggregator_Id
 
 # Create a blueprint for the home routes
 producer_page_bp = Blueprint("producer_page", __name__)
@@ -104,15 +103,14 @@ def sell_energy():
             '9-10pm': ten_pm,'10-11pm': eleven_pm,'11-12pm': twelve_pm,
         }
     
-        aggregator_public_key = get_User_Session_Other_Public_Key()
-        user_private_key = get_User_Session_Private_Key()
-        shared_key_hex = get_Shared_Key(user_private_key, aggregator_public_key)
+        shared_key_list = get_Chaos_Key_List()
 
-        print("Shared key :",shared_key_hex)
+
+        print("Shared key :",shared_key_list)
 
         for key,each_d in data.items():
-            hex_ciphertext_each_d = encrypt_Text_New(plaintext=each_d, secret_key=shared_key_hex)
-            data[key] = hex_ciphertext_each_d
+            hex_ciphertext_each_d = encrypt_Text_New(plaintext=each_d, secret_key=shared_key_list)
+            data[key] = str(hex_ciphertext_each_d)
         
         insert_One_Into_Aggregator_Dashboard(data)
 
