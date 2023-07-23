@@ -3,7 +3,7 @@ from flask import Blueprint, redirect, render_template, request, url_for,session
 from routes.data_generator.tp_chaos_generator.tp_chaos_generator.triple_pendulum import encrypt_Text_New
 from routes.utility.fetch_Data import fetch_From_Consumer_Dashboard, fetch_From_Consumer_History, fetch_From_Consumer_Monitor
 from routes.__config__ import Config
-from routes.utility.general_methods import get_Chaos_Key_List_Aggregator, get_User_Session_Details, get_User_Session_Other_Public_Key, get_User_Session_Private_Key, get_User_Aggregator_Id
+from routes.utility.general_methods import get_Chaos_Key_List_Aggregator, get_User_Session_Details, get_User_Session_Other_Public_Key, get_User_Session_Private_Key, get_User_Aggregator_Id, get_User_Username
 from datetime import datetime
 import time
 
@@ -155,12 +155,14 @@ def consumer_monitor(status=None):
 
         print(f'User id {session["user_id"]} in Consumer Monitor Page')
 
+        username = get_User_Username()
         data = []
+        
         data = fetch_From_Consumer_Monitor(session['user_id'])
         if (data == []): total_current, total_w = 0, 0
         else: total_current, total_w = get_Total_Current_And_Power(data)
         
-        return render_template('/consumer/consumer_monitor_page.html', data=data, total_current=total_current, total_w=total_w, status=status)
+        return render_template('/consumer/consumer_monitor_page.html',username=username , data=data, total_current=total_current, total_w=total_w, status=status)
 
     elif not session:
         return redirect(url_for('auth_page.signin'))

@@ -164,7 +164,7 @@ def signin():
                     table_name = "private_data"
                     response = (
                         supabase_.table(table_name=table_name)
-                        .select("aggregator_id", "utility_public_key")
+                        .select("aggregator_id", "utility_public_key", "username")
                         .eq("user_id", user_id)
                         .execute()
                     )
@@ -178,6 +178,7 @@ def signin():
                         start_time = time.time()
                         aggregator_id = response.data[0]["aggregator_id"]
                         utility_public_key = response.data[0]["utility_public_key"]
+                        username = response.data[0]["username"]
 
                         response1 = (
                             supabase_.table(table_name=table_name)
@@ -216,6 +217,7 @@ def signin():
                         # setting user login session
                         set_User_Session(
                             email=email,
+                            username=username,
                             user_type=user_metadata["user-type"],
                             access_token=user_access_token,
                             user_id=user_id,
@@ -227,8 +229,10 @@ def signin():
                         aggregator_private_key = user_metadata["private-key"]
                         aggregator_id = response.data[0]["aggregator_id"]
                         utility_public_key = response.data[0]["utility_public_key"]
+                        username = response.data[0]["username"]
                         set_User_Session(
                             email=email,
+                            username=username,
                             user_type=user_metadata["user-type"],
                             access_token=user_access_token,
                             user_id=user_id,

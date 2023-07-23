@@ -25,6 +25,7 @@ def set_User_Session(
     user_type,
     user_id,
     access_token,
+    username=None,
     other_public_key=None,
     user_private_key=None,
     aggregator_id=None,
@@ -32,6 +33,7 @@ def set_User_Session(
     utility_public_key=None,
 ):
     session["email"] = email
+    session["username"] = username
     session["access_token"] = access_token
     session["user-type"] = user_type
     session["user_id"] = user_id
@@ -45,6 +47,8 @@ def set_User_Session(
 def get_User_Session_Details():
     return session["email"], session["user-type"], session["user_id"]
 
+def get_User_Username():
+    return session['username']
 
 def get_Chaos_Key_List_Aggregator():
     return session["chaos_key_aggregator"]
