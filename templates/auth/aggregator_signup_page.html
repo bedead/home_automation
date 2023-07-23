@@ -1,0 +1,58 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/css/main.css">
+        <link rel="stylesheet" href="/static/css/custom.css">
+        <script src="/static/js/triggerNav.js"></script>
+        <title>Home automation | Become Aggregator</title>
+    </head>
+    <body>
+        <div>
+            {% extends "base_layout.html" %}
+            {% block content %}
+                <section class="mt-[78px] md:mt-20 lg:mt-[86px] bg-white-simple flex flex-col md:flex-row items-center">
+
+                    <div class="md:mx-auto md:w-1/2 mt-10 md:mt-14 px-3 lg:px-16 xl:px-12 items-center">
+
+                        <h1 class="text-2xl mb-4 lg:text-3xl text-new_orange-brighter font-bold leading-tight">Apply now and become a Aggregator
+                        </h1>
+
+                        <form id="signUpForm" class="text-md" action="{{ url_for('auth_page.aggregator_signup') }}" method="POST">
+                            <div>
+                                <label class="block text-new_orange-brighter">Username</label>
+                                <input type="text" name="username" placeholder="Enter username" class="w-full px-4 py-3 rounded-lg mt-2 border focus:outline-none" autofocus autocomplete required>
+                            </div>
+                            <div>
+                                <label class="block text-new_orange-brighter">Email Address</label>
+                                <input type="email" name="email" placeholder="Enter Email Address" class="w-full px-4 py-3 rounded-lg mt-2 border focus:outline-none" autofocus autocomplete required>
+                            </div>
+                            <!-- <input type="text" id="ip_address" name="ip_address" class="hidden"/> -->
+                            <div class="mt-4 ">
+                                <label class="block text-new_orange-brighter">Address</label>
+                                <input type="text" name="address" placeholder="Enter your address" class="w-full px-4 py-3 rounded-lg mt-2 border focus:outline-none" autofocus autocomplete required>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-new_orange-brighter">Password</label>
+                                <input type="password" name="password" placeholder="Enter Password" minlength="6" class="w-full px-4 py-3 rounded-lg mt-2 border focus:outline-none" required>
+                            </div>
+                            <div class="mt-4">
+                                <label class="block text-new_orange-brighter">Confirm Password</label>
+                                <input type="password" name="reenter_password" placeholder="Enter Same Password" minlength="6" class="w-full px-4 py-3 rounded-lg mt-2 border focus:outline-none" required>
+                            </div>
+
+                            <button type="submit" class="w-full block bg-new_orange-brighter hover:bg-new_brown-brighter focus:bg-new_brown-brighter text-white-simple font-semibold rounded-lg px-4 py-3 mt-6">Sign Up</button>
+                        </form>
+
+                        <hr class="my-6 border-new_brown-brighter w-full">
+
+                        <p class="mt-8 mb-8 text-center text-new_brown-brighter hover:text-new_orange-brighter">Already have an aggregator account?
+                            <a href="/auth/signin" class="font-semibold">Login</a>
+                        </p>
+                    </div>
+
+                </section>
+            {% endblock %}
+        </div>
+    </body>
+</html>

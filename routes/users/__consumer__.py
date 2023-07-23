@@ -3,7 +3,7 @@ from flask import Blueprint, redirect, render_template, request, url_for,session
 from routes.data_generator.tp_chaos_generator.tp_chaos_generator.triple_pendulum import encrypt_Text_New
 from routes.utility.fetch_Data import fetch_From_Consumer_Dashboard, fetch_From_Consumer_History, fetch_From_Consumer_Monitor
 from routes.__config__ import Config
-from routes.utility.general_methods import get_Chaos_Key_List, get_User_Session_Details, get_User_Session_Other_Public_Key, get_User_Session_Private_Key, get_User_Aggregator_Id
+from routes.utility.general_methods import get_Chaos_Key_List_Aggregator, get_User_Session_Details, get_User_Session_Other_Public_Key, get_User_Session_Private_Key, get_User_Aggregator_Id
 from datetime import datetime
 import time
 
@@ -106,7 +106,7 @@ def buy_energy():
     
         # aggregator_public_key = get_User_Session_Other_Public_Key()
         # user_private_key = get_User_Session_Private_Key()
-        shared_key_list = get_Chaos_Key_List()
+        shared_key_list = get_Chaos_Key_List_Aggregator()
 
         print("Shared key :",shared_key_list)
 

@@ -502,4 +502,16 @@ def fetch_User_Total_Appliances(user_id: str):
     return query.data[0]["total_appliances"]
 
 
+def get_Aggregator_Id_From_Username(user_name: str) -> str:
+    table_name = "private_data"
+    query = (
+        supabase_.table(table_name=table_name)
+        .select("user_id")
+        .eq("username", user_name)
+        .execute()
+    )
+
+    return query.data[0]["user_id"]
+
+
 # print(fetch_User_Total_Appliances("48a6cc6b-93c7-4a31-b0c9-bef7b27675bb"))

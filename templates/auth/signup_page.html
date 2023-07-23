@@ -17,17 +17,17 @@
             <!-- component -->
             <section class="mt-[78px] md:mt-20 lg:mt-[86px] bg-white-simple flex flex-col md:flex-row items-center">
 
-                <div class="hidden lg:block md:w-1/2 xl:w-2/3 ">
-                    <img src="https://source.unsplash.com/random/1024x868/?city,night,dark" alt="side image (city, night)" class="w-full h-full object-cover" loading="lazy">
-                </div>
-
-                <div class="md:mx-auto md:w-1/2 xl:w-1/3 mt-10 md:mt-14 px-3 lg:px-16 xl:px-12 items-center">
+                <div class="md:mx-auto md:w-1/2 mt-10 md:mt-14 px-3 lg:px-16 xl:px-12 items-center">
 
 
                     <h1 class="text-2xl mb-4 lg:text-3xl text-new_orange-brighter font-bold leading-tight">Get started now
                     </h1>
 
                     <form id="signUpForm" class="text-md" action="{{ url_for('auth_page.signup') }}" method="POST">
+                        <div>
+                            <label class="block text-new_orange-brighter">Username</label>
+                            <input type="text" name="username" placeholder="Enter your username" class="w-full px-4 py-3 rounded-lg mt-2 border focus:outline-none" autofocus autocomplete required>
+                        </div>
                         <div>
                             <label class="block text-new_orange-brighter">Email Address</label>
                             <input type="email" name="email" placeholder="Enter Email Address" class="w-full px-4 py-3 rounded-lg mt-2 border focus:outline-none" autofocus autocomplete required>
@@ -46,9 +46,12 @@
                         </div>
                         <div class="mt-4 " id="aggregatorOption">
                             <label class="block text-new_orange-brighter">Aggregator</label>
-                            <select class="w-full px-4 py-3 rounded-lg mt-2 border focus:outline-none" name="aggre-type">
-                                <option class="text-md" value="Aggregator-1">Aggregator-1</option>
-                                <option class="text-md" value="Aggregator-2">Aggregator-2</option>
+                            <select id="aggregatorList" class="w-full px-4 py-3 rounded-lg mt-2 border focus:outline-none" name="aggre-type">
+                                {% for each in aggregator_list %}
+                                    <option class="text-md" value='{{ each.username }}'>
+                                        {{ each.username }}
+                                    </option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="mt-4 ">

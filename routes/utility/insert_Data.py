@@ -2,6 +2,7 @@ import os
 import httpx
 from supabase import create_client, Client
 from dotenv import load_dotenv
+
 load_dotenv()
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
@@ -27,31 +28,45 @@ supabase_: Client = create_client(supabase_url=SUPABASE_URL, supabase_key=SUPABA
 #     response = supabase_.table(table_name).insert(row).execute()
 #     return response
 
+
 def insert_Many_Into_Consumer_Dashboard(data, type):
     table_name = None
-    if (type == 'producer'):
-        table_name = 'producer_dashboard'
-    elif (type == 'consumer'):
-        table_name = 'consumer_dashboard'
+    if type == "producer":
+        table_name = "producer_dashboard"
+    elif type == "consumer":
+        table_name = "consumer_dashboard"
     response = supabase_.table(table_name=table_name).insert(data).execute()
+
 
 def insert_Many_Into_Consumer_History(data, type):
     table_name = None
-    if (type == 'producer'):
-        table_name = 'producer_history'
-    elif (type == 'consumer'):
-        table_name = 'consumer_history'
+    if type == "producer":
+        table_name = "producer_history"
+    elif type == "consumer":
+        table_name = "consumer_history"
     response = supabase_.table(table_name=table_name).insert(data).execute()
 
-def insert_Many_into_Consumer_Monitor(data, type) :
+
+def insert_Many_into_Consumer_Monitor(data, type):
     table_name = None
-    if (type == 'producer'):
-        table_name = 'producer_monitor'
-    elif (type == 'consumer'):
-        table_name = 'consumer_monitor'
+    if type == "producer":
+        table_name = "producer_monitor"
+    elif type == "consumer":
+        table_name = "consumer_monitor"
     try:
         response = supabase_.table(table_name=table_name).insert(data).execute()
     except httpx.ConnectTimeout as e:
         print(e.args)
     except httpx.WriteTimeout as e:
         print(e.args)
+
+
+def insert_Into_Private_Data_From_Aggregator(row: dict):
+    table_name = "private_data"
+    response = supabase_.table(table_name=table_name).insert(row).execute()
+
+
+def insert_Into_Aggregator_Data_From_Aggregator(user_id: str, username: str):
+    table_name = "aggregator_data"
+    row = {"aggregator_id": user_id, "username": username}
+    response = supabase_.table(table_name=table_name).insert(row).execute()

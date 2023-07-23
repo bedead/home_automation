@@ -1,90 +1,79 @@
 <nav class="z-50 top-0 left-0 right-0 fixed bg-gradient-to-r from-white-simple to-white-shade shadow-sm">
     <div class="p-2 pl-4 md:p-3 flex justify-between items-center">
         <a href="/" class="md:ml-8 bg-new_orange-brighter p-5 md:w-1/6 rounded-2xl">
-            <img class="w-30 h-5 md:w-32 lg:w-36 lg:h-7" src="/static/img/logo/logo-no-background.png"
-                alt="company logo" />
+            <img class="w-30 h-5 md:w-32 lg:w-36 lg:h-7" src="/static/img/logo/logo-no-background.png" alt="company logo"/>
         </a>
         <!-- pc desktop navigation bar -->
         <ul class="hidden md:text-[16px] lg:text-[18px] md:flex md:mr-20 gap-8 font-semibold items-center">
-            <li
-                class="hover:border-b-2 border-new_brown-brighter hover:text-new_brown-brighter text-new_orange-brighter">
-                <a href="{{url_for('landing_page.home')}}">Home.</a>
+            <li class="hover:border-b-2 border-new_brown-brighter hover:text-new_brown-brighter text-new_orange-brighter">
+                <a href="{{ url_for('landing_page.home') }}">Home.</a>
             </li>
-            <li
-                class="hover:border-b-2 border-new_brown-brighter hover:text-new_brown-brighter text-new_orange-brighter">
-                <a href="{{url_for('landing_page.services')}}">Services.</a>
+            <li class="hover:border-b-2 border-new_brown-brighter hover:text-new_brown-brighter text-new_orange-brighter">
+                <a href="{{ url_for('landing_page.services') }}">Services.</a>
             </li>
-            <li
-                class="hover:border-b-2 border-new_brown-brighter hover:text-new_brown-brighter text-new_orange-brighter">
-                <a href="{{url_for('landing_page.products')}}">Products.</a>
+            <li class="hover:border-b-2 border-new_brown-brighter hover:text-new_brown-brighter text-new_orange-brighter">
+                <a href="{{ url_for('landing_page.products') }}">Products.</a>
             </li>
-            <li
-                class="hover:border-b-2 border-new_brown-brighter hover:text-new_brown-brighter text-new_orange-brighter">
-                <a href="{{url_for('landing_page.become_aggregator')}}">Become a Aggregator.</a>
+            <li class="hover:border-b-2 border-new_brown-brighter hover:text-new_brown-brighter text-new_orange-brighter">
+                <a href="{{ url_for('auth_page.aggregator_signup') }}">Become a Aggregator.</a>
             </li>
-            <li
-                class="hover:border-b-2 border-new_brown-brighter hover:text-new_brown-brighter text-new_orange-brighter">
-                <a href="{{url_for('landing_page.about')}}">About.</a>
+            <li class="hover:border-b-2 border-new_brown-brighter hover:text-new_brown-brighter text-new_orange-brighter">
+                <a href="{{ url_for('landing_page.about') }}">About.</a>
             </li>
-            <li
-                class="hover:border-b-2 border-new_brown-brighter hover:text-new_brown-brighter text-new_orange-brighter">
-                <a href="{{url_for('auth_page.signin')}}">Log In.</a>
+            <li class="hover:border-b-2 border-new_brown-brighter hover:text-new_brown-brighter text-new_orange-brighter">
+                <a href="{{ url_for('auth_page.signin') }}">Log In.</a>
             </li>
             <li class="text-white-simple bg-new_orange-brighter hover:bg-new_brown-brighter px-4 py-2 rounded-3xl">
-                <a href="{{url_for('auth_page.signup')}}">Sign Up.</a>
+                <a href="{{ url_for('auth_page.signup') }}">Sign Up.</a>
             </li>
         </ul>
         <!-- mobile nav -->
-        <div class="md:hidden">
+        <div
+            class="md:hidden">
             <!-- menu open icon -->
             <a id="menu_open" class="hover:cursor-pointer" onclick="toggleNav();">
                 <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="mr-3 h-6 w-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
                 </svg>
             </a>
             <!-- close icon -->
             <a id="menu_close" class="hover:cursor-pointer hidden" onclick="toggleNav();">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="mr-3 w-6 h-6">
-                    <path fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
-                        clip-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd"/>
                 </svg>
             </a>
         </div>
         <div id='mobile_nav' class='top-0 left-0 glass-effect hidden absolute w-[60%] h-screen shadow-xl'>
             <div class='m-4 items-center text-center'>
-                <img class="" alt="company logo" src="/static/img/logo/logo-black.png">
+                <img class="" alt="company logo" src="/static/img/logo/logo-black.png"></div>
+                <div class="h-[2px] bg-white-simple"/>
+                <ul class="pt-4 items-center font-bold text-[18px] text-center space-y-2">
+                    <li class="text-new_orange-brighter hover:text-new_brown-brighter mx-1.5">
+                        <a href="{{ url_for('landing_page.home') }}">Home.</a>
+                    </li>
+                    <li class="text-new_orange-brighter hover:text-new_brown-brighter mx-1.5">
+                        <a href="{{ url_for('landing_page.services') }}">Services.</a>
+                    </li>
+                    <li class="text-new_orange-brighter hover:text-new_brown-brighter mx-1.5">
+                        <a href="{{ url_for('landing_page.products') }}">Products.</a>
+                    </li>
+                    <li class="text-new_orange-brighter hover:text-new_brown-brighter mx-1.5">
+                        <a href="{{ url_for('auth_page.aggregator_signup') }}">Become a Aggregator.</a>
+                    </li>
+                    <li class="text-new_orange-brighter hover:text-new_brown-brighter mx-1.5">
+                        <a href="{{ url_for('landing_page.about') }}">About.</a>
+                    </li>
+                    <li class="text-new_orange-brighter hover:text-new_brown-brighter mx-1.5">
+                        <a href="{{ url_for('auth_page.signin') }}">Log In.</a>
+                    </li>
+                    <li class="bg-new_orange-brighter hover:bg-new_brown-brighter w-40 m-auto text-white-simple px-4 py-2.5 rounded-xl">
+                        <a href="{{ url_for('auth_page.signup') }}">Sign Up.</a>
+                    </li>
+                </ul>
             </div>
-            <div class="h-[2px] bg-white-simple" />
-            <ul class="pt-4 items-center font-bold text-[18px] text-center space-y-2">
-                <li class="text-new_orange-brighter hover:text-new_brown-brighter mx-1.5">
-                    <a href="{{url_for('landing_page.home')}}">Home.</a>
-                </li>
-                <li class="text-new_orange-brighter hover:text-new_brown-brighter mx-1.5">
-                    <a href="{{url_for('landing_page.services')}}">Services.</a>
-                </li>
-                <li class="text-new_orange-brighter hover:text-new_brown-brighter mx-1.5">
-                    <a href="{{url_for('landing_page.products')}}">Products.</a>
-                </li>
-                <li class="text-new_orange-brighter hover:text-new_brown-brighter mx-1.5">
-                    <a href="{{url_for('landing_page.become_aggregator')}}">Become a Aggregator.</a>
-                </li>
-                <li class="text-new_orange-brighter hover:text-new_brown-brighter mx-1.5">
-                    <a href="{{url_for('landing_page.about')}}">About.</a>
-                </li>
-                <li class="text-new_orange-brighter hover:text-new_brown-brighter mx-1.5">
-                    <a href="{{url_for('auth_page.signin')}}">Log In.</a>
-                </li>
-                <li
-                    class="bg-new_orange-brighter hover:bg-new_brown-brighter w-40 m-auto text-white-simple px-4 py-2.5 rounded-xl">
-                    <a href="{{url_for('auth_page.signup')}}">Sign Up.</a>
-                </li>
-            </ul>
         </div>
-    </div>
-</nav>
+    </nav>
 
-{% block content %}
-{% endblock %}
+    {% block content %}{% endblock %}
 
-{% include "base_footer.html" %}
+    {% include "base_footer.html" %}
