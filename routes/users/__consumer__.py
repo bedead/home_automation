@@ -114,9 +114,8 @@ def insert_One_Into_Aggregator_Dashboard(data: dict):
     for key, value in data.items():
         row[key] = value
     try:
-        response = supabase_.table(table_name=table_name).insert(row).execute()
+        supabase_.table(table_name=table_name).insert(row).execute()
 
-        return response
     except Exception as e:
         return redirect(url_for("error_page.unknown_error"))
 
@@ -191,7 +190,7 @@ def buy_energy():
         encryption_time_taken = end_time - start_time
 
         start_time = time.time()
-        res = insert_One_Into_Aggregator_Dashboard(data)
+        insert_One_Into_Aggregator_Dashboard(data)
         end_time = time.time()
         datasending_to_database_time_taken = end_time - start_time
 
@@ -201,7 +200,6 @@ def buy_energy():
             writer.writerow([encryption_time_taken, datasending_to_database_time_taken])
         file.close()
 
-        print(res.data)
         print("Buy request made.")
         return redirect(url_for("consumer_page.consumer_monitor", status=True))
 

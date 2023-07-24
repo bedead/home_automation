@@ -1,12 +1,16 @@
 from flask import Blueprint, redirect, render_template, request, url_for, session
 from routes.__config__ import Config
 from routes.data_generator.tp_chaos_generator.tp_chaos_generator.triple_pendulum import (
+    decode_key,
     decrypt_Text_New,
+    get_encoded_key,
 )
 from ast import literal_eval
 from routes.utility.fetch_Data import (
     fetch_All_From_Aggregator_Dashboard,
+    fetch_All_User_Complaints_From_Aggregator,
     fetch_One_From_Aggregator_Dashboard,
+    fetch_Public_Key_From_Email,
 )
 from routes.utility.diffi_hellman_EC import get_Shared_Key
 from routes.utility.general_methods import (
@@ -133,6 +137,52 @@ def aggregator_history():
         print("Uer id: ", session["user_id"])
 
         return render_template("/aggregator/aggregator_history_page.html")
+
+    elif not session:
+        return redirect(url_for("auth_page.signin"))
+    else:
+        return "Some error occured."
+
+
+def decode_Complaints_Data(data):
+    aggre_private_key = get_User_Session_Private_Key()
+    complaint_data = []
+    # print(data)
+    for each_complaints in data:
+        email = each_complaints["email"]
+        user_public_key = fetch_Public_Key_From_Email(email)
+
+        # print(user_public_key)
+        # print(type(user_public_key))
+
+        shared_key_hex = get_Shared_Key(aggre_private_key, user_public_key)
+        d = {}
+        for key, values in each_complaints.items():
+            if key == "message":
+                values_encrpyted = literal_eval(values)
+                plain_text_each_d = decrypt_Text_New(values_encrpyted, shared_key_hex)
+                d[key] = plain_text_each_d
+            else:
+                d[key] = values
+
+        complaint_data.append(d)
+
+    return complaint_data
+
+
+@aggregator_page_bp.route("/user/aggregator/complaints")
+def aggregator_complaints():
+    if session:
+        if not (session["user-type"] == "Aggregator"):
+            return redirect(url_for("error_page.error_403"))
+        print("Uer id: ", session["user_id"])
+
+        aggregator_id = get_User_User_Id()
+        encrpyted_data = fetch_All_User_Complaints_From_Aggregator(aggregator_id)
+        data = decode_Complaints_Data(encrpyted_data)
+        print(data)
+
+        return render_template("/aggregator/aggregator_complaints_page.html", data=data)
 
     elif not session:
         return redirect(url_for("auth_page.signin"))

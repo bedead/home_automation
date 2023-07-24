@@ -514,4 +514,35 @@ def get_Aggregator_Id_From_Username(user_name: str) -> str:
     return query.data[0]["user_id"]
 
 
+def fetch_All_User_Complaints_From_Aggregator(user_id):
+    table_name = "aggregator_issues"
+    query = (
+        supabase_.table(table_name=table_name)
+        .select("*")
+        .eq("aggregator_id", user_id)
+        .execute()
+    )
+
+    return query.data
+
+
+def fetch_All_User_Complaints_From_Utility():
+    table_name = "utility_issues"
+    query = supabase_.table(table_name=table_name).select("*").execute()
+
+    return query.data
+
+
+def fetch_Public_Key_From_Email(email):
+    table_name = "private_data"
+    query = (
+        supabase_.table(table_name=table_name)
+        .select("public_key")
+        .eq("email_id", email)
+        .execute()
+    )
+
+    return query.data[0]["public_key"]
+
+
 # print(fetch_User_Total_Appliances("48a6cc6b-93c7-4a31-b0c9-bef7b27675bb"))
