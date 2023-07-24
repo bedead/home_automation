@@ -176,11 +176,11 @@ def aggregator_complaints():
         if not (session["user-type"] == "Aggregator"):
             return redirect(url_for("error_page.error_403"))
         print("Uer id: ", session["user_id"])
-
+        data = []
         aggregator_id = get_User_User_Id()
         encrpyted_data = fetch_All_User_Complaints_From_Aggregator(aggregator_id)
         data = decode_Complaints_Data(encrpyted_data)
-        print(data)
+        # print(data)
 
         return render_template("/aggregator/aggregator_complaints_page.html", data=data)
 

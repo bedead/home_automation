@@ -86,8 +86,59 @@
             </div> -->
             <!-- first row -->
             <!-- <h1 class="text-4xl font-semibold mb-2 text-gray-800">Welcome back, Satyam Mishra </h1> -->
-            <div class="m-auto flex justify-center">
-                
+            <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
+                <div class="mr-6">
+                    <h1 class="text-3xl font-semibold mb-2 text-gray-800">Complaints</h1>
+                    <h2 class="text-gray-600 ml-0.5">Market player's complaints</h2>
+                </div>
+                <div class="flex flex-wrap items-start justify-end -mb-3">
+
+                </div>
+            </div>
+            <!-- seocnd row (table) -->
+            <!-- component -->
+            <div class="p-4 lg:container rounded-xl bg-white-simple shadow-xl flex flex-col overflow-x-auto">
+                <div class="sm:-mx-6 lg:-mx-8">
+                    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                        <div class="overflow-x-auto">
+                            {% if data != [] %}
+                            <table class="min-w-full text-left font-light">
+                                <thead class="border-b text-base font-medium dark:border-neutral-500">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-4">Username</th>
+                                        <th scope="col" class="px-6 py-4">Email</th>
+                                        <th scope="col" class="px-6 py-4">Message</th>
+                                        <th scope="col" class="px-6 py-4">Created at</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for each in data %}
+                                    <!-- <tr class="border-b hover:bg-white-shade clickable-row" method="POST"
+                                        data-href="{{ url_for('aggregator_page.aggregator_user_details', user_id=each['user_id'], created_at=each['created_at']) }}"> -->
+                                    <tr class="border-b hover:bg-white-shade">
+                                        <td class="whitespace-nowrap px-6 py-4 text-success-900 font-bold"> {{
+                                            each['username']
+                                            }} </td>
+                                        <td class="whitespace-nowrap px-6 py-4 text-success-900 font-bold"> {{
+                                            each['email']
+                                            }} </td>
+                                        <td class="whitespace-nowrap text-sm px-6 py-4 text-info-500 font-bold "> {{
+                                            each['message'] }} </td>
+                                        <td class="whitespace-nowrap px-6 py-4"> {{ each['created_at']
+                                            }} </td>
+                                    </tr>
+
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <div class="w-full p-8 text-center items-center text-gray-800">
+                                No requests to display.
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </main>
