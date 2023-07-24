@@ -220,6 +220,7 @@ def signin():
                             username=username,
                             user_type=user_metadata["user-type"],
                             access_token=user_access_token,
+                            user_private_key=user_private_key,
                             user_id=user_id,
                             utility_public_key=utility_public_key,
                             aggregator_id=aggregator_id,

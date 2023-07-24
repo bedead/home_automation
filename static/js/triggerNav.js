@@ -66,3 +66,8 @@ function toggleAggregator(selected) {
         option.classList.remove('hidden');
     }
 }
+
+function closeMessageToast(){
+    var toast = document.getElementById('toast-div');
+    toast.classList.add('hidden');
+}

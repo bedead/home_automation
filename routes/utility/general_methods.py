@@ -44,11 +44,21 @@ def set_User_Session(
     session["utility_public_key"] = utility_public_key
 
 
+def set_Utility_Chaos_Key(key):
+    session["chaos_key_utility"] = key
+
+
+def get_Utility_Public_Key():
+    return session["utility_public_key"]
+
+
 def get_User_Session_Details():
     return session["email"], session["user-type"], session["user_id"]
 
+
 def get_User_Username():
-    return session['username']
+    return session["username"]
+
 
 def get_Chaos_Key_List_Aggregator():
     return session["chaos_key_aggregator"]
