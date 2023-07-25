@@ -31,11 +31,7 @@ def decode_All_Data(data: list) -> list:
     dashboard_data = []
     for each_row in data:
         row_user_id = each_row["user_id"]
-        user_row_public_key = get_Public_Key_For_ID(row_user_id)
 
-        shared_key_hex = get_Shared_Key(user_private_key, user_row_public_key)
-        shared_key_hex = shared_key_hex[:24]
-        print("Shared key :", shared_key_hex)
 
         dashboard_row = {}
         for key, each_d in each_row.items():
