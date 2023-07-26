@@ -170,9 +170,7 @@ def sell_energy():
         print("Shared key :", shared_key_list)
 
         for key, each_d in data.items():
-            hex_ciphertext_each_d = encrypt_Text_New(
-                plaintext=each_d, secret_key=shared_key_list
-            )
+            hex_ciphertext_each_d = encrypt_Text_New(each_d, shared_key_list)
             data[key] = str(hex_ciphertext_each_d)
 
         insert_One_Into_Aggregator_Dashboard(data)
