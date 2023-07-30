@@ -139,7 +139,59 @@ def api_sign_out():
 
 @api_page_bp.route("/api/aggregator/create_account", methods=["POST"])
 def aggregator_create_account():
-    pass
+    data = request.get_json()
+    return_data = {}
+    try:
+        user = supabase_.auth.sign_up(
+            {
+                "email": data["email"],
+                "password": data["password"],
+                "options": {
+                    "data": {
+                        "user-type": data["user_type"],
+                        "private-key": data["private_key"],
+                        "username": data["username"],
+                        "user_address": data["user_address"],
+                    }
+                },
+            }
+        )
+        if user:
+            utility_public_key = "2d2d2d2d2d424547494e205055424c4943204b45592d2d2d2d2d0a4d485977454159484b6f5a497a6a3043415159464b34454541434944596741456d466d7641695041526b554c6b63494e4b6e476369704f57586b7275744539630a772f656f6b7870386a41686d4b79716757646536553372306331417038473058366158536876724755456166313276785076427575356973337868767663515a0a6d576a4753707164716634387362317338384853314364766e663469412b51350a2d2d2d2d2d454e44205055424c4943204b45592d2d2d2d2d0a"
+            row = {
+                "user_id": user.user.id,
+                "public_key": data["private_key"],
+                "user_type": data["user_type"],
+                "email_id": data["email"],
+                "username": data["username"],
+                "utility_public_key": utility_public_key,
+            }
+
+            table_name = "private_data"
+            res = supabase_.table(table_name=table_name).insert(row).execute()
+
+            table_name = "aggregator_data"
+            row1 = {"aggregator_id": user.user.id, "username": data["username"]}
+            res1 = supabase_.table(table_name=table_name).insert(row1).execute()
+
+            shared_key_hex = get_Shared_Key(data["private_key"], utility_public_key)
+            encoded_key = get_encoded_key(shared_key_hex)
+            generate_keys_list = decode_key(encoded_key[0])
+            # print("Chaos key :", generate_keys_list)
+
+            encrypted_generate_key_list = encrypt_Text_New(str(generate_keys_list))
+
+    except Exception as e:
+        print(e.args)
+        print("Sign in Error")
+
+        return "Sign in error", 500
+
+    return_data["user_id"] = user.user.id
+    return_data["utility_public_key"] = utility_public_key
+    return_data["encrypted_chaos"] = encrypted_generate_key_list
+
+    return return_data, 200
 
 
 @api_page_bp.route("/api/market_player/consumer/monitor", methods=["POST"])
