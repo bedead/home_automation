@@ -1,3 +1,5 @@
+import csv
+import time
 from flask import Blueprint, redirect, render_template, request, url_for, session
 from routes.__config__ import Config
 from routes.data_generator.tp_chaos_generator.tp_chaos_generator.triple_pendulum import (
@@ -32,7 +34,6 @@ def decode_All_Data(data: list) -> list:
     for each_row in data:
         row_user_id = each_row["user_id"]
 
-
         dashboard_row = {}
         for key, each_d in each_row.items():
             if ("am" in key) or ("pm" in key):
@@ -46,6 +47,7 @@ def decode_All_Data(data: list) -> list:
 
 def decode_One_Data(detail_data: dict) -> dict:
     dashboard_row = {}
+    print(detail_data)
     detail_data = detail_data[0]
 
     row_user_id = detail_data["user_id"]
@@ -54,11 +56,13 @@ def decode_One_Data(detail_data: dict) -> dict:
 
     shared_key_hex = get_Shared_Key(user_private_key, user_row_public_key)
     print("Shared key :", shared_key_hex)
+    encoded_key = get_encoded_key(shared_key_hex)
+    generate_list_key = decode_key(encoded_key[0])
 
     for key, each_d in detail_data.items():
         if ("am" in key) or ("pm" in key):
             each_d = literal_eval(each_d)
-            plain_text_each_d = decrypt_Text_New(each_d, shared_key_hex)
+            plain_text_each_d = decrypt_Text_New(each_d, generate_list_key)
             dashboard_row[key] = plain_text_each_d
         else:
             dashboard_row[key] = each_d
@@ -110,10 +114,23 @@ def aggregator_user_details():
 
         request_user_id = request.args.get("user_id", None)
         created_at = request.args.get("created_at", None)
+        starttime = time.time()
         encrypted_detail_data = fetch_One_From_Aggregator_Dashboard(
             user_id=request_user_id, created_at=created_at
         )
+        endtime = time.time()
+        fetchtime = endtime - starttime
+
+        starttime = time.time()
         data = decode_One_Data(encrypted_detail_data)
+        endtime = time.time()
+        decryption_time = endtime - starttime
+
+        with open("aggre_request_show.csv", "a", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow([fetchtime, decryption_time])
+        file.close()
+
 
         return render_template(
             "/aggregator/aggregator_dashboard_request_details_page.html", data=data
@@ -152,11 +169,15 @@ def decode_Complaints_Data(data):
         # print(type(user_public_key))
 
         shared_key_hex = get_Shared_Key(aggre_private_key, user_public_key)
+        encoded_key = get_encoded_key(shared_key_hex)
+        generate_list_key = decode_key(encoded_key[0])
         d = {}
         for key, values in each_complaints.items():
             if key == "message":
                 values_encrpyted = literal_eval(values)
-                plain_text_each_d = decrypt_Text_New(values_encrpyted, shared_key_hex)
+                plain_text_each_d = decrypt_Text_New(
+                    values_encrpyted, generate_list_key
+                )
                 d[key] = plain_text_each_d
             else:
                 d[key] = values
@@ -174,8 +195,21 @@ def aggregator_complaints():
         print("Uer id: ", session["user_id"])
         data = []
         aggregator_id = get_User_User_Id()
+
+        startime = time.time()
         encrpyted_data = fetch_All_User_Complaints_From_Aggregator(aggregator_id)
+        endtime = time.time()
+        complaint_fetch_time = endtime - startime
+
+        startime = time.time()
         data = decode_Complaints_Data(encrpyted_data)
+        endtime = time.time()
+        decryption_time = endtime - startime
+
+        with open("complaint_show.csv", "a", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow([complaint_fetch_time, decryption_time])
+        file.close()
         # print(data)
 
         return render_template("/aggregator/aggregator_complaints_page.html", data=data)

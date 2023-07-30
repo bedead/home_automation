@@ -72,15 +72,24 @@ def insert_Into_Aggregator_Data_From_Aggregator(user_id: str, username: str):
     resp = supabase_.table(table_name=table_name).insert(row).execute()
 
 
-def send_Issue_Message_To_Aggregator(username, email, message):
+def send_Issue_Message_To_Aggregator(username, email, message, aggregator_id):
     table_name = "aggregator_issues"
-    row = {"username": username, "message": message, "email": email}
+    row = {
+        "username": username,
+        "message": message,
+        "email": email,
+        "aggregator_id": aggregator_id,
+    }
 
     resp = supabase_.table(table_name=table_name).insert(row).execute()
 
 
 def send_Issue_Message_To_Utility(username, email, message):
     table_name = "utility_issues"
-    row = {"username": username, "message": message, "email": email}
+    row = {
+        "username": username,
+        "message": message,
+        "email": email,
+    }
 
     resp = supabase_.table(table_name=table_name).insert(row).execute()

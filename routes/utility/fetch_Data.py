@@ -1,3 +1,4 @@
+import csv
 from flask import redirect, url_for
 from routes.data_generator.tp_chaos_generator.tp_chaos_generator.triple_pendulum import (
     decrypt_Text_New,
@@ -99,18 +100,18 @@ def fetch_From_Consumer_Dashboard(user_id):
         # print(average_cost_hour)
 
         # returning all values (including average value)
-        return (
+        return [
             total_trades_0,
             average_wh_hour_0,
             average_cost_hour_0,
             access_grants_0,
             access_rejected_0,
             some_other_0,
-        )
+        ]
 
     except Exception as e:
         print(e.__dict__)
-        return 0, 0, 0, 0, 0, 0
+        return [0, 0, 0, 0, 0, 0]
 
     # decryption
 
@@ -149,6 +150,7 @@ def fetch_From_Consumer_Monitor(user_id):
     total_appliances = fetch_User_Total_Appliances(user_id)
     # print(total_appliances)
 
+    starttime = time.time()
     table_name = "consumer_monitor"
     query = (
         supabase_.table(table_name=table_name)
@@ -167,14 +169,14 @@ def fetch_From_Consumer_Monitor(user_id):
         return response.data
     else:
         all_loads = []
+        end_time = time.time()
+        fetch_time = end_time - starttime
 
         # decrypting each column value
         start_time = time.time()
         data = []
         for each_index in range(len(response.data)):
-            data_load = decrypt_Text_New(
-                literal_eval(response.data[each_index]["load_type"])
-            )
+            data_load = response.data[each_index]["load_type"]
 
             if data_load not in all_loads:
                 all_loads.append(data_load)
@@ -190,7 +192,11 @@ def fetch_From_Consumer_Monitor(user_id):
                     literal_eval(response.data[each_index]["frequency"])
                 )
                 p = decrypt_Text_New(literal_eval(response.data[each_index]["power"]))
-                e = decrypt_Text_New(literal_eval(response.data[each_index]["energy"]))
+                e = (
+                    decrypt_Text_New(literal_eval(response.data[each_index]["energy"]))
+                    if response.data[each_index]["energy"] != None
+                    else 0
+                )
                 ne = {
                     "load_type": data_load,
                     "volt": (0 if volt == "nan" else float(volt)),
@@ -206,6 +212,11 @@ def fetch_From_Consumer_Monitor(user_id):
 
         end_time = time.time()
         decryption_time_taken = end_time - start_time
+
+        with open("dashboard_data.csv", "a", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow([fetch_time, decryption_time_taken])
+        file.close()
 
         return data
 
@@ -288,17 +299,15 @@ def fetch_From_Producer_Dashboard(user_id):
         # print(average_cost_hour)
 
         # returning all values (including average value)
-        return (
-            total_trades_0,
+        return [total_trades_0,
             average_wh_hour_0,
             average_cost_hour_0,
             access_grants_0,
             access_rejected_0,
-            some_other_0,
-        )
+            some_other_0,]
 
     except Exception as e:
-        return 0, 0, 0, 0, 0, 0
+        return [0, 0, 0, 0, 0, 0]
     # decryption
 
 
@@ -357,7 +366,7 @@ def fetch_From_Producer_Monitor(user_id):
         # decrypting each column value
         data = []
         for each_index in range(len(response.data)):
-            data_load = decrypt_Text_New(response.data[each_index]["load_type"])
+            data_load = response.data[each_index]["load_type"]
 
             if data_load not in all_loads:
                 all_loads.append(data_load)
@@ -372,7 +381,11 @@ def fetch_From_Producer_Monitor(user_id):
                     literal_eval(response.data[each_index]["frequency"])
                 )
                 p = decrypt_Text_New(literal_eval(response.data[each_index]["power"]))
-                e = decrypt_Text_New(literal_eval(response.data[each_index]["energy"]))
+                e = (
+                    decrypt_Text_New(literal_eval(response.data[each_index]["energy"]))
+                    if response.data[each_index]["energy"] != None
+                    else 0
+                )
                 ne = {
                     "load_type": data_load,
                     "volt": (0 if volt == "nan" else float(volt)),

@@ -1,9 +1,13 @@
 from ast import literal_eval
+import csv
+import time
 from flask import Blueprint, redirect, render_template, request, url_for, session
 
 from routes.__config__ import Config
 from routes.data_generator.tp_chaos_generator.tp_chaos_generator.triple_pendulum import (
+    decode_key,
     decrypt_Text_New,
+    get_encoded_key,
 )
 from routes.utility.diffi_hellman_EC import get_Shared_Key
 from routes.utility.fetch_Data import (
@@ -115,11 +119,15 @@ def decode_Utiltiy_Complaints(data):
         # print(type(user_public_key))
 
         shared_key_hex = get_Shared_Key(utility_private_key, user_public_key)
+        encoded_key = get_encoded_key(shared_key_hex)
+        generate_list_key = decode_key(encoded_key[0])
         d = {}
         for key, values in each_complaints.items():
             if key == "message":
                 values_encrpyted = literal_eval(values)
-                plain_text_each_d = decrypt_Text_New(values_encrpyted, shared_key_hex)
+                plain_text_each_d = decrypt_Text_New(
+                    values_encrpyted, generate_list_key
+                )
                 d[key] = plain_text_each_d
             else:
                 d[key] = values
@@ -138,11 +146,24 @@ def utility_marketplayer_issues():
         name = get_User_Username()
         print("User id: ", session["user_id"])
 
+        starttime = time.time()
         data = []
         encrpyted_data = fetch_All_User_Complaints_From_Utility()
         print(encrpyted_data)
+        endtime = time.time()
+        fetch_time = endtime - starttime
+
+        starttime = time.time()
         data = decode_Utiltiy_Complaints(encrpyted_data)
         print(data)
+        endtime = time.time()
+        decryption_time = endtime - starttime
+
+        with open("utility_complaint_show.csv", "a", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow([fetch_time, decryption_time])
+        file.close()
+
         return render_template(
             "/utililty/utility_marketplayer_issues_page.html", name=name, data=data
         )

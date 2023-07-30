@@ -194,7 +194,7 @@ def buy_energy():
         end_time = time.time()
         datasending_to_database_time_taken = end_time - start_time
 
-        with open("chaos.csv", "a", newline="") as file:
+        with open("buy_request.csv", "a", newline="") as file:
             writer = csv.writer(file)
             # writer.writerow(['Data Encrytion time','Data sending time'])
             writer.writerow([encryption_time_taken, datasending_to_database_time_taken])
@@ -231,6 +231,7 @@ def consumer_monitor(status=None):
         data = []
 
         data = fetch_From_Consumer_Monitor(session["user_id"])
+        print(data)
         if data == []:
             total_current, total_w = 0, 0
         else:
@@ -294,9 +295,21 @@ def send_message_to_aggregator():
         print(username, email, message)
 
         try:
+            starttime = time.time()
             choas_secret_key = get_Chaos_Key_List_Aggregator()
             cipher_text = encrypt_Text_New(message, choas_secret_key)
+            endtime = time.time()
+            encryption_time = endtime - starttime
+
+            starttime = time.time()
             send_Issue_Message_To_Aggregator(username, email, cipher_text)
+            endtime = time.time()
+            sending_time = endtime - starttime
+
+            with open("grievance.csv", "a", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerow([encryption_time, sending_time])
+            file.close()
 
             return redirect(
                 url_for("consumer_page.consumer_issue_to_aggregator", message="send")
@@ -353,6 +366,7 @@ def send_message_to_utility():
         print(username, email, message)
 
         try:
+            starttime = time.time()
             user_private_key = get_User_Session_Private_Key()
             utility_public_key = get_Utility_Public_Key()
 
@@ -362,11 +376,24 @@ def send_message_to_utility():
             shared_hex_key = get_Shared_Key(user_private_key, utility_public_key)
             encoded_key = get_encoded_key(shared_hex_key)
             utility_chaos_key = decode_key(encoded_key[0])
+            endtime = time.time()
+            utility_key_gen = endtime - starttime
 
+            starttime = time.time()
             set_Utility_Chaos_Key(utility_chaos_key)
-
             cipher_text = encrypt_Text_New(message, utility_chaos_key)
+            endtime = time.time()
+            encryption_time = endtime - starttime
+
+            starttime = time.time()
             send_Issue_Message_To_Utility(username, email, cipher_text)
+            endtime = time.time()
+            sending_time = endtime - starttime
+
+            with open("ascaliate.csv", "a", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerow([utility_key_gen, encryption_time, sending_time])
+            file.close()
 
             return redirect(
                 url_for("consumer_page.consumer_issue_to_utility", message="send")

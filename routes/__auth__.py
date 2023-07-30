@@ -199,18 +199,7 @@ def signin():
                         end_time = time.time()
                         time_taken_shared_key = end_time - start_time
 
-                        # saveing time in csv file
-                        with open("session_key_exchange.csv", "a", newline="") as file:
-                            writer = csv.writer(file)
-                            # writer.writerow(['Public key exchange time','Private key exchange time'])
-                            writer.writerow(
-                                [
-                                    time_taken_pubic_key_exchange,
-                                    time_taken_private_key_exchange,
-                                    time_taken_shared_key,
-                                ]
-                            )
-                        file.close()
+                        
                         # print(user_private_key)
                         # print(aggregator_public_key)
 
