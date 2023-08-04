@@ -190,16 +190,12 @@ def signin():
                         end_time = time.time()
                         time_taken_pubic_key_exchange = end_time - start_time
 
-                        start_time = time.time()
                         shared_key_hex = get_Shared_Key(
                             user_private_key, aggregator_public_key
                         )
                         encoded_key = get_encoded_key(shared_key_hex)
                         generate_keys_list = decode_key(encoded_key[0])
-                        end_time = time.time()
-                        time_taken_shared_key = end_time - start_time
 
-                        
                         # print(user_private_key)
                         # print(aggregator_public_key)
 

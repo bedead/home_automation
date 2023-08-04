@@ -29,6 +29,8 @@ def create_app():
         from .__auth__ import auth_page_bp
         from .__error__ import error_page_bp
         from .__api__ import api_page_bp
+        from .__apifetch__ import api_fetch_bp
+        from .__apiinsert__ import api_insert_bp
         from .users.__consumer__ import consumer_page_bp
         from .users.__producer__ import producer_page_bp
         from .users.__aggregator__ import aggregator_page_bp
@@ -39,6 +41,8 @@ def create_app():
         app.register_blueprint(auth_page_bp)
         app.register_blueprint(error_page_bp)
         app.register_blueprint(api_page_bp)
+        app.register_blueprint(api_fetch_bp)
+        app.register_blueprint(api_insert_bp)
         app.register_blueprint(consumer_page_bp)
         app.register_blueprint(producer_page_bp)
         # app.register_blueprint(prosumer_page_bp)

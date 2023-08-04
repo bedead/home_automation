@@ -146,23 +146,10 @@ def utility_marketplayer_issues():
         name = get_User_Username()
         print("User id: ", session["user_id"])
 
-        starttime = time.time()
         data = []
         encrpyted_data = fetch_All_User_Complaints_From_Utility()
-        print(encrpyted_data)
-        endtime = time.time()
-        fetch_time = endtime - starttime
 
-        starttime = time.time()
         data = decode_Utiltiy_Complaints(encrpyted_data)
-        print(data)
-        endtime = time.time()
-        decryption_time = endtime - starttime
-
-        with open("utility_complaint_show.csv", "a", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow([fetch_time, decryption_time])
-        file.close()
 
         return render_template(
             "/utililty/utility_marketplayer_issues_page.html", name=name, data=data

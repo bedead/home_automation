@@ -196,20 +196,9 @@ def aggregator_complaints():
         data = []
         aggregator_id = get_User_User_Id()
 
-        startime = time.time()
         encrpyted_data = fetch_All_User_Complaints_From_Aggregator(aggregator_id)
-        endtime = time.time()
-        complaint_fetch_time = endtime - startime
 
-        startime = time.time()
         data = decode_Complaints_Data(encrpyted_data)
-        endtime = time.time()
-        decryption_time = endtime - startime
-
-        with open("complaint_show.csv", "a", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow([complaint_fetch_time, decryption_time])
-        file.close()
         # print(data)
 
         return render_template("/aggregator/aggregator_complaints_page.html", data=data)

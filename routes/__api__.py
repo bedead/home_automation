@@ -1,26 +1,28 @@
+from ast import literal_eval
 import json
 from flask import Blueprint, render_template, request, send_file
 
 from routes.__config__ import Config
 from routes.data_generator.tp_chaos_generator.tp_chaos_generator.triple_pendulum import (
     decode_key,
+    decrypt_Text_New,
     encrypt_Text_New,
     get_encoded_key,
 )
 from routes.utility.diffi_hellman_EC import get_Shared_Key
 from routes.utility.fetch_Data import (
+    fetch_All_User_Complaints_From_Aggregator,
+    fetch_All_User_Complaints_From_Utility,
     fetch_From_Consumer_Dashboard,
     fetch_From_Consumer_History,
     fetch_From_Consumer_Monitor,
     fetch_From_Producer_Dashboard,
     fetch_From_Producer_History,
     fetch_From_Producer_Monitor,
+    fetch_Public_Key_From_Email,
     get_Aggregator_Id_From_Username,
 )
-from routes.utility.insert_Data import (
-    send_Issue_Message_To_Aggregator,
-    send_Issue_Message_To_Utility,
-)
+
 
 # Create a blueprint for the home routes
 api_page_bp = Blueprint("api_page", __name__)
@@ -125,6 +127,27 @@ def api_sign_in():
         return "error", 500
 
 
+@api_page_bp.route("/api/dso/signin/", methods=["POST"])
+def api_dso_sign_in():
+    data = request.get_json()
+    return_data = {}
+    user1 = supabase_.auth.sign_in_with_password(
+        {"email": data["email"], "password": data["password"]}
+    )
+    print(user1.session.access_token)
+    if user1:
+        global user
+        user = user1
+        return_data["user_id"] = user1.user.id
+        return_data["email"] = user1.user.email
+        return_data["private-key"] = user1.user.user_metadata["private-key"]
+        return_data["user-type"] = user1.user.user_metadata["user-type"]
+
+        return return_data, 200
+    else:
+        return "error", 500
+
+
 @api_page_bp.route("/api/user/signout/", methods=["GET"])
 def api_sign_out():
     global user
@@ -141,6 +164,7 @@ def api_sign_out():
 def aggregator_create_account():
     data = request.get_json()
     return_data = {}
+
     try:
         user = supabase_.auth.sign_up(
             {
