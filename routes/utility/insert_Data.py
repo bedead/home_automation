@@ -30,6 +30,10 @@ supabase_: Client = create_client(supabase_url=SUPABASE_URL, supabase_key=SUPABA
 
 
 def insert_Many_Into_Consumer_Dashboard(data, type):
+    """
+    Inserts data into the consumer or producer dashboard
+    table based on the specified type.
+    """
     table_name = None
     if type == "producer":
         table_name = "producer_dashboard"
@@ -39,6 +43,10 @@ def insert_Many_Into_Consumer_Dashboard(data, type):
 
 
 def insert_Many_Into_Consumer_History(data, type):
+    """
+    Inserts data into the consumer or producer history
+    table based on the specified type.
+    """
     table_name = None
     if type == "producer":
         table_name = "producer_history"
@@ -48,6 +56,10 @@ def insert_Many_Into_Consumer_History(data, type):
 
 
 def insert_Many_into_Consumer_Monitor(data, type):
+    """
+    Inserts data into the consumer or producer monitor table based on the specified type.
+    Handles exceptions related to HTTP timeouts.
+    """
     table_name = None
     if type == "producer":
         table_name = "producer_monitor"
@@ -62,17 +74,29 @@ def insert_Many_into_Consumer_Monitor(data, type):
 
 
 def insert_Into_Private_Data_From_Aggregator(row: dict):
+    """
+    Inserts a row of data into the private data
+    table, typically used by aggregators.
+    """
     table_name = "private_data"
     resp = supabase_.table(table_name=table_name).insert(row).execute()
 
 
 def insert_Into_Aggregator_Data_From_Aggregator(user_id: str, username: str):
+    """
+    Inserts data into the aggregator data table, including
+    the aggregator's user ID and username.
+    """
     table_name = "aggregator_data"
     row = {"aggregator_id": user_id, "username": username}
     resp = supabase_.table(table_name=table_name).insert(row).execute()
 
 
 def send_Issue_Message_To_Aggregator(username, email, message, aggregator_id):
+    """
+    Inserts an issue message into the aggregator issues table, along
+    with the relevant username, email, and aggregator ID.
+    """
     table_name = "aggregator_issues"
     row = {
         "username": username,
@@ -85,6 +109,10 @@ def send_Issue_Message_To_Aggregator(username, email, message, aggregator_id):
 
 
 def send_Issue_Message_To_Utility(username, email, message):
+    """
+    Inserts an issue message into the utility issues table,
+    along with the relevant username and email.
+    """
     table_name = "utility_issues"
     row = {
         "username": username,

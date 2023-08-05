@@ -31,6 +31,12 @@ supabase_ = Config.supabase_
 
 @utility_page_bp.route("/admin/utility/dashboard")
 def utility_dashboard():
+    """
+    This route handles the utility's main dashboard page.
+    It checks if the user is logged in as a utility. If
+    not, it redirects to the appropriate error page. If the user is a utility,
+    it renders the utility's main dashboard page.
+    """
     if session:
         if not (session["user-type"] == "Utility"):
             return redirect(url_for("error_page.error_403"))
@@ -46,6 +52,14 @@ def utility_dashboard():
 
 @utility_page_bp.route("/admin/utility/private_data")
 def utility_private_data():
+    """
+    This route displays the utility's private data page.
+    It checks if the user is logged in as a utility
+    and then retrieves data related to aggregators
+    and market players using the fetch_All_Aggregator_From_Private_Data()
+    and fetch_All_Market_Players_From_Private_Data() functions. The retrieved
+    data is then passed to the template for rendering.
+    """
     if session:
         if not (session["user-type"] == "Utility"):
             return redirect(url_for("error_page.error_403"))
@@ -69,6 +83,14 @@ def utility_private_data():
 
 @utility_page_bp.route("/admin/utility/buy_sell_request")
 def utility_buy_sell_request():
+    """
+    This route displays the utility's page for viewing buy
+    and sell requests from aggregators. Similar to previous
+    routes, it checks if the user is logged in as a utility
+    and then fetches buy and sell request data using
+    the appropriate functions. The retrieved data
+    is then passed to the template for rendering.
+    """
     if session:
         if not (session["user-type"] == "Utility"):
             return redirect(url_for("error_page.error_403"))
@@ -91,6 +113,12 @@ def utility_buy_sell_request():
 
 @utility_page_bp.route("/admin/utility/aggregator_applications")
 def utility_aggregator_applications():
+    """
+    This route handles the utility's aggregator applications
+    page. It checks if the user is logged in as a
+    utility and retrieves the user's name. The
+    name is then passed to the template for rendering.
+    """
     if session:
         if not (session["user-type"] == "Utility"):
             return redirect(url_for("error_page.error_403"))
@@ -108,6 +136,15 @@ def utility_aggregator_applications():
 
 
 def decode_Utiltiy_Complaints(data):
+    """
+    This function decodes complaints data received by the
+    utility. It takes a list of complaint data as input
+    and processes each complaint. It uses the utility's
+    private key to derive shared keys with the users
+    who submitted the complaints. It then decodes the
+    encrypted complaint messages using the shared
+    keys and returns a list of decoded complaints.
+    """
     complaints = []
     utility_private_key = get_User_Session_Private_Key()
 
@@ -139,6 +176,19 @@ def decode_Utiltiy_Complaints(data):
 
 @utility_page_bp.route("/admin/utility/market_player/issues")
 def utility_marketplayer_issues():
+    """
+    This route handles the utility's page for viewing issues
+    submitted by market players. It first checks if the user
+    is logged in as a utility. If the user is not logged in,
+    it redirects to the signin page. If the user is a utility,
+    it retrieves the utility's username and user ID. Then, it
+    fetches encrypted complaint data from market players using the
+    fetch_All_User_Complaints_From_Utility() function. After retrieving
+    the data, it decodes the complaints using the decode_Utiltiy_Complaints()
+    function, which decrypts the complaint messages using shared
+    keys. The decoded complaints are then passed to the template along with
+    the username for rendering the market player issues page.
+    """
     if session:
         if not (session["user-type"] == "Utility"):
             return redirect(url_for("error_page.error_403"))

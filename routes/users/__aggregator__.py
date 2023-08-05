@@ -27,6 +27,15 @@ aggregator_page_bp = Blueprint("aggregator_page", __name__)
 
 
 def decode_All_Data(data: list) -> list:
+    """
+    This function takes a list of encrypted data rows as
+    input and returns a list of decoded dashboard rows. It
+    iterates through each row, excluding the time-specific
+    keys ('am' and 'pm'). For each row, it creates a new
+    dashboard row with decrypted values using a shared key
+    generated from the user's private key and their
+    public key. The decoded dashboard data is then returned.
+    """
     user_private_key = get_User_Session_Private_Key()
     # print("Aggregator private key :",user_private_key)
     # print(data)
@@ -46,6 +55,16 @@ def decode_All_Data(data: list) -> list:
 
 
 def decode_One_Data(detail_data: dict) -> dict:
+    """
+    This function takes a dictionary of encrypted detailed
+    data as input and returns a decoded dashboard row.
+    It focuses on a single row of detailed data.
+    It first extracts the detail data from the dictionary
+    and identifies the corresponding user's public key.
+    Using the user's private key and the public key, it
+    generates a shared key and decodes the encrypted values.
+    The decoded details are returned in a dictionary format.
+    """
     dashboard_row = {}
     print(detail_data)
     detail_data = detail_data[0]
@@ -71,6 +90,12 @@ def decode_One_Data(detail_data: dict) -> dict:
 
 
 def get_Public_Key_For_ID(user_id):
+    """
+    This function retrieves the public key associated with a
+    given user ID. It queries the "private_data" table using
+    the user ID and extracts the public key from the
+    response data. The retrieved public key is then returned.
+    """
     table_name = "private_data"
     response1 = (
         supabase.table(table_name=table_name)
@@ -85,6 +110,17 @@ def get_Public_Key_For_ID(user_id):
 
 @aggregator_page_bp.route("/user/aggregator/dashboard")
 def aggregator_dashboard():
+    """
+    This route is accessed by aggregators to view their
+    dashboard. It first checks if a user session exists.
+    If the user is not logged in or not an aggregator,
+    it redirects to appropriate pages. If the user is an
+    aggregator, it retrieves the aggregator's ID and
+    fetches encrypted data related to their dashboard.
+    It then decodes this data using the decode_All_Data
+    function to obtain the decrypted dashboard information. The decoded
+    data is passed to the HTML template for rendering.
+    """
     if session:
         if not (session["user-type"] == "Aggregator"):
             return redirect(url_for("error_page.error_403"))
@@ -106,6 +142,18 @@ def aggregator_dashboard():
 
 @aggregator_page_bp.route("/user/aggregator/dashboard/request_details/")
 def aggregator_user_details():
+    """
+    This route is accessed to view detailed information
+    about a specific user's request. It checks if a user
+    session exists and if the user is an aggregator. If
+    so, it retrieves query parameters like user_id and
+    created_at. It fetches encrypted detailed data related to
+    the specified user and timestamp, then decodes this data
+    using the decode_One_Data method to obtain the decrypted
+    information. It also measures the time taken for fetching
+    and decryption, records it in a CSV file,
+    and renders a template to display the decrypted data.
+    """
     if session:
         if not (session["user-type"] == "Aggregator"):
             return redirect(url_for("error_page.error_403"))
@@ -131,7 +179,6 @@ def aggregator_user_details():
             writer.writerow([fetchtime, decryption_time])
         file.close()
 
-
         return render_template(
             "/aggregator/aggregator_dashboard_request_details_page.html", data=data
         )
@@ -144,6 +191,13 @@ def aggregator_user_details():
 
 @aggregator_page_bp.route("/user/aggregator/history")
 def aggregator_history():
+    """
+    This route is used to display the history of an
+    aggregator's actions. It checks the user's session
+    and whether they are an aggregator. If valid,
+    it retrieves the user's ID and renders a
+    template to display the aggregator's history page.
+    """
     if session:
         if not (session["user-type"] == "Aggregator"):
             return redirect(url_for("error_page.error_403"))
@@ -158,6 +212,15 @@ def aggregator_history():
 
 
 def decode_Complaints_Data(data):
+    """
+    This function takes a list of encrypted complaint
+    data as input and returns a list of decoded complaint
+    entries. It iterates through each encrypted complaint,
+    decrypts the "message" value using the shared key
+    derived from the aggregator's private key and the
+    user's public key. It constructs a new complaint entry with decrypted
+    values and returns the list of decoded complaints.
+    """
     aggre_private_key = get_User_Session_Private_Key()
     complaint_data = []
     # print(data)
@@ -189,6 +252,15 @@ def decode_Complaints_Data(data):
 
 @aggregator_page_bp.route("/user/aggregator/complaints")
 def aggregator_complaints():
+    """
+    This route is accessed to view complaints submitted
+    by users to the aggregator. It checks the user's
+    session and whether they are an aggregator. If valid,
+    it fetches encrypted complaint data related to the aggregator,
+    then decodes this data using the decode_Complaints_Data method
+    to obtain decrypted complaint entries.
+    It renders a template to display the decoded complaints.
+    """
     if session:
         if not (session["user-type"] == "Aggregator"):
             return redirect(url_for("error_page.error_403"))
@@ -211,6 +283,12 @@ def aggregator_complaints():
 
 @aggregator_page_bp.route("/user/aggregator/settings")
 def aggregator_settings():
+    """
+    This route provides access to the aggregator's settings
+    page. It checks the user's session and whether they
+    are an aggregator. If valid, it retrieves the user's
+    ID and renders a template to display the settings page.
+    """
     if session:
         if not (session["user-type"] == "Aggregator"):
             return redirect(url_for("error_page.error_403"))

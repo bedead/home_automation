@@ -14,6 +14,13 @@ supabase_ = Config.supabase_
 
 
 def compute_Avg(info, column_name):
+    """
+    This function calculates the average value of a
+    specific column in the given dataset. It iterates
+    through the dataset, decrypts the values
+    in the specified column, computes
+    the average, and returns the rounded result.
+    """
     val = 0
     for each in info:
         plainInt = int(decrypt_Text_New(each[column_name]))
@@ -23,6 +30,17 @@ def compute_Avg(info, column_name):
 
 
 def fetch_From_Consumer_Dashboard(user_id):
+    """
+    This function fetches various statistics and metrics from
+    the consumer dashboard for a specific user. It
+    constructs multiple queries to retrieve data related to
+    total trades, average watt-hour per hour, average cost
+    per hour, access grants, access rejections, and other
+    stats. The retrieved data is decrypted and processed.
+    The function calculates averages for the top 10 values of
+    the average_wh_hour and average_cost_hour columns. Finally, it
+    returns a list containing the fetched and calculated values.
+    """
     table_name = "consumer_dashboard"
     col1 = "total_trades"
     col2 = "average_wh_hour"
@@ -117,6 +135,13 @@ def fetch_From_Consumer_Dashboard(user_id):
 
 
 def fetch_From_Consumer_History(user_id):
+    """
+    This function retrieves data from the consumer history
+    table for a specific user. It constructs a query to
+    fetch the data and then iterates through the response
+    to decrypt and process specific columns like
+    full_name, wh_hour_price, and email. The decrypted data is then returned.
+    """
     table_name = "consumer_history"
     query = (
         supabase_.table(table_name=table_name)
@@ -147,6 +172,16 @@ def fetch_From_Consumer_History(user_id):
 
 
 def fetch_From_Consumer_Monitor(user_id):
+    """
+    This function fetches data from the consumer monitor
+    table for a specific user. It retrieves the total_appliances
+    for the user and constructs a query to fetch data related
+    to various load types. The fetched data is decrypted
+    and processed to create a new data structure. The function
+    also measures the time taken for fetching and decrypting data and records
+    it in a CSV file named "dashboard_data.csv."
+    """
+
     total_appliances = fetch_User_Total_Appliances(user_id)
     # print(total_appliances)
 
@@ -222,6 +257,16 @@ def fetch_From_Consumer_Monitor(user_id):
 
 
 def fetch_From_Producer_Dashboard(user_id):
+    """
+    Similar to the previous description, this function fetches
+    various statistics and metrics from the producer dashboard
+    for a specific user. It constructs queries to retrieve
+    data related to total trades, average watt-hour per hour,
+    average cost per hour, access grants, access rejections,
+    and other stats. The retrieved data is decrypted and
+    processed. The function calculates averages
+    for specific columns and returns the results.
+    """
     table_name = "producer_dashboard"
     col1 = "total_trades"
     col2 = "average_wh_hour"
@@ -299,12 +344,14 @@ def fetch_From_Producer_Dashboard(user_id):
         # print(average_cost_hour)
 
         # returning all values (including average value)
-        return [total_trades_0,
+        return [
+            total_trades_0,
             average_wh_hour_0,
             average_cost_hour_0,
             access_grants_0,
             access_rejected_0,
-            some_other_0,]
+            some_other_0,
+        ]
 
     except Exception as e:
         return [0, 0, 0, 0, 0, 0]
@@ -312,6 +359,13 @@ def fetch_From_Producer_Dashboard(user_id):
 
 
 def fetch_From_Producer_History(user_id):
+    """
+    This function retrieves data from the producer history
+    table for a specific user. It constructs a query to fetch
+    the data and then iterates through the response to
+    decrypt and process specific columns like
+    full_name, wh_hour_price, and email. The decrypted data is then returned.
+    """
     table_name = "producer_history"
     query = (
         supabase_.table(table_name=table_name)
@@ -342,6 +396,14 @@ def fetch_From_Producer_History(user_id):
 
 
 def fetch_From_Producer_Monitor(user_id):
+    """
+    This function fetches data from the producer monitor table
+    for a specific user. It retrieves the total_appliances
+    for the user and constructs a query to fetch data related
+    to various load types. The fetched data is decrypted
+    and processed to create a new data structure.
+    The function returns the processed data.
+    """
     total_appliances = fetch_User_Total_Appliances(user_id)
 
     table_name = "producer_monitor"
@@ -403,6 +465,12 @@ def fetch_From_Producer_Monitor(user_id):
 
 
 def fetch_All_From_Aggregator_Dashboard(aggregator_id):
+    """
+    This function retrieves all data from the aggregator
+    dashboard table for a specific aggregator. It
+    constructs a query to retrieve all entries related to
+    the given aggregator_id and returns the response data.
+    """
     table_name = "aggregator_dashboard"
     response = (
         supabase_.table(table_name=table_name)
@@ -415,6 +483,12 @@ def fetch_All_From_Aggregator_Dashboard(aggregator_id):
 
 
 def fetch_One_From_Aggregator_Dashboard(user_id: str, created_at: str) -> list:
+    """
+    This function fetches a single entry from the aggregator dashboard
+    table based on the user_id and created_at
+    timestamp. It constructs a query to retrieve
+    the specific entry and returns the response data.
+    """
     table_name = "aggregator_dashboard"
 
     response = (
@@ -430,6 +504,11 @@ def fetch_One_From_Aggregator_Dashboard(user_id: str, created_at: str) -> list:
 
 # fetch_From_Consumer_History('19353ea3-5608-4971-b168-cccf5a9324a7')
 def fetch_All_Aggregator_From_Private_Data():
+    """
+    This function retrieves data from the private_data table for
+    all users with the user type "Aggregator." It orders the data by creation time in
+    descending order and limits the result to 6 entries.
+    """
     table = "private_data"
     query = (
         supabase_.table(table_name=table)
@@ -444,6 +523,13 @@ def fetch_All_Aggregator_From_Private_Data():
 
 
 def fetch_All_Market_Players_From_Private_Data():
+    """
+    This function retrieves data from the private_data table for
+    all users with user types "Consumer" or "Producer."
+    Similar to the previous function, it orders
+    the data by creation time in descending
+    order and limits the result to 6 entries.
+    """
     table = "private_data"
     query = (
         supabase_.table(table_name=table)
@@ -458,6 +544,12 @@ def fetch_All_Market_Players_From_Private_Data():
 
 
 def fetch_All_Buy_Request_From_Aggregator_Dashboard():
+    """
+    This function fetches buy request data from the
+    aggregator_dashboard table. It selects specific columns
+    related to buy requests, orders the data by creation time in
+    descending order, and limits the result to 6 entries.
+    """
     table = "aggregator_dashboard"
     query = (
         supabase_.table(table_name=table)
@@ -481,6 +573,12 @@ def fetch_All_Buy_Request_From_Aggregator_Dashboard():
 
 
 def fetch_All_Sell_Request_From_Aggregator_Dashboard():
+    """
+    This function fetches sell request data from the aggregator_dashboard
+    table. It selects specific columns related to
+    sell requests, orders the data by creation time in
+    descending order, and limits the result to 6 entries.
+    """
     table = "aggregator_dashboard"
     query = (
         supabase_.table(table_name=table)
@@ -504,6 +602,11 @@ def fetch_All_Sell_Request_From_Aggregator_Dashboard():
 
 
 def fetch_User_Total_Appliances(user_id: str):
+    """
+    This function retrieves the total number of appliances
+    associated with a specific user. It fetches the total_appliances value from
+    the private_data table for the given user_id.
+    """
     table_name = "private_data"
     query = (
         supabase_.table(table_name=table_name)
@@ -516,6 +619,12 @@ def fetch_User_Total_Appliances(user_id: str):
 
 
 def get_Aggregator_Id_From_Username(user_name: str) -> str:
+    """
+    This function retrieves the aggregator ID based on the
+    provided username. It fetches the
+    user_id from the private_data table where
+    the username matches the given user_name.
+    """
     table_name = "private_data"
     query = (
         supabase_.table(table_name=table_name)
@@ -528,6 +637,13 @@ def get_Aggregator_Id_From_Username(user_name: str) -> str:
 
 
 def fetch_All_User_Complaints_From_Aggregator(user_id):
+    """
+    This function retrieves all user complaints
+    related to a specific aggregator. It fetches data
+    from the aggregator_issues table where the
+    aggregator_id matches the given user_id. The
+    function returns a list of complaint data.
+    """
     table_name = "aggregator_issues"
     query = (
         supabase_.table(table_name=table_name)
@@ -540,6 +656,11 @@ def fetch_All_User_Complaints_From_Aggregator(user_id):
 
 
 def fetch_All_User_Complaints_From_Utility():
+    """
+    This function retrieves all user complaints related to the
+    utility. It fetches data from the utility_issues
+    table and returns a list of complaint data.
+    """
     table_name = "utility_issues"
     query = supabase_.table(table_name=table_name).select("*").execute()
 
@@ -547,6 +668,13 @@ def fetch_All_User_Complaints_From_Utility():
 
 
 def fetch_Public_Key_From_Email(email):
+    """
+    This function retrieves the public key associated with a
+    given email address. It fetches the public_key
+    value from the private_data table where the
+    email_id matches the provided email. The function
+    returns the public key value as a string.
+    """
     table_name = "private_data"
     query = (
         supabase_.table(table_name=table_name)

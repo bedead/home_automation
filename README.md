@@ -27,4 +27,4 @@ __init__.py contains blueprint to initialize all the files and environment varia
 
 __config__.py fetches the supabase configuration from .env file to access and alter cloud resources. Can also config Dev environ or Production environment.
 
-Rest details about each function can found inside each python file.
+Rest details about each function can be found inside each python file.

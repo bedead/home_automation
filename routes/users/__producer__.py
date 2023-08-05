@@ -22,6 +22,13 @@ supabase_ = Config.supabase_
 
 @producer_page_bp.route("/user/producer/dashboard")
 def producer_dashboard():
+    """
+    This route displays the producer's dashboard page. It
+    first checks if the user is logged in as a producer.
+    It retrieves relevant data using the
+    fetch_From_Producer_Dashboard() function and
+    displays it on the producer's dashboard page.
+    """
     if session:
         if not (session["user-type"] == "Producer"):
             return redirect(url_for("error_page.error_403"))
@@ -68,6 +75,13 @@ def producer_dashboard():
 
 @producer_page_bp.route("/user/producer/history")
 def producer_history():
+    """
+    This route displays the producer's trade history. Similar
+    to the dashboard route, it checks if the user is logged
+    in as a producer, retrieves historical trade data using
+    the fetch_From_Producer_History() function, and
+    displays it on the producer's history page.
+    """
     if session:
         if not (session["user-type"] == "Producer"):
             return redirect(url_for("error_page.error_403"))
@@ -84,6 +98,16 @@ def producer_history():
 
 
 def insert_One_Into_Aggregator_Dashboard(data: dict):
+    """
+    This function is responsible for inserting a new
+    trade entry into the aggregator's dashboard. It
+    takes trade data as a dictionary, fetches user details
+    from the session, including user email, user type,
+    and user ID. It then creates a new row with relevant
+    details, such as trade type (sell), status
+    (PENDING), and aggregator ID. The row is
+    inserted into the aggregator_dashboard table.
+    """
     user_email, user_type, user_id = get_User_Session_Details()
     aggregator_id = get_User_Aggregator_Id()
     table_name = "aggregator_dashboard"
@@ -110,6 +134,19 @@ def insert_One_Into_Aggregator_Dashboard(data: dict):
 
 @producer_page_bp.route("/user/producer/monitor/sell_energy", methods=["POST"])
 def sell_energy():
+    """
+    This route handles the submission of a sell energy
+    request by the producer. It's triggered by a
+    POST request from the form on the producer's monitor
+    page. It captures energy data for different time
+    intervals from the form. The energy data is then
+    encrypted using the shared chaos key from the
+    get_Chaos_Key_List_Aggregator() function. The encrypted
+    data is then used to create a new trade entry in
+    the aggregator's dashboard using the insert_One_Into_Aggregator_Dashboard()
+    function. After successfully inserting the entry, the route redirects back to the
+    producer's monitor page with a success status.
+    """
     # print('sell endpoint trigger')
     if request.method == "POST":
         first = request.form["12-1am"]
@@ -180,6 +217,15 @@ def sell_energy():
 
 
 def get_Total_Current_And_Power(data):
+    """
+    This function calculates the total current and total
+    power consumption from the data provided. It
+    iterates through each row of data and sums up
+    the values for the "current" and "power" attributes.
+    The calculated totals are then rounded to one
+    decimal place for current and two decimal places for power.
+    The function returns these two calculated values.
+    """
     total_current = 0
     total_w = 0
 
@@ -196,6 +242,19 @@ def get_Total_Current_And_Power(data):
 @producer_page_bp.route("/user/producer/monitor")
 @producer_page_bp.route("/user/producer/monitor/<status>")
 def producer_monitor(status=None):
+    """
+    This route handles the producer's monitor page, where
+    they can view their energy consumption data. It
+    first checks if the user is logged in as a producer. If
+    not, it redirects to the sign-in page. If the user is a
+    producer, it retrieves energy consumption data using
+    the fetch_From_Producer_Monitor() function. The total
+    current and total power are calculated using the
+    get_Total_Current_And_Power() function. The data and
+    calculated totals are then passed to the producer's
+    monitor page for rendering. Additionally, the status parameter is used to
+    indicate the status of a trade request (if provided).
+    """
     if session:
         if not (session["user-type"] == "Producer"):
             return redirect(url_for("error_page.error_403"))
@@ -223,6 +282,13 @@ def producer_monitor(status=None):
 
 @producer_page_bp.route("/user/producer/settings")
 def producer_settings():
+    """
+    This route displays the producer's settings page.
+    Similar to other routes, it checks if the user is
+    logged in as a producer. If so, it renders the
+    producer's settings page. If the user is not
+    logged in, it redirects to the sign-in page.
+    """
     if session:
         if not (session["user-type"] == "Producer"):
             return redirect(url_for("error_page.error_403"))
