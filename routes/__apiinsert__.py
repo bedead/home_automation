@@ -1,3 +1,9 @@
+"""
+This code snippet defines a Flask blueprint named api_insert_bp, which 
+handles API routes responsible for inserting data into a database, 
+particularly Supabase. These routes facilitate the insertion of replies to market player 
+complaints and sending messages to utility sources.
+"""
 # Create a blueprint for the home routes
 from flask import Blueprint, request
 from routes.__config__ import Config
@@ -12,6 +18,14 @@ supabase_ = Config.supabase_
     "/api/insert/reply_to_market_players_complaints/", methods=["POST"]
 )
 def send_reply_to_market_player_complaints():
+    """
+    function handles the route /api/insert/reply_to_market_players_complaints/.
+    It receives a JSON payload containing the cipher_reply (encrypted reply)
+    and complaint_id. The function updates the aggregator_issues table in
+    Supabase, setting the reply field with the provided encrypted reply. The update is
+    targeted at the record with the specified complaint_id.
+    """
+
     data = request.get_json()
 
     try:
@@ -38,6 +52,13 @@ def send_reply_to_market_player_complaints():
 
 @api_insert_bp.route("/api/insert/send_message_to_utility/", methods=["POST"])
 def send_message_to_utility():
+    """
+    function is associated with the route /api/insert/send_message_to_utility/.
+    This route expects JSON data containing username, cipher_text (encrypted message),
+    email, and aggregator_id. The function inserts a new row into the
+    aggregator_to_utility_issues table in Supabase, storing the
+    encrypted message along with other provided details.
+    """
     data = request.get_json()
 
     try:

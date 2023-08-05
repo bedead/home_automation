@@ -5,14 +5,11 @@ from flask import Blueprint, render_template, request, send_file
 from routes.__config__ import Config
 from routes.data_generator.tp_chaos_generator.tp_chaos_generator.triple_pendulum import (
     decode_key,
-    decrypt_Text_New,
     encrypt_Text_New,
     get_encoded_key,
 )
 from routes.utility.diffi_hellman_EC import get_Shared_Key
 from routes.utility.fetch_Data import (
-    fetch_All_User_Complaints_From_Aggregator,
-    fetch_All_User_Complaints_From_Utility,
     fetch_From_Consumer_Dashboard,
     fetch_From_Consumer_History,
     fetch_From_Consumer_Monitor,
@@ -32,11 +29,23 @@ supabase_ = Config.supabase_
 
 @api_page_bp.route("/api/test/", methods=["GET"])
 def test():
+    """
+    A test route to check if the API is working.
+
+    Returns:
+        str: A success message.
+    """
     return "success", 200
 
 
 @api_page_bp.route("/api/user/create_account/", methods=["POST"])
 def market_player_create_account():
+    """
+    Route for creating a user account.
+
+    Returns:
+        dict: Response data containing user information and keys.
+    """
     data = request.get_json()
     return_data = {}
     try:
@@ -109,6 +118,12 @@ user = {}
 
 @api_page_bp.route("/api/user/signin/", methods=["POST"])
 def api_sign_in():
+    """
+    Route for user sign in.
+
+    Returns:
+        dict: Response data containing access and refresh tokens.
+    """
     data = request.get_json()
     return_data = {}
     user1 = supabase_.auth.sign_in_with_password(
@@ -150,6 +165,12 @@ def api_dso_sign_in():
 
 @api_page_bp.route("/api/user/signout/", methods=["GET"])
 def api_sign_out():
+    """
+    Route for user sign out.
+
+    Returns:
+        str: Success message or unauthorized error.
+    """
     global user
     if user:
         print(user.user.email)
@@ -162,6 +183,12 @@ def api_sign_out():
 
 @api_page_bp.route("/api/aggregator/create_account", methods=["POST"])
 def aggregator_create_account():
+    """
+    Route for creating an aggregator account.
+
+    Returns:
+        dict: Response data containing aggregator information and keys.
+    """
     data = request.get_json()
     return_data = {}
 
@@ -220,6 +247,12 @@ def aggregator_create_account():
 
 @api_page_bp.route("/api/market_player/consumer/monitor", methods=["POST"])
 def consumer_fetch_Monitor_data():
+    """
+    Route for fetching consumer monitor data.
+
+    Returns:
+        dict: Response data containing consumer monitor information.
+    """
     global user
     if user:
         data = request.get_json()
@@ -256,6 +289,12 @@ def consumer_fetch_History_data():
 
 @api_page_bp.route("/api/market_player/producer/monitor", methods=["POST"])
 def producer_fetch_Monitor_data():
+    """
+    Route for fetching producer monitor data.
+
+    Returns:
+        dict: Response data containing producer monitor information.
+    """
     global user
     if user:
         data = request.get_json()
@@ -292,6 +331,12 @@ def producer_fetch_History_data():
 
 @api_page_bp.route("/api/utility/get_utility_chaos", methods=["POST"])
 def send_utility_public():
+    """
+    Route for sending the utility's public key.
+
+    Returns:
+        str: Encrypted utility chaos key.
+    """
     utility_public_key = "2d2d2d2d2d424547494e205055424c4943204b45592d2d2d2d2d0a4d485977454159484b6f5a497a6a3043415159464b34454541434944596741454247394c6a7a794a2b652b61706e7139622b416571552f535259707472334e700a4673723852696933663270664b4a717676416a7758533550756e346972374965424a7a2b4e6568704266645062735562465139366258776e674d362b455342570a723974792b50772b367936485176426c4654754f2b4778736c7750553863322b0a2d2d2d2d2d454e44205055424c4943204b45592d2d2d2d2d0a"
     data = request.get_json()
 

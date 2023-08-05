@@ -37,6 +37,15 @@ supabase_ = Config.supabase_
 
 @auth_page_bp.route("/auth/signup/", methods=["GET", "POST"])
 def signup(pass_same=False):
+    """
+    Route for user signup.
+
+    Args:
+        pass_same (bool): Flag to indicate if password confirmation is the same.
+
+    Returns:
+        str: Redirects to various routes based on signup status.
+    """
     if not session:
         # fetching all aggregators name
         table_name = "private_data"
@@ -250,6 +259,17 @@ def signin():
 
 @auth_page_bp.route("/auth/become_aggregator/signup/", methods=["GET", "POST"])
 def aggregator_signup(pass_same=False):
+    """
+    The aggregator_signup route, located within the authentication blueprint,
+    facilitates the signup process for users aiming to become aggregators.
+    It handles both GET and POST requests. For POST requests, the route
+    validates user-provided data, generates encryption keys, and
+    registers the user through Supabase. If successful, the user's data
+    is added to relevant tables. If passwords don't match, a flag is
+    set for error notification. For GET requests, the route either
+    renders the signup form or redirects logged-in users
+    based on their role to their respective dashboard.
+    """
     if not session:
         if request.method == "POST":
             username = request.form["username"]
@@ -323,12 +343,25 @@ def aggregator_signup(pass_same=False):
 
 @auth_page_bp.route("/auth/email_verify/")
 def email_verificatation():
+    """
+    This route handles email verification. It retrieves the email
+    from the query parameters using request.args.get("email", None)
+    and returns a message indicating that an email
+    verification has been sent to the provided email address.
+    """
     email = request.args.get("email", None)
     return f"Email verification has been sent to {email} mail."
 
 
 @auth_page_bp.route("/auth/password_recovery/")
 def password_recovery():
+    """
+    This route is related to password recovery. It checks if the
+    password_recovery_ready flag is set to True. If not, it redirects
+    to an "under construction" page using redirect(url_for("error_page.under_construction")).
+    If the flag is
+    set to True, it renders the password recovery page using
+    """
     password_recovery_ready = False
     if not password_recovery_ready:
         return redirect(url_for("error_page.under_construction"))
@@ -338,6 +371,12 @@ def password_recovery():
 
 @auth_page_bp.route("/auth/logout/", methods=["GET", "POST"])
 def logout():
+    """
+    This route handles user logout. It first prints the email of the
+    current session user. Then, it signs the user out using supabase_.auth.sign_out(),
+    clears the session using session.clear(), and finally redirects the user to
+    the signin page using redirect(url_for("auth_page.signin")).
+    """
     print(session["email"])
     out = supabase_.auth.sign_out()
     session.clear()

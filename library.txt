@@ -4,7 +4,3 @@ supabase
 names
 pycryptodome
 cryptography
-# flaskwebgui
-# waitress
-# PyNeutralino
-# turbo-flask
